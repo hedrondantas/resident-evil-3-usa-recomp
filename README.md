@@ -27,7 +27,7 @@ Tools: Python 3, CMake, Ninja and a C/C++ compiler. On Windows,
 ## Build
 
 ```sh
-git clone --recursive https://github.com/hedrondantas/resident-evil-3-usa-recomp.git
+git clone https://github.com/hedrondantas/resident-evil-3-usa-recomp.git
 cd resident-evil-3-usa-recomp
 
 python psxrecomp/psxrecomp_cli.py ensure-toolchain --project-root .
@@ -59,7 +59,7 @@ immediately and are saved to `settings.toml`; no restart is needed.
 
 Navigate with the arrow keys or D-pad, change values with Left/Right, go back with
 Esc / Circle. Live resolution scale needs the OpenGL renderer (the default).
-This comes from this project's changes to the framework (see Credits).
+This comes from this project's changes to the framework in `psxrecomp/` (see Credits).
 
 | Resolution scale | Internal resolution | Good for |
 |---|---|---|
@@ -109,14 +109,19 @@ Developed with AI assistance (Claude Code).
 
 ## Credits and licenses
 
-- Framework: [PSXRecomp](https://github.com/mstan/psxrecomp), via the
+The framework and launcher are included in this repository as ordinary folders
+(not submodules), with this project's changes applied on top:
+
+- `psxrecomp/`: [PSXRecomp](https://github.com/mstan/psxrecomp), from the
   [Alexbeav/psxrecomp](https://github.com/Alexbeav/psxrecomp) fork at `6c7fdaa`, plus the
-  this project's runtime-menu and 8x-resolution changes (`98d81db`).
-- Launcher: [recomp-ui](https://github.com/mstan/recomp-ui), via
-  [Alexbeav/recomp-ui](https://github.com/Alexbeav/recomp-ui) at `be8ac1d`, plus this
-  project's 8x resolution ceiling (`b82b231`).
+  F1 runtime menu and the 8x internal resolution. Includes its `lib/recomp-net` and
+  `lib/retcomm-rbengine` dependencies.
+- `recomp-ui/`: [recomp-ui](https://github.com/mstan/recomp-ui), from
+  [Alexbeav/recomp-ui](https://github.com/Alexbeav/recomp-ui) at `be8ac1d`, plus the 8x
+  resolution ceiling in the launcher.
 - Project layout and configuration derived from
   [resident-evil-3-recomp](https://github.com/alexbeavs-ps1-ports/resident-evil-3-recomp).
 
-Framework and launcher licenses remain in their submodules. Resident Evil and all
-related trademarks belong to Capcom.
+Each included folder keeps its own license and third-party notices. The upstream commits
+are recorded in `framework_pins.txt`. Resident Evil and all related trademarks belong to
+Capcom.
