@@ -92,10 +92,6 @@ own functions classified by subsystem with a confidence level. `symbols.toml` ho
 same names in PSXRecomp's symbol-map format, and `catalog/ghidra_import.py` loads them
 into Ghidra. See [`catalog/README.md`](catalog/README.md).
 
-## Roadmap
-
-Planned and wished-for changes are tracked in [`TODO.md`](TODO.md).
-
 ## About this project
 
 Developed with AI assistance (Claude Code).
