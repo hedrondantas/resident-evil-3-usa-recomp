@@ -22,6 +22,10 @@ void host_osd_push(const char *msg, int duration_ms);
 /* Persistent top-left status text. Passing NULL/empty clears it. */
 void host_osd_set_status(const char *msg);
 
+/* Persistent HUD text drawn at the bottom-left of the game image (OpenGL
+ * presenter). Set by trusted game plugins; NULL/empty hides it. */
+void host_osd_set_hud(const char *msg);
+
 /* Right-side vertical volume bar (percent clamped 0..100). */
 void host_osd_show_volume(int percent, int duration_ms);
 
@@ -38,6 +42,7 @@ int host_osd_needs_present(void);
  * deciding neither is active), call host_osd_present_done(). */
 int host_osd_image(const uint32_t **pixels, int *w, int *h);          /* text */
 int host_osd_volume_image(const uint32_t **pixels, int *w, int *h);   /* bar */
+int host_osd_hud_image(const uint32_t **pixels, int *w, int *h);      /* HUD */
 void host_osd_present_done(void);
 
 /* Software / SDL_Renderer path: draw overlays over the current backbuffer. */

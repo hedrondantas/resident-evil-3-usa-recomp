@@ -5,6 +5,7 @@
 #include "mod_packages.h"
 #include "mod_plugins.h"
 #include "gpu.h"
+#include "host_osd.h"
 #include "psx_sha256.h"
 
 #if defined(RECOMP_LAUNCHER)
@@ -1403,6 +1404,10 @@ extern "C" uint32_t psx_mod_display_height(void) {
     std::memset(&info, 0, sizeof(info));
     gpu_get_display_info(&info);
     return info.height;
+}
+
+extern "C" void psx_mod_set_hud_text(const char* text) {
+    host_osd_set_hud(text);
 }
 
 extern "C" int psx_mod_register_function_entry_plugin(

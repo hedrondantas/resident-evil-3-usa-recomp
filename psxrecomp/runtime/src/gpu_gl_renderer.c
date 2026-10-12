@@ -4082,6 +4082,14 @@ static void gl_swap_with_osd(void) {
             if (ui < 1) ui = 1;
             if (ui > 8) ui = 8;
             margin = 8 * ui;
+            if (host_osd_hud_image(&px, &ow, &oh) && px) {
+                int lx, ly, lw, lh;
+                letterbox_rect(ww, wh, &lx, &ly, &lw, &lh);
+                const int dw = ow * ui, dh = oh * ui;
+                const int hx = lx + margin;
+                const int hy = ly + lh - dh - margin;
+                gl_draw_osd_image(px, ow, oh, dw, dh, hx, hy > 0 ? hy : 0, ww, wh);
+            }
             if (host_osd_image(&px, &ow, &oh) && px)
                 gl_draw_osd_image(px, ow, oh, ow * ui, oh * ui,
                                   margin, margin, ww, wh);

@@ -84,6 +84,7 @@ guarded patch that checks the original instruction bytes before applying:
 | Items | Infinite items |
 | Difficulty | Hardcore mode (one-hit death) |
 | Video | Skip FMVs |
+| HUD | Health and ammo HUD (bottom-left of the screen, hidden in menus; OpenGL renderer) |
 | Experimental | More inventory slots · Walk through walls · Walk through enemies · Freeze enemies |
 
 The patches are adapted from known NTSC-U GameShark codes

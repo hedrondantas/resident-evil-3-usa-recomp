@@ -81,6 +81,14 @@ uint32_t psx_mod_display_width(void);
 uint32_t psx_mod_display_height(void);
 
 /*
+ * Host-drawn HUD line at the bottom-left of the game image (OpenGL
+ * presenter), outside guest VRAM and savestates. Printable ASCII, up to 64
+ * characters; NULL or "" hides it. Cheap to call every VBlank: unchanged
+ * text is not re-rasterized.
+ */
+void psx_mod_set_hud_text(const char *text);
+
+/*
  * Read the committed value of one of this package's declared options, as the
  * player left it in the launcher (or the manifest default when untouched).
  * Writes a NUL-terminated string into `out` and returns 1; returns 0 with

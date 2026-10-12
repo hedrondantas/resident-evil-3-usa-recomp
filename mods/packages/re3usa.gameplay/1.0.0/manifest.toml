@@ -1,4 +1,4 @@
-format_version = 1
+format_version = 5
 id = "re3usa.gameplay"
 version = "1.0.0"
 name = "RE3 (USA) — Gameplay tweaks"
@@ -156,3 +156,16 @@ target = "main_exe"
 address = 0x80023EA8
 expected = "09 f8 40 00"
 replace = "09 f8 00 24"
+
+# ------------------------------------------------------------------ HUD
+
+[[feature]]
+id = "hud"
+name = "Health and ammo HUD"
+description = "Shows Jill's health and the equipped weapon's loaded ammo at the bottom-left of the screen (OpenGL renderer)."
+group = "HUD"
+default_enabled = false
+
+[[plugin]]
+feature = "hud"
+id = "re3usa.hud"

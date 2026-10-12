@@ -39,6 +39,7 @@ psxrecomp_add_game_runtime(psx-runtime
     GEN_MARKER "generated/SLUS_009.23_dispatch.c"
     GEN_FULL_GLOB "generated/SLUS_009.23_full_*.c"
     CODEGEN_SETUP_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/codegen_setup.c"
+                          "${CMAKE_CURRENT_SOURCE_DIR}/src/re3usa_hud.c"
 )
 
 # Stage runtime configs next to the exe for direct build/ launches. Only copy

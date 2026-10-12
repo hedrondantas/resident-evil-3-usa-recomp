@@ -148,6 +148,14 @@ static uint32_t s_img[OSD_IMG_W * OSD_IMG_H];
 static int      s_img_w;
 static int      s_img_h;
 
+/* Persistent HUD line (trusted game plugins), drawn at the bottom-left of the
+ * game image rather than the window. Independent of toasts/status. */
+static char     s_hud_msg[OSD_MAX_CHARS + 1];
+static int      s_hud_active;
+static uint32_t s_hud_img[OSD_IMG_W * OSD_IMG_H];
+static int      s_hud_w;
+static int      s_hud_h;
+
 /* Vertical bar: outer 16x120 @ 2x → 32x240. Fill grows from the bottom. */
 #define VOL_BAR_W   (16 * OSD_SCALE)
 #define VOL_BAR_H   (120 * OSD_SCALE)
@@ -201,18 +209,21 @@ static int vol_visible(void) {
     return 1;
 }
 
-static void rasterize_text(const char *msg) {
+static void rasterize_text_into(const char *msg, uint32_t *img,
+                                int *out_w, int *out_h) {
     int n = (int)strlen(msg);
     if (n > OSD_MAX_CHARS) n = OSD_MAX_CHARS;
-    s_img_w = (OSD_PAD_X * 2 + n * OSD_GLYPH_W) * OSD_SCALE;
-    s_img_h = (OSD_PAD_Y * 2 + OSD_GLYPH_H) * OSD_SCALE;
-    if (s_img_w < 1) s_img_w = 1;
-    if (s_img_h < 1) s_img_h = 1;
-    if (s_img_w > OSD_IMG_W) s_img_w = OSD_IMG_W;
-    if (s_img_h > OSD_IMG_H) s_img_h = OSD_IMG_H;
+    int img_w = (OSD_PAD_X * 2 + n * OSD_GLYPH_W) * OSD_SCALE;
+    int img_h = (OSD_PAD_Y * 2 + OSD_GLYPH_H) * OSD_SCALE;
+    if (img_w < 1) img_w = 1;
+    if (img_h < 1) img_h = 1;
+    if (img_w > OSD_IMG_W) img_w = OSD_IMG_W;
+    if (img_h > OSD_IMG_H) img_h = OSD_IMG_H;
+    *out_w = img_w;
+    *out_h = img_h;
 
-    for (int i = 0; i < s_img_w * s_img_h; i++)
-        s_img[i] = 0xFF202020u;
+    for (int i = 0; i < img_w * img_h; i++)
+        img[i] = 0xFF202020u;
 
     for (int ci = 0; ci < n; ci++) {
         unsigned char ch = (unsigned char)msg[ci];
@@ -227,14 +238,18 @@ static void rasterize_text(const char *msg) {
                 for (int dy = 0; dy < OSD_SCALE; dy++) {
                     for (int dx = 0; dx < OSD_SCALE; dx++) {
                         int x = x0 + dx, y = y0 + dy;
-                        if ((unsigned)x < (unsigned)s_img_w &&
-                            (unsigned)y < (unsigned)s_img_h)
-                            s_img[y * s_img_w + x] = 0xFFFFFFFFu;
+                        if ((unsigned)x < (unsigned)img_w &&
+                            (unsigned)y < (unsigned)img_h)
+                            img[y * img_w + x] = 0xFFFFFFFFu;
                     }
                 }
             }
         }
     }
+}
+
+static void rasterize_text(const char *msg) {
+    rasterize_text_into(msg, s_img, &s_img_w, &s_img_h);
     s_img_dirty = 0;
 }
 
@@ -451,6 +466,40 @@ int host_osd_volume_image(const uint32_t **pixels, int *w, int *h) {
     if (h) *h = s_vol_h;
     return 1;
 #endif
+}
+
+void host_osd_set_hud(const char *msg) {
+#if !HOST_OSD_VISUAL
+    (void)msg;
+    return;
+#else
+    if (!msg || !msg[0]) {
+        if (s_hud_active) s_needs_clear = 1;
+        s_hud_msg[0] = ' ';
+        s_hud_active = 0;
+        return;
+    }
+    if (s_hud_active && strncmp(s_hud_msg, msg, OSD_MAX_CHARS) == 0)
+        return;
+    snprintf(s_hud_msg, sizeof(s_hud_msg), "%s", msg);
+    rasterize_text_into(s_hud_msg, s_hud_img, &s_hud_w, &s_hud_h);
+    s_hud_active = 1;
+#endif
+}
+
+int host_osd_hud_image(const uint32_t **pixels, int *w, int *h) {
+#if HOST_OSD_VISUAL
+    if (s_hud_active) {
+        if (pixels) *pixels = s_hud_img;
+        if (w) *w = s_hud_w;
+        if (h) *h = s_hud_h;
+        return 1;
+    }
+#endif
+    if (pixels) *pixels = NULL;
+    if (w) *w = 0;
+    if (h) *h = 0;
+    return 0;
 }
 
 void host_osd_present_done(void) {
