@@ -53,13 +53,24 @@ immediately and are saved to `settings.toml`; no restart is needed.
 | Category | Settings |
 |---|---|
 | Display | Fullscreen, window scale |
-| Graphics | Linear filter, texture filtering, FMV filtering, **resolution scale (1x–4x)**, geometry correction, perspective texturing |
+| Graphics | Linear filter, texture filtering, FMV filtering, **resolution scale (1x–8x)**, geometry correction, perspective texturing |
 | Audio | Volume |
 | Input / Disc | Controller port route, change or reinsert disc |
 
 Navigate with the arrow keys or D-pad, change values with Left/Right, go back with
 Esc / Circle. Live resolution scale needs the OpenGL renderer (the default).
-This is added by the framework branch `re3usa/runtime-menu-video`.
+This comes from this project's changes to the framework (see Credits).
+
+| Resolution scale | Internal resolution | Good for |
+|---|---|---|
+| 4x | 1280x960 | 720p / 900p displays |
+| 5x | 1600x1200 | **1080p** |
+| 6x | 1920x1440 | 1440p |
+| 8x | 2560x1920 | 4K (downsampled) |
+
+The ceiling is 8x, lowered automatically if the graphics driver cannot allocate the
+surface (8x uses about 400 MB of video memory). Pre-rendered backgrounds and FMVs keep
+their original resolution; the scale sharpens the 3D models.
 
 ## Mods
 
@@ -100,8 +111,10 @@ Developed with AI assistance (Claude Code).
 
 - Framework: [PSXRecomp](https://github.com/mstan/psxrecomp), via the
   [Alexbeav/psxrecomp](https://github.com/Alexbeav/psxrecomp) fork at `6c7fdaa`, plus the
-  runtime-menu change on branch `re3usa/runtime-menu-video` (`eb816b1`).
-- Launcher: [recomp-ui](https://github.com/mstan/recomp-ui) (pinned at `be8ac1d`).
+  this project's runtime-menu and 8x-resolution changes (`98d81db`).
+- Launcher: [recomp-ui](https://github.com/mstan/recomp-ui), via
+  [Alexbeav/recomp-ui](https://github.com/Alexbeav/recomp-ui) at `be8ac1d`, plus this
+  project's 8x resolution ceiling (`b82b231`).
 - Project layout and configuration derived from
   [resident-evil-3-recomp](https://github.com/alexbeavs-ps1-ports/resident-evil-3-recomp).
 
