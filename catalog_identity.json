@@ -1,40 +1,40 @@
 {
   "format_version": 1,
   "game": {
-    "name": "Resident Evil 3: Nemesis",
-    "id": "SLES-02529",
-    "boot_exe": "SLES_025.29"
+    "name": "Resident Evil 3: Nemesis (USA)",
+    "id": "SLUS-00923",
+    "boot_exe": "SLUS_009.23"
   },
   "marketing": {
     "description": "",
     "publisher": "",
     "year": "",
-    "region": "Europe",
+    "region": "USA",
     "players": 1
   },
   "rom_identity": {
-    "cue_name": "Resident Evil 3 - Nemesis (Europe).cue",
-    "bin_name": "Resident Evil 3 - Nemesis (Europe).bin",
+    "cue_name": "Resident Evil 3 - Nemesis (USA).cue",
+    "bin_name": "Resident Evil 3 - Nemesis (USA).bin",
     "track_counts": [
       1
     ],
-    "require_cue": false,
+    "require_cue": true,
     "data_track": {
-      "size": 712491360,
-      "md5": "e7813f06885842fe2bb2c3d02b67f455",
-      "sha1": "b3ec6631e1c9ed3b0f554b3a5f61166bac8ebb9d",
-      "crc32": "fb9def08"
+      "size": 722165136,
+      "md5": "03ccf2f717dad9168640f518dd4e3e80",
+      "sha1": "c5993ac3ea6efb4181554aa32d8749a7f728a7ad",
+      "crc32": "132bb3e6"
     },
-    "disc_fp": "eeac3af85b94e26eb8efbf0aef01d45f62c2a992cd7efe4ca1001aa20c760f82"
+    "disc_fp": "06a17096baa2d3c9abb3275850479f22a3deadafc2d14799f04ea95cdb5baed0"
   },
   "exe": {
     "load_address": "0x80010000",
-    "entry_pc": "0x80011BD0",
-    "text_size": "0x000D5800",
+    "entry_pc": "0x80011B80",
+    "text_size": "0x000D3800",
     "stack_base": "0x801FFFF0"
   },
   "seeds": {
-    "count": 985,
+    "count": 965,
     "source": "boot_exe_jal"
   },
   "warnings": [

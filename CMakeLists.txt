@@ -9,7 +9,7 @@ if(NOT EXISTS "${PSXRECOMP_ROOT}/runtime/runtime.cmake")
         "If psxrecomp/ is not a submodule, set -DPSXRECOMP_ROOT=<path-to-psxrecomp>.")
 endif()
 
-project(Resident_Evil_3__Nemesis_Recompiled LANGUAGES C CXX)
+project(Resident_Evil_3_Nemesis_USA_Recompiled LANGUAGES C CXX)
 
 # --- Opt-in product surfaces (OFF by default in the framework) -------------
 # Scaffold prompts / flags fill these. Without recomp-ui, PSX_RECOMP_UI is OFF.
@@ -21,23 +21,23 @@ set(PSX_STATIC_RUNTIME ON CACHE BOOL "Portable runtime" FORCE)
 set(PSX_ENABLE_VULKAN ON CACHE BOOL "Vulkan renderer" FORCE)
 set(PSX_NETPLAY OFF CACHE BOOL "Accepted offline release" FORCE)
 set(PSX_SETUP_WIZARD ON CACHE BOOL "First-run setup" FORCE)
-set(PSXRECOMP_BIOS_STEMS "SCPH5552" CACHE STRING "Accepted BIOS" FORCE)
-set(PSXRECOMP_BIOS_STEM "SCPH5552" CACHE STRING "Accepted BIOS" FORCE)
-set(PSXRECOMP_BIOS_PROFILE "${PSXRECOMP_ROOT}/bios/SCPH5552.toml" CACHE FILEPATH "Accepted BIOS" FORCE)
+set(PSXRECOMP_BIOS_STEMS "SCPH1001" CACHE STRING "Accepted BIOS" FORCE)
+set(PSXRECOMP_BIOS_STEM "SCPH1001" CACHE STRING "Accepted BIOS" FORCE)
+set(PSXRECOMP_BIOS_PROFILE "${PSXRECOMP_ROOT}/bios/SCPH1001.toml" CACHE FILEPATH "Accepted BIOS" FORCE)
 include("${PSXRECOMP_ROOT}/runtime/runtime.cmake")
 
 psxrecomp_add_game_runtime(psx-runtime
 
 
     ENABLE_SETUP_WIZARD
-    EXE_NAME "Resident_Evil_3__Nemesis_Recompiled"
-    WINDOW_TITLE "Resident Evil 3: Nemesis Recompiled"
+    EXE_NAME "Resident_Evil_3_Nemesis_USA_Recompiled"
+    WINDOW_TITLE "Resident Evil 3: Nemesis (USA) Recompiled"
     DEFAULT_GAME_CONFIG_PATH "game.toml"
     MAX_PLAYERS 1
 
 
-    GEN_MARKER "generated/SLES_025.29_dispatch.c"
-    GEN_FULL_GLOB "generated/SLES_025.29_full_*.c"
+    GEN_MARKER "generated/SLUS_009.23_dispatch.c"
+    GEN_FULL_GLOB "generated/SLUS_009.23_full_*.c"
     CODEGEN_SETUP_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/codegen_setup.c"
 )
 
@@ -53,3 +53,15 @@ foreach(_PSX_RUNTIME_CONFIG game.toml game_options.toml)
             VERBATIM)
     endif()
 endforeach()
+
+# Stage this title's mod packages next to the framework's. The framework's own
+# POST_BUILD step (added by psxrecomp_add_game_runtime above, so it runs first)
+# clears mods/packages on every build.
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/mods/packages")
+    add_custom_command(TARGET psx-runtime POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${CMAKE_CURRENT_SOURCE_DIR}/mods/packages"
+            "$<TARGET_FILE_DIR:psx-runtime>/mods/packages"
+        COMMENT "Staging title mod packages"
+        VERBATIM)
+endif()

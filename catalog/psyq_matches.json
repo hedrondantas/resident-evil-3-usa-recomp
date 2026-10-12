@@ -1,0 +1,2508 @@
+{
+ "base": "0x80010000",
+ "best_version": "450",
+ "version_scores": {
+  "260": 2124,
+  "300": 2172,
+  "330": 6860,
+  "340": 6924,
+  "350": 8324,
+  "3610": 9248,
+  "3611": 9248,
+  "370": 11852,
+  "400": 11764,
+  "410": 46964,
+  "420": 47980,
+  "430": 50196,
+  "440": 80932,
+  "450": 96052,
+  "460": 43892,
+  "470": 43348
+ },
+ "functions": {
+  "0x80011b80": {
+   "name": "__SN_ENTRY_POINT",
+   "lib": "NOHEAP.OBJ",
+   "obj": "NOHEAP.OBJ",
+   "version": "450"
+  },
+  "0x80011c20": {
+   "name": "__main",
+   "lib": "NOHEAP.OBJ",
+   "obj": "NOHEAP.OBJ",
+   "version": "450"
+  },
+  "0x80011c90": {
+   "name": "__do_global_dtors",
+   "lib": "NOHEAP.OBJ",
+   "obj": "NOHEAP.OBJ",
+   "version": "450"
+  },
+  "0x8007a04c": {
+   "name": "__builtin_vec_new",
+   "lib": "LIBSN.LIB",
+   "obj": "op_vnew.obj",
+   "version": "470"
+  },
+  "0x8007cfe8": {
+   "name": "_SpuInit",
+   "lib": "LIBSPU.LIB",
+   "obj": "S_INI.OBJ",
+   "version": "450"
+  },
+  "0x8007d0d0": {
+   "name": "SpuStart",
+   "lib": "LIBSPU.LIB",
+   "obj": "S_INI.OBJ",
+   "version": "450"
+  },
+  "0x8007d148": {
+   "name": "_spu_init",
+   "lib": "LIBSPU.LIB",
+   "obj": "SPU.OBJ",
+   "version": "450"
+  },
+  "0x8007d588": {
+   "name": "_spu_FiDMA",
+   "lib": "LIBSPU.LIB",
+   "obj": "SPU.OBJ",
+   "version": "450"
+  },
+  "0x8007d644": {
+   "name": "_spu_Fr_",
+   "lib": "LIBSPU.LIB",
+   "obj": "SPU.OBJ",
+   "version": "450"
+  },
+  "0x8007d6ec": {
+   "name": "_spu_t",
+   "lib": "LIBSPU.LIB",
+   "obj": "SPU.OBJ",
+   "version": "450"
+  },
+  "0x8007d96c": {
+   "name": "_spu_Fw",
+   "lib": "LIBSPU.LIB",
+   "obj": "SPU.OBJ",
+   "version": "450"
+  },
+  "0x8007d9f0": {
+   "name": "_spu_Fr",
+   "lib": "LIBSPU.LIB",
+   "obj": "SPU.OBJ",
+   "version": "450"
+  },
+  "0x8007da54": {
+   "name": "_spu_FsetRXX",
+   "lib": "LIBSPU.LIB",
+   "obj": "SPU.OBJ",
+   "version": "450"
+  },
+  "0x8007da98": {
+   "name": "_spu_FsetRXXa",
+   "lib": "LIBSPU.LIB",
+   "obj": "SPU.OBJ",
+   "version": "450"
+  },
+  "0x8007db3c": {
+   "name": "_spu_FgetRXXa",
+   "lib": "LIBSPU.LIB",
+   "obj": "SPU.OBJ",
+   "version": "450"
+  },
+  "0x8007db78": {
+   "name": "_spu_FsetPCR",
+   "lib": "LIBSPU.LIB",
+   "obj": "SPU.OBJ",
+   "version": "450"
+  },
+  "0x8007dc20": {
+   "name": "_spu_Fw1ts",
+   "lib": "LIBSPU.LIB",
+   "obj": "SPU.OBJ",
+   "version": "450"
+  },
+  "0x8007dc88": {
+   "name": "_SpuDataCallback",
+   "lib": "LIBSPU.LIB",
+   "obj": "S_DCB.OBJ",
+   "version": "450"
+  },
+  "0x8007dcb8": {
+   "name": "SpuSetReverb",
+   "lib": "LIBSPU.LIB",
+   "obj": "S_SR.OBJ",
+   "version": "450"
+  },
+  "0x8007dd88": {
+   "name": "_SpuIsInAllocateArea",
+   "lib": "LIBSPU.LIB",
+   "obj": "S_M_UTIL.OBJ",
+   "version": "450"
+  },
+  "0x8007de08": {
+   "name": "_SpuIsInAllocateArea_",
+   "lib": "LIBSPU.LIB",
+   "obj": "S_M_UTIL.OBJ",
+   "version": "450"
+  },
+  "0x8007de98": {
+   "name": "SpuSetReverbModeParam",
+   "lib": "LIBSPU.LIB",
+   "obj": "S_SRMP.OBJ",
+   "version": "450"
+  },
+  "0x8007e378": {
+   "name": "_spu_setReverbAttr",
+   "lib": "LIBSPU.LIB",
+   "obj": "S_SRA.OBJ",
+   "version": "450"
+  },
+  "0x8007e848": {
+   "name": "SpuReserveReverbWorkArea",
+   "lib": "LIBSPU.LIB",
+   "obj": "S_RRWA.OBJ",
+   "version": "450"
+  },
+  "0x8007e898": {
+   "name": "SpuSetReverbDepth",
+   "lib": "LIBSPU.LIB",
+   "obj": "S_SRD.OBJ",
+   "version": "450"
+  },
+  "0x8007e918": {
+   "name": "SpuSetReverbVoice",
+   "lib": "LIBSPU.LIB",
+   "obj": "S_SRV.OBJ",
+   "version": "450"
+  },
+  "0x8007e948": {
+   "name": "_SpuSetAnyVoice",
+   "lib": "LIBSPU.LIB",
+   "obj": "S_SAV.OBJ",
+   "version": "450"
+  },
+  "0x8007ec08": {
+   "name": "SpuClearReverbWorkArea",
+   "lib": "LIBSPU.LIB",
+   "obj": "S_CRWA.OBJ",
+   "version": "450"
+  },
+  "0x8007eda8": {
+   "name": "SpuSetKey",
+   "lib": "LIBSPU.LIB",
+   "obj": "S_SK.OBJ",
+   "version": "450"
+  },
+  "0x8007ef68": {
+   "name": "SpuRead",
+   "lib": "LIBSPU.LIB",
+   "obj": "S_R.OBJ",
+   "version": "450"
+  },
+  "0x8007efc8": {
+   "name": "SpuSetTransferStartAddr",
+   "lib": "LIBSPU.LIB",
+   "obj": "S_STSA.OBJ",
+   "version": "450"
+  },
+  "0x8007f028": {
+   "name": "SpuSetTransferMode",
+   "lib": "LIBSPU.LIB",
+   "obj": "S_STM.OBJ",
+   "version": "450"
+  },
+  "0x8007f058": {
+   "name": "SpuWritePartly",
+   "lib": "LIBSPU.LIB",
+   "obj": "S_WP.OBJ",
+   "version": "450"
+  },
+  "0x8007f0e8": {
+   "name": "SpuIsTransferCompleted",
+   "lib": "LIBSPU.LIB",
+   "obj": "S_ITC.OBJ",
+   "version": "450"
+  },
+  "0x8007f198": {
+   "name": "SpuSetCommonAttr",
+   "lib": "LIBSPU.LIB",
+   "obj": "S_SCA.OBJ",
+   "version": "450"
+  },
+  "0x8007f518": {
+   "name": "SpuRGetAllKeysStatus",
+   "lib": "LIBSPU.LIB",
+   "obj": "SR_GAKS.OBJ",
+   "version": "450"
+  },
+  "0x8007f5ec": {
+   "name": "SpuGetAllKeysStatus",
+   "lib": "LIBSPU.LIB",
+   "obj": "SR_GAKS.OBJ",
+   "version": "450"
+  },
+  "0x8007f678": {
+   "name": "SpuSetVoiceVolume",
+   "lib": "LIBSPU.LIB",
+   "obj": "S_SVV.OBJ",
+   "version": "450"
+  },
+  "0x8007f6f8": {
+   "name": "SpuSetVoicePitch",
+   "lib": "LIBSPU.LIB",
+   "obj": "S_SVP.OBJ",
+   "version": "450"
+  },
+  "0x8007f768": {
+   "name": "SpuSetVoiceAttr",
+   "lib": "LIBSPU.LIB",
+   "obj": "S_SVA.OBJ",
+   "version": "450"
+  },
+  "0x8007fd68": {
+   "name": "_spu_note2pitch",
+   "lib": "LIBSPU.LIB",
+   "obj": "S_N2P.OBJ",
+   "version": "450"
+  },
+  "0x8007fe38": {
+   "name": "_spu_pitch2note",
+   "lib": "LIBSPU.LIB",
+   "obj": "S_N2P.OBJ",
+   "version": "450"
+  },
+  "0x8007ff68": {
+   "name": "SpuGetVoiceAttr",
+   "lib": "LIBSPU.LIB",
+   "obj": "S_GVA.OBJ",
+   "version": "450"
+  },
+  "0x80080358": {
+   "name": "PCopen",
+   "lib": "LIBSN.LIB",
+   "obj": "OPEN.OBJ",
+   "version": "450"
+  },
+  "0x80080378": {
+   "name": "PCclose",
+   "lib": "LIBSN.LIB",
+   "obj": "CLOSE.OBJ",
+   "version": "450"
+  },
+  "0x80080388": {
+   "name": "PClseek",
+   "lib": "LIBSN.LIB",
+   "obj": "LSEEK.OBJ",
+   "version": "450"
+  },
+  "0x800803ac": {
+   "name": "PCread",
+   "lib": "LIBSN.LIB",
+   "obj": "READ.OBJ",
+   "version": "450"
+  },
+  "0x8008046c": {
+   "name": "_SN_read",
+   "lib": "LIBSN.LIB",
+   "obj": "SNREAD.OBJ",
+   "version": "450"
+  },
+  "0x80080484": {
+   "name": "VSync",
+   "lib": "LIBETC.LIB",
+   "obj": "VSYNC.OBJ",
+   "version": "450"
+  },
+  "0x80080694": {
+   "name": "ResetCallback",
+   "lib": "LIBETC.LIB",
+   "obj": "INTR.OBJ",
+   "version": "450"
+  },
+  "0x800806c4": {
+   "name": "InterruptCallback",
+   "lib": "LIBETC.LIB",
+   "obj": "INTR.OBJ",
+   "version": "450"
+  },
+  "0x800806f4": {
+   "name": "DMACallback",
+   "lib": "LIBETC.LIB",
+   "obj": "INTR.OBJ",
+   "version": "450"
+  },
+  "0x80080724": {
+   "name": "VSyncCallback",
+   "lib": "LIBETC.LIB",
+   "obj": "INTR.OBJ",
+   "version": "450"
+  },
+  "0x80080758": {
+   "name": "VSyncCallbacks",
+   "lib": "LIBETC.LIB",
+   "obj": "INTR.OBJ",
+   "version": "450"
+  },
+  "0x80080788": {
+   "name": "StopCallback",
+   "lib": "LIBETC.LIB",
+   "obj": "INTR.OBJ",
+   "version": "450"
+  },
+  "0x800807b8": {
+   "name": "RestartCallback",
+   "lib": "LIBETC.LIB",
+   "obj": "INTR.OBJ",
+   "version": "450"
+  },
+  "0x800807e8": {
+   "name": "CheckCallback",
+   "lib": "LIBETC.LIB",
+   "obj": "INTR.OBJ",
+   "version": "450"
+  },
+  "0x800807f8": {
+   "name": "GetIntrMask",
+   "lib": "LIBETC.LIB",
+   "obj": "INTR.OBJ",
+   "version": "450"
+  },
+  "0x80080810": {
+   "name": "SetIntrMask",
+   "lib": "LIBETC.LIB",
+   "obj": "INTR.OBJ",
+   "version": "450"
+  },
+  "0x80080d54": {
+   "name": "startIntrVSync",
+   "lib": "LIBETC.LIB",
+   "obj": "INTR_VB.OBJ",
+   "version": "450"
+  },
+  "0x80080e74": {
+   "name": "startIntrDMA",
+   "lib": "LIBETC.LIB",
+   "obj": "INTR_DMA.OBJ",
+   "version": "450"
+  },
+  "0x80081114": {
+   "name": "StSetRing",
+   "lib": "LIBCD.LIB",
+   "obj": "CDROM.OBJ",
+   "version": "450"
+  },
+  "0x80081144": {
+   "name": "StClearRing",
+   "lib": "LIBCD.LIB",
+   "obj": "C_002.OBJ",
+   "version": "450"
+  },
+  "0x800811a4": {
+   "name": "StUnSetRing",
+   "lib": "LIBCD.LIB",
+   "obj": "C_003.OBJ",
+   "version": "450"
+  },
+  "0x80081224": {
+   "name": "CdStatus",
+   "lib": "LIBCD.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x80081234": {
+   "name": "CdMode",
+   "lib": "LIBCD.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x80081244": {
+   "name": "CdLastCom",
+   "lib": "LIBCD.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x80081254": {
+   "name": "CdLastPos",
+   "lib": "LIBCD.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x80081260": {
+   "name": "CdReset",
+   "lib": "LIBCD.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x800812cc": {
+   "name": "CdFlush",
+   "lib": "LIBCD.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x800812ec": {
+   "name": "CdSetDebug",
+   "lib": "LIBCD.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x80081300": {
+   "name": "CdComstr",
+   "lib": "LIBCD.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x80081334": {
+   "name": "CdIntstr",
+   "lib": "LIBCD.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x80081368": {
+   "name": "CdSync",
+   "lib": "LIBCD.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x80081388": {
+   "name": "CdReady",
+   "lib": "LIBCD.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x800813a8": {
+   "name": "CdSyncCallback",
+   "lib": "LIBCD.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x800813bc": {
+   "name": "CdReadyCallback",
+   "lib": "LIBCD.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x800813d0": {
+   "name": "CdControl",
+   "lib": "LIBCD.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008150c": {
+   "name": "CdControlF",
+   "lib": "LIBCD.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x80081640": {
+   "name": "CdControlB",
+   "lib": "LIBCD.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008178c": {
+   "name": "CdMix",
+   "lib": "LIBCD.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x800817ac": {
+   "name": "CdGetSector",
+   "lib": "LIBCD.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x800817cc": {
+   "name": "CdGetSector2",
+   "lib": "LIBCD.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x800817ec": {
+   "name": "CdDataCallback",
+   "lib": "LIBCD.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x80081810": {
+   "name": "CdDataSync",
+   "lib": "LIBCD.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x80081d98": {
+   "name": "CD_sync",
+   "lib": "LIBCD.LIB",
+   "obj": "BIOS.OBJ",
+   "version": "450"
+  },
+  "0x80082018": {
+   "name": "CD_ready",
+   "lib": "LIBCD.LIB",
+   "obj": "BIOS.OBJ",
+   "version": "450"
+  },
+  "0x800822e0": {
+   "name": "CD_cw",
+   "lib": "LIBCD.LIB",
+   "obj": "BIOS.OBJ",
+   "version": "450"
+  },
+  "0x800826ec": {
+   "name": "CD_vol",
+   "lib": "LIBCD.LIB",
+   "obj": "BIOS.OBJ",
+   "version": "450"
+  },
+  "0x80082774": {
+   "name": "CD_flush",
+   "lib": "LIBCD.LIB",
+   "obj": "BIOS.OBJ",
+   "version": "450"
+  },
+  "0x80082848": {
+   "name": "CD_initvol",
+   "lib": "LIBCD.LIB",
+   "obj": "BIOS.OBJ",
+   "version": "450"
+  },
+  "0x80082938": {
+   "name": "CD_initintr",
+   "lib": "LIBCD.LIB",
+   "obj": "BIOS.OBJ",
+   "version": "450"
+  },
+  "0x80082984": {
+   "name": "CD_init",
+   "lib": "LIBCD.LIB",
+   "obj": "BIOS.OBJ",
+   "version": "450"
+  },
+  "0x80082b64": {
+   "name": "CD_datasync",
+   "lib": "LIBCD.LIB",
+   "obj": "BIOS.OBJ",
+   "version": "450"
+  },
+  "0x80082ccc": {
+   "name": "CD_getsector",
+   "lib": "LIBCD.LIB",
+   "obj": "BIOS.OBJ",
+   "version": "450"
+  },
+  "0x80082dcc": {
+   "name": "CD_getsector2",
+   "lib": "LIBCD.LIB",
+   "obj": "BIOS.OBJ",
+   "version": "450"
+  },
+  "0x80082eb8": {
+   "name": "CD_set_test_parmnum",
+   "lib": "LIBCD.LIB",
+   "obj": "BIOS.OBJ",
+   "version": "450"
+  },
+  "0x80082fa4": {
+   "name": "StSetStream",
+   "lib": "LIBCD.LIB",
+   "obj": "C_005.OBJ",
+   "version": "450"
+  },
+  "0x80083034": {
+   "name": "StFreeRing",
+   "lib": "LIBCD.LIB",
+   "obj": "C_007.OBJ",
+   "version": "450"
+  },
+  "0x800830e4": {
+   "name": "init_ring_status",
+   "lib": "LIBCD.LIB",
+   "obj": "C_008.OBJ",
+   "version": "450"
+  },
+  "0x80083124": {
+   "name": "StGetNext",
+   "lib": "LIBCD.LIB",
+   "obj": "C_009.OBJ",
+   "version": "450"
+  },
+  "0x800831e4": {
+   "name": "StSetMask",
+   "lib": "LIBCD.LIB",
+   "obj": "C_010.OBJ",
+   "version": "450"
+  },
+  "0x80083204": {
+   "name": "StCdInterrupt",
+   "lib": "LIBCD.LIB",
+   "obj": "C_011.OBJ",
+   "version": "450"
+  },
+  "0x80083d80": {
+   "name": "StGetBackloc",
+   "lib": "LIBCD.LIB",
+   "obj": "C_004.OBJ",
+   "version": "450"
+  },
+  "0x80083de4": {
+   "name": "CdIntToPos",
+   "lib": "LIBCD.LIB",
+   "obj": "S_002.OBJ",
+   "version": "450"
+  },
+  "0x80083ee8": {
+   "name": "CdPosToInt",
+   "lib": "LIBCD.LIB",
+   "obj": "S_002.OBJ",
+   "version": "450"
+  },
+  "0x80084090": {
+   "name": "DS_CQ_flush",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_2.OBJ",
+   "version": "450"
+  },
+  "0x80084654": {
+   "name": "DsInit",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_2.OBJ",
+   "version": "450"
+  },
+  "0x80084798": {
+   "name": "DsReset",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_2.OBJ",
+   "version": "450"
+  },
+  "0x800848a4": {
+   "name": "DsClose",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_2.OBJ",
+   "version": "450"
+  },
+  "0x800848c4": {
+   "name": "DsCommand",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_2.OBJ",
+   "version": "450"
+  },
+  "0x80084b08": {
+   "name": "DsPacket",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_2.OBJ",
+   "version": "450"
+  },
+  "0x80084b3c": {
+   "name": "_DsPacket2",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_2.OBJ",
+   "version": "450"
+  },
+  "0x80084eac": {
+   "name": "DsSync",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_2.OBJ",
+   "version": "450"
+  },
+  "0x8008509c": {
+   "name": "DsReady",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_2.OBJ",
+   "version": "450"
+  },
+  "0x80085130": {
+   "name": "DsFlush",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_2.OBJ",
+   "version": "450"
+  },
+  "0x800851c0": {
+   "name": "DsSystemStatus",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_2.OBJ",
+   "version": "450"
+  },
+  "0x8008520c": {
+   "name": "DsQueueLen",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_2.OBJ",
+   "version": "450"
+  },
+  "0x8008521c": {
+   "name": "DsStatus",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_2.OBJ",
+   "version": "450"
+  },
+  "0x8008523c": {
+   "name": "DsShellOpen",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_2.OBJ",
+   "version": "450"
+  },
+  "0x8008525c": {
+   "name": "DsLastCom",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_2.OBJ",
+   "version": "450"
+  },
+  "0x80085424": {
+   "name": "DS_init",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_1.OBJ",
+   "version": "450"
+  },
+  "0x800854bc": {
+   "name": "DS_reset_members",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_1.OBJ",
+   "version": "450"
+  },
+  "0x8008559c": {
+   "name": "DS_close",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_1.OBJ",
+   "version": "450"
+  },
+  "0x800855dc": {
+   "name": "DS_cw",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_1.OBJ",
+   "version": "450"
+  },
+  "0x80085658": {
+   "name": "DS_vsync_callback",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_1.OBJ",
+   "version": "450"
+  },
+  "0x80085664": {
+   "name": "DS_sync_callback",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_1.OBJ",
+   "version": "450"
+  },
+  "0x80085670": {
+   "name": "DS_ready_callback",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_1.OBJ",
+   "version": "450"
+  },
+  "0x8008567c": {
+   "name": "DS_start_callback",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_1.OBJ",
+   "version": "450"
+  },
+  "0x80085688": {
+   "name": "DS_system_status",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_1.OBJ",
+   "version": "450"
+  },
+  "0x800856a0": {
+   "name": "DS_lastcom",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_1.OBJ",
+   "version": "450"
+  },
+  "0x800856b0": {
+   "name": "DS_lastmode",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_1.OBJ",
+   "version": "450"
+  },
+  "0x800856c0": {
+   "name": "DS_lastpos",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_1.OBJ",
+   "version": "450"
+  },
+  "0x800856cc": {
+   "name": "DS_lastseek",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_1.OBJ",
+   "version": "450"
+  },
+  "0x800856dc": {
+   "name": "DS_lastread",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_1.OBJ",
+   "version": "450"
+  },
+  "0x800856ec": {
+   "name": "DS_status",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_1.OBJ",
+   "version": "450"
+  },
+  "0x800856fc": {
+   "name": "DS_sync",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_1.OBJ",
+   "version": "450"
+  },
+  "0x80085720": {
+   "name": "DS_ready",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_1.OBJ",
+   "version": "450"
+  },
+  "0x80085744": {
+   "name": "DS_shell_open",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_1.OBJ",
+   "version": "450"
+  },
+  "0x80085754": {
+   "name": "DS_cw_system",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_1.OBJ",
+   "version": "450"
+  },
+  "0x80086470": {
+   "name": "DS_stop",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_1.OBJ",
+   "version": "450"
+  },
+  "0x800864e8": {
+   "name": "DS_restart",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_1.OBJ",
+   "version": "450"
+  },
+  "0x800864f8": {
+   "name": "DS_system_active",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_1.OBJ",
+   "version": "450"
+  },
+  "0x80086508": {
+   "name": "parcpy",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_1.OBJ",
+   "version": "450"
+  },
+  "0x80086550": {
+   "name": "rescpy",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_1.OBJ",
+   "version": "450"
+  },
+  "0x80086598": {
+   "name": "tipDsSystem",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_1.OBJ",
+   "version": "450"
+  },
+  "0x80086674": {
+   "name": "DsMix",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_3.OBJ",
+   "version": "450"
+  },
+  "0x80086694": {
+   "name": "DsGetSector",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_3.OBJ",
+   "version": "450"
+  },
+  "0x800866b4": {
+   "name": "DsGetSector2",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_3.OBJ",
+   "version": "450"
+  },
+  "0x800866d4": {
+   "name": "DsDataSync",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_3.OBJ",
+   "version": "450"
+  },
+  "0x800866f4": {
+   "name": "DsIntToPos",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_3.OBJ",
+   "version": "450"
+  },
+  "0x800867f8": {
+   "name": "DsPosToInt",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_3.OBJ",
+   "version": "450"
+  },
+  "0x80086878": {
+   "name": "DsSetDebug",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_3.OBJ",
+   "version": "450"
+  },
+  "0x8008688c": {
+   "name": "DsLastPos",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_3.OBJ",
+   "version": "450"
+  },
+  "0x800868e4": {
+   "name": "DsControlF",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_4.OBJ",
+   "version": "450"
+  },
+  "0x8008690c": {
+   "name": "DsControl",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_4.OBJ",
+   "version": "450"
+  },
+  "0x80086974": {
+   "name": "DsControlB",
+   "lib": "LIBDS.LIB",
+   "obj": "DSSYS_4.OBJ",
+   "version": "450"
+  },
+  "0x800869e4": {
+   "name": "DsRead",
+   "lib": "LIBDS.LIB",
+   "obj": "DSREAD.OBJ",
+   "version": "450"
+  },
+  "0x80086d94": {
+   "name": "DsReadSync",
+   "lib": "LIBDS.LIB",
+   "obj": "DSREAD.OBJ",
+   "version": "450"
+  },
+  "0x80086e04": {
+   "name": "DsReadCallback",
+   "lib": "LIBDS.LIB",
+   "obj": "DSREAD.OBJ",
+   "version": "450"
+  },
+  "0x80086e18": {
+   "name": "DsReadBreak",
+   "lib": "LIBDS.LIB",
+   "obj": "DSREAD.OBJ",
+   "version": "450"
+  },
+  "0x80086ed4": {
+   "name": "DsReadMode",
+   "lib": "LIBDS.LIB",
+   "obj": "DSREAD.OBJ",
+   "version": "450"
+  },
+  "0x80086ee0": {
+   "name": "GsSetNearClip",
+   "lib": "LIBGS.LIB",
+   "obj": "GS_101.OBJ",
+   "version": "370"
+  },
+  "0x80086ef4": {
+   "name": "DsRead2",
+   "lib": "LIBDS.LIB",
+   "obj": "DSREAD2.OBJ",
+   "version": "450"
+  },
+  "0x80086ff4": {
+   "name": "DsStartReadySystem",
+   "lib": "LIBDS.LIB",
+   "obj": "DSREADY.OBJ",
+   "version": "450"
+  },
+  "0x80087078": {
+   "name": "DsEndReadySystem",
+   "lib": "LIBDS.LIB",
+   "obj": "DSREADY.OBJ",
+   "version": "450"
+  },
+  "0x800870dc": {
+   "name": "DsReadySystemMode",
+   "lib": "LIBDS.LIB",
+   "obj": "DSREADY.OBJ",
+   "version": "450"
+  },
+  "0x8008752c": {
+   "name": "ER_active",
+   "lib": "LIBDS.LIB",
+   "obj": "DSREADY.OBJ",
+   "version": "450"
+  },
+  "0x8008753c": {
+   "name": "ER_clear",
+   "lib": "LIBDS.LIB",
+   "obj": "DSREADY.OBJ",
+   "version": "450"
+  },
+  "0x80087594": {
+   "name": "DsSyncCallback",
+   "lib": "LIBDS.LIB",
+   "obj": "DSCB.OBJ",
+   "version": "450"
+  },
+  "0x800875a8": {
+   "name": "DsReadyCallback",
+   "lib": "LIBDS.LIB",
+   "obj": "DSCB.OBJ",
+   "version": "450"
+  },
+  "0x800875bc": {
+   "name": "DsStartCallback",
+   "lib": "LIBDS.LIB",
+   "obj": "DSCB.OBJ",
+   "version": "450"
+  },
+  "0x800875d0": {
+   "name": "DsDataCallback",
+   "lib": "LIBDS.LIB",
+   "obj": "DSCB.OBJ",
+   "version": "450"
+  },
+  "0x800875f4": {
+   "name": "rsin",
+   "lib": "LIBGTE.LIB",
+   "obj": "GEO_00.OBJ",
+   "version": "450"
+  },
+  "0x80087630": {
+   "name": "sin_1",
+   "lib": "LIBGTE.LIB",
+   "obj": "GEO_00.OBJ",
+   "version": "450"
+  },
+  "0x800876c4": {
+   "name": "rcos",
+   "lib": "LIBGTE.LIB",
+   "obj": "GEO_01.OBJ",
+   "version": "450"
+  },
+  "0x80087764": {
+   "name": "MatrixNormal_0",
+   "lib": "LIBGTE.LIB",
+   "obj": "GEO_03.OBJ",
+   "version": "450"
+  },
+  "0x80087880": {
+   "name": "MatrixNormal_1",
+   "lib": "LIBGTE.LIB",
+   "obj": "GEO_03.OBJ",
+   "version": "450"
+  },
+  "0x8008799c": {
+   "name": "MatrixNormal_2",
+   "lib": "LIBGTE.LIB",
+   "obj": "GEO_03.OBJ",
+   "version": "450"
+  },
+  "0x80087ac4": {
+   "name": "ccos",
+   "lib": "LIBGTE.LIB",
+   "obj": "COR_02.OBJ",
+   "version": "450"
+  },
+  "0x80087b94": {
+   "name": "csincos",
+   "lib": "LIBGTE.LIB",
+   "obj": "COR_01.OBJ",
+   "version": "450"
+  },
+  "0x80087cb4": {
+   "name": "csin_1",
+   "lib": "LIBGTE.LIB",
+   "obj": "COR_03.OBJ",
+   "version": "450"
+  },
+  "0x80087d54": {
+   "name": "csin",
+   "lib": "LIBGTE.LIB",
+   "obj": "COR_03.OBJ",
+   "version": "450"
+  },
+  "0x80087e94": {
+   "name": "catan",
+   "lib": "LIBGTE.LIB",
+   "obj": "COR_06.OBJ",
+   "version": "450"
+  },
+  "0x80087f6c": {
+   "name": "InitGeom",
+   "lib": "LIBGTE.LIB",
+   "obj": "MSC00.OBJ",
+   "version": "450"
+  },
+  "0x80087ff4": {
+   "name": "SquareRoot0",
+   "lib": "LIBGTE.LIB",
+   "obj": "MSC01.OBJ",
+   "version": "450"
+  },
+  "0x80088084": {
+   "name": "InvSquareRoot",
+   "lib": "LIBGTE.LIB",
+   "obj": "MSC02.OBJ",
+   "version": "450"
+  },
+  "0x80088110": {
+   "name": "VectorNormalS",
+   "lib": "LIBGTE.LIB",
+   "obj": "MSC02.OBJ",
+   "version": "450"
+  },
+  "0x80088124": {
+   "name": "VectorNormal",
+   "lib": "LIBGTE.LIB",
+   "obj": "MSC02.OBJ",
+   "version": "450"
+  },
+  "0x80088154": {
+   "name": "VectorNormalSS",
+   "lib": "LIBGTE.LIB",
+   "obj": "MSC02.OBJ",
+   "version": "450"
+  },
+  "0x80088244": {
+   "name": "MatrixNormal",
+   "lib": "LIBGTE.LIB",
+   "obj": "MSC02.OBJ",
+   "version": "450"
+  },
+  "0x80088334": {
+   "name": "LoadAverage12",
+   "lib": "LIBGTE.LIB",
+   "obj": "MSC06.OBJ",
+   "version": "450"
+  },
+  "0x80088384": {
+   "name": "LoadAverage0",
+   "lib": "LIBGTE.LIB",
+   "obj": "MSC06.OBJ",
+   "version": "450"
+  },
+  "0x800883d4": {
+   "name": "LoadAverageShort12",
+   "lib": "LIBGTE.LIB",
+   "obj": "MSC06.OBJ",
+   "version": "450"
+  },
+  "0x8008845c": {
+   "name": "LoadAverageShort0",
+   "lib": "LIBGTE.LIB",
+   "obj": "MSC06.OBJ",
+   "version": "450"
+  },
+  "0x800884e4": {
+   "name": "LoadAverageByte",
+   "lib": "LIBGTE.LIB",
+   "obj": "MSC06.OBJ",
+   "version": "450"
+  },
+  "0x80088544": {
+   "name": "LoadAverageCol",
+   "lib": "LIBGTE.LIB",
+   "obj": "MSC06.OBJ",
+   "version": "450"
+  },
+  "0x800885c4": {
+   "name": "SquareRoot12",
+   "lib": "LIBGTE.LIB",
+   "obj": "MSC09.OBJ",
+   "version": "450"
+  },
+  "0x80088664": {
+   "name": "MulMatrix0",
+   "lib": "LIBGTE.LIB",
+   "obj": "MTX_000.OBJ",
+   "version": "450"
+  },
+  "0x80088774": {
+   "name": "ApplyMatrixLV",
+   "lib": "LIBGTE.LIB",
+   "obj": "MTX_004.OBJ",
+   "version": "450"
+  },
+  "0x800888d4": {
+   "name": "ApplyRotMatrix",
+   "lib": "LIBGTE.LIB",
+   "obj": "MTX_005.OBJ",
+   "version": "450"
+  },
+  "0x80088904": {
+   "name": "PushMatrix",
+   "lib": "LIBGTE.LIB",
+   "obj": "MTX_006.OBJ",
+   "version": "450"
+  },
+  "0x800889a8": {
+   "name": "PopMatrix",
+   "lib": "LIBGTE.LIB",
+   "obj": "MTX_006.OBJ",
+   "version": "450"
+  },
+  "0x80088a54": {
+   "name": "ReadLightMatrix",
+   "lib": "LIBGTE.LIB",
+   "obj": "MTX_007.OBJ",
+   "version": "450"
+  },
+  "0x80088aa4": {
+   "name": "ApplyRotMatrixLV",
+   "lib": "LIBGTE.LIB",
+   "obj": "MTX_01.OBJ",
+   "version": "450"
+  },
+  "0x80088be4": {
+   "name": "MulMatrix",
+   "lib": "LIBGTE.LIB",
+   "obj": "MTX_03.OBJ",
+   "version": "450"
+  },
+  "0x80088cf4": {
+   "name": "MulMatrix2",
+   "lib": "LIBGTE.LIB",
+   "obj": "MTX_04.OBJ",
+   "version": "450"
+  },
+  "0x80088e04": {
+   "name": "ApplyMatrix",
+   "lib": "LIBGTE.LIB",
+   "obj": "MTX_05.OBJ",
+   "version": "450"
+  },
+  "0x80088e54": {
+   "name": "ApplyMatrixSV",
+   "lib": "LIBGTE.LIB",
+   "obj": "MTX_06.OBJ",
+   "version": "450"
+  },
+  "0x80088eb4": {
+   "name": "TransMatrix",
+   "lib": "LIBGTE.LIB",
+   "obj": "MTX_07.OBJ",
+   "version": "450"
+  },
+  "0x80088ee4": {
+   "name": "ScaleMatrix",
+   "lib": "LIBGTE.LIB",
+   "obj": "MTX_08.OBJ",
+   "version": "450"
+  },
+  "0x80089024": {
+   "name": "SetRotMatrix",
+   "lib": "LIBGTE.LIB",
+   "obj": "MTX_09.OBJ",
+   "version": "450"
+  },
+  "0x80089054": {
+   "name": "SetLightMatrix",
+   "lib": "LIBGTE.LIB",
+   "obj": "MTX_10.OBJ",
+   "version": "450"
+  },
+  "0x80089084": {
+   "name": "SetColorMatrix",
+   "lib": "LIBGTE.LIB",
+   "obj": "MTX_11.OBJ",
+   "version": "450"
+  },
+  "0x800890b4": {
+   "name": "SetTransMatrix",
+   "lib": "LIBGTE.LIB",
+   "obj": "MTX_12.OBJ",
+   "version": "450"
+  },
+  "0x800890d4": {
+   "name": "SetBackColor",
+   "lib": "LIBGTE.LIB",
+   "obj": "REG10.OBJ",
+   "version": "450"
+  },
+  "0x800890f4": {
+   "name": "SetGeomOffset",
+   "lib": "LIBGTE.LIB",
+   "obj": "REG12.OBJ",
+   "version": "450"
+  },
+  "0x80089114": {
+   "name": "SetGeomScreen",
+   "lib": "LIBGTE.LIB",
+   "obj": "REG13.OBJ",
+   "version": "450"
+  },
+  "0x80089124": {
+   "name": "LightColor",
+   "lib": "LIBGTE.LIB",
+   "obj": "SMP_00.OBJ",
+   "version": "450"
+  },
+  "0x8008914c": {
+   "name": "DpqColorLight",
+   "lib": "LIBGTE.LIB",
+   "obj": "SMP_00.OBJ",
+   "version": "450"
+  },
+  "0x80089174": {
+   "name": "DpqColor3",
+   "lib": "LIBGTE.LIB",
+   "obj": "SMP_00.OBJ",
+   "version": "450"
+  },
+  "0x800891b0": {
+   "name": "Intpl",
+   "lib": "LIBGTE.LIB",
+   "obj": "SMP_00.OBJ",
+   "version": "450"
+  },
+  "0x800891d4": {
+   "name": "Square12",
+   "lib": "LIBGTE.LIB",
+   "obj": "SMP_00.OBJ",
+   "version": "450"
+  },
+  "0x800891fc": {
+   "name": "Square0",
+   "lib": "LIBGTE.LIB",
+   "obj": "SMP_00.OBJ",
+   "version": "450"
+  },
+  "0x80089224": {
+   "name": "AverageZ3",
+   "lib": "LIBGTE.LIB",
+   "obj": "SMP_00.OBJ",
+   "version": "450"
+  },
+  "0x80089234": {
+   "name": "AverageSZ3",
+   "lib": "LIBGTE.LIB",
+   "obj": "SMP_11.OBJ",
+   "version": "460"
+  },
+  "0x80089244": {
+   "name": "AverageZ4",
+   "lib": "LIBGTE.LIB",
+   "obj": "SMP_00.OBJ",
+   "version": "450"
+  },
+  "0x80089258": {
+   "name": "AverageSZ4",
+   "lib": "LIBGTE.LIB",
+   "obj": "SMP_12.OBJ",
+   "version": "460"
+  },
+  "0x80089268": {
+   "name": "OuterProduct12",
+   "lib": "LIBGTE.LIB",
+   "obj": "SMP_00.OBJ",
+   "version": "450"
+  },
+  "0x800892c0": {
+   "name": "OuterProduct0",
+   "lib": "LIBGTE.LIB",
+   "obj": "SMP_00.OBJ",
+   "version": "450"
+  },
+  "0x80089318": {
+   "name": "Lzc",
+   "lib": "LIBGTE.LIB",
+   "obj": "SMP_00.OBJ",
+   "version": "450"
+  },
+  "0x80089324": {
+   "name": "ReadLZC",
+   "lib": "LIBGTE.LIB",
+   "obj": "REG02_8.OBJ",
+   "version": "460"
+  },
+  "0x80089334": {
+   "name": "RotTransPers",
+   "lib": "LIBGTE.LIB",
+   "obj": "SMP_02.OBJ",
+   "version": "450"
+  },
+  "0x80089364": {
+   "name": "RotTransPers3",
+   "lib": "LIBGTE.LIB",
+   "obj": "SMP_03.OBJ",
+   "version": "450"
+  },
+  "0x800893c4": {
+   "name": "RotTrans",
+   "lib": "LIBGTE.LIB",
+   "obj": "SMP_04.OBJ",
+   "version": "450"
+  },
+  "0x800893f4": {
+   "name": "RotAverageNclip4",
+   "lib": "LIBGTE.LIB",
+   "obj": "CMB_07.OBJ",
+   "version": "450"
+  },
+  "0x800894a4": {
+   "name": "TransposeMatrix",
+   "lib": "LIBGTE.LIB",
+   "obj": "FGO_00.OBJ",
+   "version": "450"
+  },
+  "0x800894e4": {
+   "name": "RotMatrix",
+   "lib": "LIBGTE.LIB",
+   "obj": "FGO_01.OBJ",
+   "version": "450"
+  },
+  "0x80089774": {
+   "name": "RotMatrixZYX",
+   "lib": "LIBGTE.LIB",
+   "obj": "FGO_03.OBJ",
+   "version": "450"
+  },
+  "0x80089a04": {
+   "name": "RotMatrixX",
+   "lib": "LIBGTE.LIB",
+   "obj": "FGO_04.OBJ",
+   "version": "450"
+  },
+  "0x80089ba4": {
+   "name": "RotMatrixY",
+   "lib": "LIBGTE.LIB",
+   "obj": "FGO_05.OBJ",
+   "version": "450"
+  },
+  "0x80089d44": {
+   "name": "RotMatrixZ",
+   "lib": "LIBGTE.LIB",
+   "obj": "FGO_06.OBJ",
+   "version": "450"
+  },
+  "0x80089ee4": {
+   "name": "RotMatrixZYX_gte",
+   "lib": "LIBGTE.LIB",
+   "obj": "RMAT_00.OBJ",
+   "version": "450"
+  },
+  "0x8008a0e4": {
+   "name": "RotMatrix_gte",
+   "lib": "LIBGTE.LIB",
+   "obj": "RMAT_01.OBJ",
+   "version": "450"
+  },
+  "0x8008a2f4": {
+   "name": "DivideGT3",
+   "lib": "LIBGTE.LIB",
+   "obj": "DVGT3_04.OBJ",
+   "version": "450"
+  },
+  "0x8008a4d4": {
+   "name": "ReadSZfifo3",
+   "lib": "LIBGTE.LIB",
+   "obj": "REG04.OBJ",
+   "version": "450"
+  },
+  "0x8008a4f4": {
+   "name": "RotAverageNclip3",
+   "lib": "LIBGTE.LIB",
+   "obj": "CMB_06.OBJ",
+   "version": "450"
+  },
+  "0x8008a584": {
+   "name": "RCpolyGT3",
+   "lib": "LIBGTE.LIB",
+   "obj": "DIVGT3A.OBJ",
+   "version": "450"
+  },
+  "0x8008a58c": {
+   "name": "RCpolyGT3A",
+   "lib": "LIBGTE.LIB",
+   "obj": "DIVGT3A.OBJ",
+   "version": "450"
+  },
+  "0x8008aa24": {
+   "name": "ratan2",
+   "lib": "LIBGTE.LIB",
+   "obj": "RATAN.OBJ",
+   "version": "450"
+  },
+  "0x8008aba4": {
+   "name": "_patch_gte",
+   "lib": "LIBGTE.LIB",
+   "obj": "PATCHGTE.OBJ",
+   "version": "450"
+  },
+  "0x8008ac84": {
+   "name": "ResetGraph",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008adf8": {
+   "name": "SetGraphDebug",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008ae54": {
+   "name": "SetGraphQueue",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008aef8": {
+   "name": "GetGraphDebug",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008af08": {
+   "name": "DrawSyncCallback",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008af68": {
+   "name": "SetDispMask",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008b000": {
+   "name": "DrawSync",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008b184": {
+   "name": "ClearImage",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008b214": {
+   "name": "ClearImage2",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008b2ac": {
+   "name": "LoadImage",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008b30c": {
+   "name": "StoreImage",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008b36c": {
+   "name": "MoveImage",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008b424": {
+   "name": "ClearOTag",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008b4ec": {
+   "name": "ClearOTagR",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008b598": {
+   "name": "DrawPrim",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008b5f4": {
+   "name": "DrawOTag",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008b664": {
+   "name": "PutDrawEnv",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008b724": {
+   "name": "DrawOTagEnv",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008b7fc": {
+   "name": "GetDrawEnv",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008b830": {
+   "name": "PutDispEnv",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008bd28": {
+   "name": "GetDispEnv",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008bd5c": {
+   "name": "GetODE",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008bd8c": {
+   "name": "SetDrawArea",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008be0c": {
+   "name": "SetDrawOffset",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008be4c": {
+   "name": "SetDrawEnv",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008d74c": {
+   "name": "LoadImage2",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008d838": {
+   "name": "StoreImage2",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008d924": {
+   "name": "MoveImage2",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008da68": {
+   "name": "DrawOTag2",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008db64": {
+   "name": "_GPU_ResetCallback",
+   "lib": "LIBGPU.LIB",
+   "obj": "SYS.OBJ",
+   "version": "450"
+  },
+  "0x8008dbb4": {
+   "name": "SetVideoMode",
+   "lib": "LIBETC.LIB",
+   "obj": "VMODE.OBJ",
+   "version": "450"
+  },
+  "0x8008dbc8": {
+   "name": "GetVideoMode",
+   "lib": "LIBETC.LIB",
+   "obj": "VMODE.OBJ",
+   "version": "450"
+  },
+  "0x8008dbe4": {
+   "name": "OpenTIM",
+   "lib": "LIBGPU.LIB",
+   "obj": "TMD.OBJ",
+   "version": "450"
+  },
+  "0x8008dbf4": {
+   "name": "ReadTIM",
+   "lib": "LIBGPU.LIB",
+   "obj": "TMD.OBJ",
+   "version": "450"
+  },
+  "0x8008dc58": {
+   "name": "OpenTMD",
+   "lib": "LIBGPU.LIB",
+   "obj": "TMD.OBJ",
+   "version": "450"
+  },
+  "0x8008dc98": {
+   "name": "ReadTMD",
+   "lib": "LIBGPU.LIB",
+   "obj": "TMD.OBJ",
+   "version": "450"
+  },
+  "0x8008f464": {
+   "name": "SetDefDrawEnv",
+   "lib": "LIBGPU.LIB",
+   "obj": "E03.OBJ",
+   "version": "450"
+  },
+  "0x8008f524": {
+   "name": "SetDefDispEnv",
+   "lib": "LIBGPU.LIB",
+   "obj": "E04.OBJ",
+   "version": "450"
+  },
+  "0x8008f564": {
+   "name": "GetTPage",
+   "lib": "LIBGPU.LIB",
+   "obj": "P00.OBJ",
+   "version": "450"
+  },
+  "0x8008f5a4": {
+   "name": "GetClut",
+   "lib": "LIBGPU.LIB",
+   "obj": "P01.OBJ",
+   "version": "450"
+  },
+  "0x8008f5c4": {
+   "name": "AddPrim",
+   "lib": "LIBGPU.LIB",
+   "obj": "P06.OBJ",
+   "version": "450"
+  },
+  "0x8008f604": {
+   "name": "SetSemiTrans",
+   "lib": "LIBGPU.LIB",
+   "obj": "P10.OBJ",
+   "version": "450"
+  },
+  "0x8008f634": {
+   "name": "SetPolyF4",
+   "lib": "LIBGPU.LIB",
+   "obj": "P16.OBJ",
+   "version": "450"
+  },
+  "0x8008f654": {
+   "name": "SetPolyFT4",
+   "lib": "LIBGPU.LIB",
+   "obj": "P17.OBJ",
+   "version": "450"
+  },
+  "0x8008f674": {
+   "name": "SetPolyG4",
+   "lib": "LIBGPU.LIB",
+   "obj": "P18.OBJ",
+   "version": "450"
+  },
+  "0x8008f694": {
+   "name": "SetPolyGT4",
+   "lib": "LIBGPU.LIB",
+   "obj": "P19.OBJ",
+   "version": "450"
+  },
+  "0x8008f6b4": {
+   "name": "SetSprt",
+   "lib": "LIBGPU.LIB",
+   "obj": "P22.OBJ",
+   "version": "450"
+  },
+  "0x8008f6d4": {
+   "name": "SetTile",
+   "lib": "LIBGPU.LIB",
+   "obj": "P26.OBJ",
+   "version": "450"
+  },
+  "0x8008f6f4": {
+   "name": "SetLineF2",
+   "lib": "LIBGPU.LIB",
+   "obj": "P27.OBJ",
+   "version": "450"
+  },
+  "0x8008f714": {
+   "name": "SetLineF3",
+   "lib": "LIBGPU.LIB",
+   "obj": "P29.OBJ",
+   "version": "450"
+  },
+  "0x8008f734": {
+   "name": "SetDrawTPage",
+   "lib": "LIBGPU.LIB",
+   "obj": "P33.OBJ",
+   "version": "450"
+  },
+  "0x8008f764": {
+   "name": "SetDrawMove",
+   "lib": "LIBGPU.LIB",
+   "obj": "P34.OBJ",
+   "version": "450"
+  },
+  "0x8008f7c4": {
+   "name": "MargePrim",
+   "lib": "LIBGPU.LIB",
+   "obj": "P36.OBJ",
+   "version": "450"
+  },
+  "0x8008f804": {
+   "name": "SetDrawMode",
+   "lib": "LIBGPU.LIB",
+   "obj": "P41.OBJ",
+   "version": "450"
+  },
+  "0x8008f8a4": {
+   "name": "DecDCTReset",
+   "lib": "LIBPRESS.LIB",
+   "obj": "LIBPRESS.OBJ",
+   "version": "450"
+  },
+  "0x8008f8d8": {
+   "name": "DecDCTGetEnv",
+   "lib": "LIBPRESS.LIB",
+   "obj": "LIBPRESS.OBJ",
+   "version": "450"
+  },
+  "0x8008f964": {
+   "name": "DecDCTPutEnv",
+   "lib": "LIBPRESS.LIB",
+   "obj": "LIBPRESS.OBJ",
+   "version": "450"
+  },
+  "0x8008f9fc": {
+   "name": "DecDCTin",
+   "lib": "LIBPRESS.LIB",
+   "obj": "LIBPRESS.OBJ",
+   "version": "450"
+  },
+  "0x8008fa78": {
+   "name": "DecDCTout",
+   "lib": "LIBPRESS.LIB",
+   "obj": "LIBPRESS.OBJ",
+   "version": "450"
+  },
+  "0x8008fa98": {
+   "name": "DecDCTinSync",
+   "lib": "LIBPRESS.LIB",
+   "obj": "LIBPRESS.OBJ",
+   "version": "450"
+  },
+  "0x8008fad4": {
+   "name": "DecDCToutSync",
+   "lib": "LIBPRESS.LIB",
+   "obj": "LIBPRESS.OBJ",
+   "version": "450"
+  },
+  "0x8008fb10": {
+   "name": "DecDCTinCallback",
+   "lib": "LIBPRESS.LIB",
+   "obj": "LIBPRESS.OBJ",
+   "version": "450"
+  },
+  "0x8008fb34": {
+   "name": "DecDCToutCallback",
+   "lib": "LIBPRESS.LIB",
+   "obj": "LIBPRESS.OBJ",
+   "version": "450"
+  },
+  "0x8008ff24": {
+   "name": "DecDCTvlcSize",
+   "lib": "LIBPRESS.LIB",
+   "obj": "VLC.OBJ",
+   "version": "450"
+  },
+  "0x8008ff54": {
+   "name": "DecDCTvlc",
+   "lib": "LIBPRESS.LIB",
+   "obj": "VLC.OBJ",
+   "version": "450"
+  },
+  "0x800902a4": {
+   "name": "InitHeap",
+   "lib": "LIBAPI.LIB",
+   "obj": "C57.OBJ",
+   "version": "450"
+  },
+  "0x800902b4": {
+   "name": "FlushCache",
+   "lib": "LIBAPI.LIB",
+   "obj": "C68.OBJ",
+   "version": "450"
+  },
+  "0x800902c4": {
+   "name": "GPU_cw",
+   "lib": "LIBAPI.LIB",
+   "obj": "C73.OBJ",
+   "version": "450"
+  },
+  "0x800902d4": {
+   "name": "_bu_init",
+   "lib": "LIBAPI.LIB",
+   "obj": "C112.OBJ",
+   "version": "450"
+  },
+  "0x800902ec": {
+   "name": "_96_remove",
+   "lib": "LIBAPI.LIB",
+   "obj": "C114.OBJ",
+   "version": "450"
+  },
+  "0x80090304": {
+   "name": "DeliverEvent",
+   "lib": "LIBAPI.LIB",
+   "obj": "A07.OBJ",
+   "version": "450"
+  },
+  "0x80090314": {
+   "name": "OpenEvent",
+   "lib": "LIBAPI.LIB",
+   "obj": "A08.OBJ",
+   "version": "450"
+  },
+  "0x80090324": {
+   "name": "WaitEvent",
+   "lib": "LIBAPI.LIB",
+   "obj": "A10.OBJ",
+   "version": "450"
+  },
+  "0x80090334": {
+   "name": "TestEvent",
+   "lib": "LIBAPI.LIB",
+   "obj": "A11.OBJ",
+   "version": "450"
+  },
+  "0x80090344": {
+   "name": "EnableEvent",
+   "lib": "LIBAPI.LIB",
+   "obj": "A12.OBJ",
+   "version": "450"
+  },
+  "0x80090354": {
+   "name": "OpenTh",
+   "lib": "LIBAPI.LIB",
+   "obj": "A14.OBJ",
+   "version": "450"
+  },
+  "0x80090364": {
+   "name": "CloseTh",
+   "lib": "LIBAPI.LIB",
+   "obj": "A15.OBJ",
+   "version": "450"
+  },
+  "0x80090374": {
+   "name": "ChangeTh",
+   "lib": "LIBAPI.LIB",
+   "obj": "A16.OBJ",
+   "version": "450"
+  },
+  "0x80090384": {
+   "name": "ReturnFromException",
+   "lib": "LIBAPI.LIB",
+   "obj": "A23.OBJ",
+   "version": "450"
+  },
+  "0x80090394": {
+   "name": "ResetEntryInt",
+   "lib": "LIBAPI.LIB",
+   "obj": "A24.OBJ",
+   "version": "450"
+  },
+  "0x800903a4": {
+   "name": "HookEntryInt",
+   "lib": "LIBAPI.LIB",
+   "obj": "A25.OBJ",
+   "version": "450"
+  },
+  "0x800903b4": {
+   "name": "EnterCriticalSection",
+   "lib": "LIBAPI.LIB",
+   "obj": "A36.OBJ",
+   "version": "450"
+  },
+  "0x800903c4": {
+   "name": "ExitCriticalSection",
+   "lib": "LIBAPI.LIB",
+   "obj": "A37.OBJ",
+   "version": "450"
+  },
+  "0x800903d4": {
+   "name": "open",
+   "lib": "LIBAPI.LIB",
+   "obj": "A50.OBJ",
+   "version": "450"
+  },
+  "0x800903e4": {
+   "name": "lseek",
+   "lib": "LIBAPI.LIB",
+   "obj": "A51.OBJ",
+   "version": "450"
+  },
+  "0x800903f4": {
+   "name": "read",
+   "lib": "LIBAPI.LIB",
+   "obj": "A52.OBJ",
+   "version": "450"
+  },
+  "0x80090404": {
+   "name": "write",
+   "lib": "LIBAPI.LIB",
+   "obj": "A53.OBJ",
+   "version": "450"
+  },
+  "0x80090414": {
+   "name": "close",
+   "lib": "LIBAPI.LIB",
+   "obj": "A54.OBJ",
+   "version": "450"
+  },
+  "0x80090424": {
+   "name": "format",
+   "lib": "LIBAPI.LIB",
+   "obj": "A65.OBJ",
+   "version": "450"
+  },
+  "0x80090434": {
+   "name": "nextfile",
+   "lib": "LIBAPI.LIB",
+   "obj": "A67.OBJ",
+   "version": "450"
+  },
+  "0x80090444": {
+   "name": "Krom2RawAdd",
+   "lib": "LIBAPI.LIB",
+   "obj": "A81.OBJ",
+   "version": "450"
+  },
+  "0x80090454": {
+   "name": "ChangeClearPAD",
+   "lib": "LIBAPI.LIB",
+   "obj": "A91.OBJ",
+   "version": "450"
+  },
+  "0x80090464": {
+   "name": "GetGp",
+   "lib": "LIBAPI.LIB",
+   "obj": "A94.OBJ",
+   "version": "450"
+  },
+  "0x80090474": {
+   "name": "ChangeClearRCnt",
+   "lib": "LIBAPI.LIB",
+   "obj": "L10.OBJ",
+   "version": "450"
+  },
+  "0x80090484": {
+   "name": "SetRCnt",
+   "lib": "LIBAPI.LIB",
+   "obj": "COUNTER.OBJ",
+   "version": "450"
+  },
+  "0x80090520": {
+   "name": "GetRCnt",
+   "lib": "LIBAPI.LIB",
+   "obj": "COUNTER.OBJ",
+   "version": "450"
+  },
+  "0x80090558": {
+   "name": "StartRCnt",
+   "lib": "LIBAPI.LIB",
+   "obj": "COUNTER.OBJ",
+   "version": "450"
+  },
+  "0x80090588": {
+   "name": "StopRCnt",
+   "lib": "LIBAPI.LIB",
+   "obj": "COUNTER.OBJ",
+   "version": "450"
+  },
+  "0x800905bc": {
+   "name": "ResetRCnt",
+   "lib": "LIBAPI.LIB",
+   "obj": "COUNTER.OBJ",
+   "version": "450"
+  },
+  "0x800905f4": {
+   "name": "firstfile",
+   "lib": "LIBAPI.LIB",
+   "obj": "FIRST.OBJ",
+   "version": "450"
+  },
+  "0x80090894": {
+   "name": "firstfile2",
+   "lib": "LIBAPI.LIB",
+   "obj": "A66.OBJ",
+   "version": "450"
+  },
+  "0x800908a4": {
+   "name": "exit",
+   "lib": "LIBC.LIB",
+   "obj": "A56.OBJ",
+   "version": "450"
+  },
+  "0x800908bc": {
+   "name": "puts",
+   "lib": "LIBC.LIB",
+   "obj": "A63.OBJ",
+   "version": "450"
+  },
+  "0x800908d4": {
+   "name": "strtol",
+   "lib": "LIBC.LIB",
+   "obj": "C13.OBJ",
+   "version": "450"
+  },
+  "0x800908e4": {
+   "name": "setjmp",
+   "lib": "LIBC.LIB",
+   "obj": "C19.OBJ",
+   "version": "450"
+  },
+  "0x800908f4": {
+   "name": "strcat",
+   "lib": "LIBC.LIB",
+   "obj": "C21.OBJ",
+   "version": "450"
+  },
+  "0x80090904": {
+   "name": "strcmp",
+   "lib": "LIBC.LIB",
+   "obj": "C23.OBJ",
+   "version": "450"
+  },
+  "0x80090914": {
+   "name": "strncmp",
+   "lib": "LIBC.LIB",
+   "obj": "C24.OBJ",
+   "version": "450"
+  },
+  "0x80090924": {
+   "name": "strcpy",
+   "lib": "LIBC.LIB",
+   "obj": "C25.OBJ",
+   "version": "450"
+  },
+  "0x80090934": {
+   "name": "strlen",
+   "lib": "LIBC.LIB",
+   "obj": "C27.OBJ",
+   "version": "450"
+  },
+  "0x80090944": {
+   "name": "strchr",
+   "lib": "LIBC.LIB",
+   "obj": "C30.OBJ",
+   "version": "450"
+  },
+  "0x80090954": {
+   "name": "strstr",
+   "lib": "LIBC.LIB",
+   "obj": "C36.OBJ",
+   "version": "450"
+  },
+  "0x80090964": {
+   "name": "memcpy",
+   "lib": "LIBC.LIB",
+   "obj": "C42.OBJ",
+   "version": "450"
+  },
+  "0x80090974": {
+   "name": "memset",
+   "lib": "LIBC.LIB",
+   "obj": "C43.OBJ",
+   "version": "450"
+  },
+  "0x80090984": {
+   "name": "printf",
+   "lib": "LIBC.LIB",
+   "obj": "C63.OBJ",
+   "version": "450"
+  },
+  "0x80090994": {
+   "name": "sprintf",
+   "lib": "LIBC.LIB",
+   "obj": "SPRINTF.OBJ",
+   "version": "450"
+  },
+  "0x80091224": {
+   "name": "memchr",
+   "lib": "LIBC.LIB",
+   "obj": "C46.OBJ",
+   "version": "450"
+  },
+  "0x80091234": {
+   "name": "memmove",
+   "lib": "LIBC.LIB",
+   "obj": "MEMMOVE.OBJ",
+   "version": "450"
+  },
+  "0x800912a4": {
+   "name": "PadChkVsync",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADENTRY.OBJ",
+   "version": "450"
+  },
+  "0x800912c4": {
+   "name": "PadStartCom",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADENTRY.OBJ",
+   "version": "450"
+  },
+  "0x800912e4": {
+   "name": "PadStopCom",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADENTRY.OBJ",
+   "version": "450"
+  },
+  "0x80091304": {
+   "name": "PadChkMtap",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADENTRY.OBJ",
+   "version": "450"
+  },
+  "0x80091350": {
+   "name": "PadGetState",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADENTRY.OBJ",
+   "version": "450"
+  },
+  "0x8009141c": {
+   "name": "PadInfoMode",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADENTRY.OBJ",
+   "version": "450"
+  },
+  "0x80091514": {
+   "name": "PadInfoAct",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADENTRY.OBJ",
+   "version": "450"
+  },
+  "0x800915e8": {
+   "name": "PadInfoComb",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADENTRY.OBJ",
+   "version": "450"
+  },
+  "0x80091690": {
+   "name": "PadSetActAlign",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADENTRY.OBJ",
+   "version": "450"
+  },
+  "0x800916c8": {
+   "name": "PadSetMainMode",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADENTRY.OBJ",
+   "version": "450"
+  },
+  "0x80091710": {
+   "name": "PadSetAct",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADENTRY.OBJ",
+   "version": "450"
+  },
+  "0x80091764": {
+   "name": "PadEnableCom",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADMAIN.OBJ",
+   "version": "450"
+  },
+  "0x8009187c": {
+   "name": "_padSetVsyncParam",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADMAIN.OBJ",
+   "version": "450"
+  },
+  "0x80091aa0": {
+   "name": "_padChkVsync",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADMAIN.OBJ",
+   "version": "450"
+  },
+  "0x80091ab4": {
+   "name": "_padStartCom",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADMAIN.OBJ",
+   "version": "450"
+  },
+  "0x80091b80": {
+   "name": "_padStopCom",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADMAIN.OBJ",
+   "version": "450"
+  },
+  "0x80091bc4": {
+   "name": "_padInitSioMode",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADMAIN.OBJ",
+   "version": "450"
+  },
+  "0x80091fe8": {
+   "name": "_padSioRW",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADMAIN.OBJ",
+   "version": "450"
+  },
+  "0x800921f8": {
+   "name": "_padSioRW2",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADMAIN.OBJ",
+   "version": "450"
+  },
+  "0x80092470": {
+   "name": "_padClrIntSio0",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADMAIN.OBJ",
+   "version": "450"
+  },
+  "0x80092500": {
+   "name": "_padWaitRXready",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADMAIN.OBJ",
+   "version": "450"
+  },
+  "0x80092534": {
+   "name": "SysEnqIntRP",
+   "lib": "LIBAPI.LIB",
+   "obj": "L02.OBJ",
+   "version": "450"
+  },
+  "0x80092544": {
+   "name": "SysDeqIntRP",
+   "lib": "LIBAPI.LIB",
+   "obj": "L03.OBJ",
+   "version": "450"
+  },
+  "0x80092554": {
+   "name": "_padSetAct",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADCMD.OBJ",
+   "version": "450"
+  },
+  "0x80092560": {
+   "name": "_padSetCmd",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADCMD.OBJ",
+   "version": "450"
+  },
+  "0x80092570": {
+   "name": "_padSendAtLoadInfo",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADCMD.OBJ",
+   "version": "450"
+  },
+  "0x800925f4": {
+   "name": "_padRecvAtLoadInfo",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADCMD.OBJ",
+   "version": "450"
+  },
+  "0x80092864": {
+   "name": "_padGetActSize",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADCMD.OBJ",
+   "version": "450"
+  },
+  "0x8009289c": {
+   "name": "_padLoadActInfo",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADCMD.OBJ",
+   "version": "450"
+  },
+  "0x80092e10": {
+   "name": "_padSetActAlign",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADCMD.OBJ",
+   "version": "450"
+  },
+  "0x80092f5c": {
+   "name": "_padSetMainMode",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADCMD.OBJ",
+   "version": "450"
+  },
+  "0x800930a8": {
+   "name": "_padCmdParaMode",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADCMD.OBJ",
+   "version": "450"
+  },
+  "0x80093784": {
+   "name": "PadInitDirect",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADPORTD.OBJ",
+   "version": "450"
+  },
+  "0x80093de4": {
+   "name": "bzero",
+   "lib": "LIBC.LIB",
+   "obj": "C40.OBJ",
+   "version": "450"
+  },
+  "0x80093df4": {
+   "name": "_padInitDirSeq",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADSEQD.OBJ",
+   "version": "450"
+  },
+  "0x8009419c": {
+   "name": "_dirFailAuto",
+   "lib": "LIBPAD.LIB",
+   "obj": "PADSEQD.OBJ",
+   "version": "450"
+  },
+  "0x800942b4": {
+   "name": "setRC2wait",
+   "lib": "LIBPAD.LIB",
+   "obj": "WAITRC2.OBJ",
+   "version": "450"
+  },
+  "0x800942d4": {
+   "name": "chkRC2wait",
+   "lib": "LIBPAD.LIB",
+   "obj": "WAITRC2.OBJ",
+   "version": "450"
+  },
+  "0x80094400": {
+   "name": "SsInitHot",
+   "lib": "LIBSND.LIB",
+   "obj": "SSINIT_H.OBJ",
+   "version": "450"
+  },
+  "0x80094430": {
+   "name": "InitCARD2",
+   "lib": "LIBCARD.LIB",
+   "obj": "A74.OBJ",
+   "version": "450"
+  },
+  "0x80094440": {
+   "name": "StartCARD2",
+   "lib": "LIBCARD.LIB",
+   "obj": "A75.OBJ",
+   "version": "450"
+  },
+  "0x80094450": {
+   "name": "StopCARD2",
+   "lib": "LIBCARD.LIB",
+   "obj": "A76.OBJ",
+   "version": "450"
+  },
+  "0x80094460": {
+   "name": "_ExitCard",
+   "lib": "LIBCARD.LIB",
+   "obj": "END.OBJ",
+   "version": "370"
+  },
+  "0x80094538": {
+   "name": "_patch_card",
+   "lib": "LIBCARD.LIB",
+   "obj": "PATCH.OBJ",
+   "version": "370"
+  },
+  "0x800945f0": {
+   "name": "_patch_card2",
+   "lib": "LIBCARD.LIB",
+   "obj": "PATCH.OBJ",
+   "version": "370"
+  }
+ }
+}

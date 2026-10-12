@@ -1,0 +1,35 @@
+{
+ "total": 2075,
+ "by_origin": {
+  "capcom": 1667,
+  "psyq": 408
+ },
+ "capcom_by_subsystem": {
+  "unknown": 524,
+  "utility": 484,
+  "time": 5,
+  "cd": 57,
+  "audio": 17,
+  "game_state": 122,
+  "system": 38,
+  "graphics": 88,
+  "3d": 269,
+  "doors": 6,
+  "enemies": 9,
+  "fmv": 2,
+  "collision": 4,
+  "controller": 11,
+  "menu": 11,
+  "player": 8,
+  "save": 4,
+  "input": 1,
+  "inventory": 2,
+  "progress": 5
+ },
+ "capcom_by_confidence": {
+  "none": 524,
+  "low": 793,
+  "high": 131,
+  "medium": 219
+ }
+}

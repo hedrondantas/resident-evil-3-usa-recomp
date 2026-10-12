@@ -1,0 +1,2937 @@
+# Resident Evil 3: Nemesis (USA) SLUS-00923 - symbol map.
+# PsyQ 4.5 names: byte-signature matches (lab313ru/psx_psyq_signatures).
+# Game functions: "guessed" from GameShark patch sites; not authoritative.
+
+[[func]]
+pc = 0x800101AC
+name = "func_800101AC"
+emit = false
+status = "guessed"
+note = "game speed (hyper mode)"
+
+[[func]]
+pc = 0x80011B80
+name = "__SN_ENTRY_POINT"
+emit = false
+status = "confirmed"
+note = "PsyQ NOHEAP.OBJ"
+
+[[func]]
+pc = 0x80011C20
+name = "__main"
+emit = false
+status = "confirmed"
+note = "PsyQ NOHEAP.OBJ"
+
+[[func]]
+pc = 0x80011C90
+name = "__do_global_dtors"
+emit = false
+status = "confirmed"
+note = "PsyQ NOHEAP.OBJ"
+
+[[func]]
+pc = 0x80023268
+name = "func_80023268"
+emit = false
+status = "guessed"
+note = "enemy update/movement"
+
+[[func]]
+pc = 0x800336F0
+name = "func_800336F0"
+emit = false
+status = "guessed"
+note = "collision (walls and enemies)"
+
+[[func]]
+pc = 0x8003389C
+name = "func_8003389C"
+emit = false
+status = "guessed"
+note = "wall collision"
+
+[[func]]
+pc = 0x80044804
+name = "func_80044804"
+emit = false
+status = "guessed"
+note = "player damage calculation (\"One Hit Death\")"
+
+[[func]]
+pc = 0x8004AF04
+name = "func_8004AF04"
+emit = false
+status = "guessed"
+note = "wall collision"
+
+[[func]]
+pc = 0x800513CC
+name = "func_800513CC"
+emit = false
+status = "guessed"
+note = "ink ribbon check when saving"
+
+[[func]]
+pc = 0x80066604
+name = "func_80066604"
+emit = false
+status = "guessed"
+note = "inventory slot count"
+
+[[func]]
+pc = 0x8006CCF0
+name = "func_8006CCF0"
+emit = false
+status = "guessed"
+note = "ink ribbon consumption"
+
+[[func]]
+pc = 0x8006D088
+name = "func_8006D088"
+emit = false
+status = "guessed"
+note = "item use/consumption"
+
+[[func]]
+pc = 0x8007CFE8
+name = "_SpuInit"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007D0D0
+name = "SpuStart"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007D148
+name = "_spu_init"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007D588
+name = "_spu_FiDMA"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007D644
+name = "_spu_Fr_"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007D6EC
+name = "_spu_t"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007D96C
+name = "_spu_Fw"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007D9F0
+name = "_spu_Fr"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007DA54
+name = "_spu_FsetRXX"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007DA98
+name = "_spu_FsetRXXa"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007DB3C
+name = "_spu_FgetRXXa"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007DB78
+name = "_spu_FsetPCR"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007DC20
+name = "_spu_Fw1ts"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007DC88
+name = "_SpuDataCallback"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007DCB8
+name = "SpuSetReverb"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007DD88
+name = "_SpuIsInAllocateArea"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007DE08
+name = "_SpuIsInAllocateArea_"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007DE98
+name = "SpuSetReverbModeParam"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007E378
+name = "_spu_setReverbAttr"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007E848
+name = "SpuReserveReverbWorkArea"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007E898
+name = "SpuSetReverbDepth"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007E918
+name = "SpuSetReverbVoice"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007E948
+name = "_SpuSetAnyVoice"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007EC08
+name = "SpuClearReverbWorkArea"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007EDA8
+name = "SpuSetKey"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007EF68
+name = "SpuRead"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007EFC8
+name = "SpuSetTransferStartAddr"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007F028
+name = "SpuSetTransferMode"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007F058
+name = "SpuWritePartly"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007F0E8
+name = "SpuIsTransferCompleted"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007F198
+name = "SpuSetCommonAttr"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007F518
+name = "SpuRGetAllKeysStatus"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007F5EC
+name = "SpuGetAllKeysStatus"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007F678
+name = "SpuSetVoiceVolume"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007F6F8
+name = "SpuSetVoicePitch"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007F768
+name = "SpuSetVoiceAttr"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007FD68
+name = "_spu_note2pitch"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007FE38
+name = "_spu_pitch2note"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x8007FF68
+name = "SpuGetVoiceAttr"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSPU.LIB"
+
+[[func]]
+pc = 0x80080358
+name = "PCopen"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSN.LIB"
+
+[[func]]
+pc = 0x80080378
+name = "PCclose"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSN.LIB"
+
+[[func]]
+pc = 0x80080388
+name = "PClseek"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSN.LIB"
+
+[[func]]
+pc = 0x800803AC
+name = "PCread"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSN.LIB"
+
+[[func]]
+pc = 0x8008046C
+name = "_SN_read"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSN.LIB"
+
+[[func]]
+pc = 0x80080484
+name = "VSync"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBETC.LIB"
+
+[[func]]
+pc = 0x80080694
+name = "ResetCallback"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBETC.LIB"
+
+[[func]]
+pc = 0x800806C4
+name = "InterruptCallback"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBETC.LIB"
+
+[[func]]
+pc = 0x800806F4
+name = "DMACallback"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBETC.LIB"
+
+[[func]]
+pc = 0x80080724
+name = "VSyncCallback"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBETC.LIB"
+
+[[func]]
+pc = 0x80080758
+name = "VSyncCallbacks"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBETC.LIB"
+
+[[func]]
+pc = 0x80080788
+name = "StopCallback"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBETC.LIB"
+
+[[func]]
+pc = 0x800807B8
+name = "RestartCallback"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBETC.LIB"
+
+[[func]]
+pc = 0x800807E8
+name = "CheckCallback"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBETC.LIB"
+
+[[func]]
+pc = 0x800807F8
+name = "GetIntrMask"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBETC.LIB"
+
+[[func]]
+pc = 0x80080810
+name = "SetIntrMask"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBETC.LIB"
+
+[[func]]
+pc = 0x80080900
+name = "func_80080900"
+emit = false
+status = "guessed"
+note = "frame timing (hyper mode)"
+
+[[func]]
+pc = 0x80080D54
+name = "startIntrVSync"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBETC.LIB"
+
+[[func]]
+pc = 0x80080E74
+name = "startIntrDMA"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBETC.LIB"
+
+[[func]]
+pc = 0x80081114
+name = "StSetRing"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80081144
+name = "StClearRing"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x800811A4
+name = "StUnSetRing"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80081224
+name = "CdStatus"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80081234
+name = "CdMode"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80081244
+name = "CdLastCom"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80081254
+name = "CdLastPos"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80081260
+name = "CdReset"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x800812CC
+name = "CdFlush"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x800812EC
+name = "CdSetDebug"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80081300
+name = "CdComstr"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80081334
+name = "CdIntstr"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80081368
+name = "CdSync"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80081388
+name = "CdReady"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x800813A8
+name = "CdSyncCallback"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x800813BC
+name = "CdReadyCallback"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x800813D0
+name = "CdControl"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x8008150C
+name = "CdControlF"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80081640
+name = "CdControlB"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x8008178C
+name = "CdMix"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x800817AC
+name = "CdGetSector"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x800817CC
+name = "CdGetSector2"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x800817EC
+name = "CdDataCallback"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80081810
+name = "CdDataSync"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80081D98
+name = "CD_sync"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80082018
+name = "CD_ready"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x800822E0
+name = "CD_cw"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x800826EC
+name = "CD_vol"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80082774
+name = "CD_flush"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80082848
+name = "CD_initvol"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80082938
+name = "CD_initintr"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80082984
+name = "CD_init"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80082B64
+name = "CD_datasync"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80082CCC
+name = "CD_getsector"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80082DCC
+name = "CD_getsector2"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80082EB8
+name = "CD_set_test_parmnum"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80082FA4
+name = "StSetStream"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80083034
+name = "StFreeRing"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x800830E4
+name = "init_ring_status"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80083124
+name = "StGetNext"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x800831E4
+name = "StSetMask"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80083204
+name = "StCdInterrupt"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80083D80
+name = "StGetBackloc"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80083DE4
+name = "CdIntToPos"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80083EE8
+name = "CdPosToInt"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCD.LIB"
+
+[[func]]
+pc = 0x80084090
+name = "DS_CQ_flush"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80084654
+name = "DsInit"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80084798
+name = "DsReset"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x800848A4
+name = "DsClose"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x800848C4
+name = "DsCommand"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80084B08
+name = "DsPacket"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80084B3C
+name = "_DsPacket2"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80084EAC
+name = "DsSync"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x8008509C
+name = "DsReady"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80085130
+name = "DsFlush"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x800851C0
+name = "DsSystemStatus"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x8008520C
+name = "DsQueueLen"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x8008521C
+name = "DsStatus"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x8008523C
+name = "DsShellOpen"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x8008525C
+name = "DsLastCom"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80085424
+name = "DS_init"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x800854BC
+name = "DS_reset_members"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x8008559C
+name = "DS_close"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x800855DC
+name = "DS_cw"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80085658
+name = "DS_vsync_callback"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80085664
+name = "DS_sync_callback"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80085670
+name = "DS_ready_callback"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x8008567C
+name = "DS_start_callback"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80085688
+name = "DS_system_status"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x800856A0
+name = "DS_lastcom"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x800856B0
+name = "DS_lastmode"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x800856C0
+name = "DS_lastpos"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x800856CC
+name = "DS_lastseek"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x800856DC
+name = "DS_lastread"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x800856EC
+name = "DS_status"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x800856FC
+name = "DS_sync"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80085720
+name = "DS_ready"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80085744
+name = "DS_shell_open"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80085754
+name = "DS_cw_system"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80086470
+name = "DS_stop"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x800864E8
+name = "DS_restart"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x800864F8
+name = "DS_system_active"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80086508
+name = "parcpy"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80086550
+name = "rescpy"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80086598
+name = "tipDsSystem"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80086674
+name = "DsMix"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80086694
+name = "DsGetSector"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x800866B4
+name = "DsGetSector2"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x800866D4
+name = "DsDataSync"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x800866F4
+name = "DsIntToPos"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x800867F8
+name = "DsPosToInt"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80086878
+name = "DsSetDebug"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x8008688C
+name = "DsLastPos"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x800868E4
+name = "DsControlF"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x8008690C
+name = "DsControl"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80086974
+name = "DsControlB"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x800869E4
+name = "DsRead"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80086D94
+name = "DsReadSync"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80086E04
+name = "DsReadCallback"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80086E18
+name = "DsReadBreak"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80086ED4
+name = "DsReadMode"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80086EF4
+name = "DsRead2"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80086FF4
+name = "DsStartReadySystem"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80087078
+name = "DsEndReadySystem"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x800870DC
+name = "DsReadySystemMode"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x8008752C
+name = "ER_active"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x8008753C
+name = "ER_clear"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x80087594
+name = "DsSyncCallback"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x800875A8
+name = "DsReadyCallback"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x800875BC
+name = "DsStartCallback"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x800875D0
+name = "DsDataCallback"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBDS.LIB"
+
+[[func]]
+pc = 0x800875F4
+name = "rsin"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80087630
+name = "sin_1"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x800876C4
+name = "rcos"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80087764
+name = "MatrixNormal_0"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80087880
+name = "MatrixNormal_1"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x8008799C
+name = "MatrixNormal_2"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80087AC4
+name = "ccos"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80087B94
+name = "csincos"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80087CB4
+name = "csin_1"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80087D54
+name = "csin"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80087E94
+name = "catan"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80087F6C
+name = "InitGeom"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80087FF4
+name = "SquareRoot0"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80088084
+name = "InvSquareRoot"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80088110
+name = "VectorNormalS"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80088124
+name = "VectorNormal"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80088154
+name = "VectorNormalSS"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80088244
+name = "MatrixNormal"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80088334
+name = "LoadAverage12"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80088384
+name = "LoadAverage0"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x800883D4
+name = "LoadAverageShort12"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x8008845C
+name = "LoadAverageShort0"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x800884E4
+name = "LoadAverageByte"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80088544
+name = "LoadAverageCol"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x800885C4
+name = "SquareRoot12"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80088664
+name = "MulMatrix0"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80088774
+name = "ApplyMatrixLV"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x800888D4
+name = "ApplyRotMatrix"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80088904
+name = "PushMatrix"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x800889A8
+name = "PopMatrix"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80088A54
+name = "ReadLightMatrix"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80088AA4
+name = "ApplyRotMatrixLV"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80088BE4
+name = "MulMatrix"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80088CF4
+name = "MulMatrix2"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80088E04
+name = "ApplyMatrix"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80088E54
+name = "ApplyMatrixSV"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80088EB4
+name = "TransMatrix"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80088EE4
+name = "ScaleMatrix"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80089024
+name = "SetRotMatrix"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80089054
+name = "SetLightMatrix"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80089084
+name = "SetColorMatrix"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x800890B4
+name = "SetTransMatrix"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x800890D4
+name = "SetBackColor"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x800890F4
+name = "SetGeomOffset"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80089114
+name = "SetGeomScreen"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80089124
+name = "LightColor"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x8008914C
+name = "DpqColorLight"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80089174
+name = "DpqColor3"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x800891B0
+name = "Intpl"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x800891D4
+name = "Square12"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x800891FC
+name = "Square0"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80089224
+name = "AverageZ3"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80089244
+name = "AverageZ4"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80089268
+name = "OuterProduct12"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x800892C0
+name = "OuterProduct0"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80089318
+name = "Lzc"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80089334
+name = "RotTransPers"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80089364
+name = "RotTransPers3"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x800893C4
+name = "RotTrans"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x800893F4
+name = "RotAverageNclip4"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x800894A4
+name = "TransposeMatrix"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x800894E4
+name = "RotMatrix"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80089774
+name = "RotMatrixZYX"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80089A04
+name = "RotMatrixX"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80089BA4
+name = "RotMatrixY"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80089D44
+name = "RotMatrixZ"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x80089EE4
+name = "RotMatrixZYX_gte"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x8008A0E4
+name = "RotMatrix_gte"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x8008A2F4
+name = "DivideGT3"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x8008A4D4
+name = "ReadSZfifo3"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x8008A4F4
+name = "RotAverageNclip3"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x8008A584
+name = "RCpolyGT3"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x8008A58C
+name = "RCpolyGT3A"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x8008AA24
+name = "ratan2"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x8008ABA4
+name = "_patch_gte"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGTE.LIB"
+
+[[func]]
+pc = 0x8008AC84
+name = "ResetGraph"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008ADF8
+name = "SetGraphDebug"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008AE54
+name = "SetGraphQueue"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008AEF8
+name = "GetGraphDebug"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008AF08
+name = "DrawSyncCallback"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008AF68
+name = "SetDispMask"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008B000
+name = "DrawSync"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008B184
+name = "ClearImage"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008B214
+name = "ClearImage2"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008B2AC
+name = "LoadImage"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008B30C
+name = "StoreImage"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008B36C
+name = "MoveImage"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008B424
+name = "ClearOTag"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008B4EC
+name = "ClearOTagR"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008B598
+name = "DrawPrim"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008B5F4
+name = "DrawOTag"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008B664
+name = "PutDrawEnv"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008B724
+name = "DrawOTagEnv"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008B7FC
+name = "GetDrawEnv"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008B830
+name = "PutDispEnv"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008BD28
+name = "GetDispEnv"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008BD5C
+name = "GetODE"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008BD8C
+name = "SetDrawArea"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008BE0C
+name = "SetDrawOffset"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008BE4C
+name = "SetDrawEnv"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008D74C
+name = "LoadImage2"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008D838
+name = "StoreImage2"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008D924
+name = "MoveImage2"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008DA68
+name = "DrawOTag2"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008DB64
+name = "_GPU_ResetCallback"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008DBB4
+name = "SetVideoMode"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBETC.LIB"
+
+[[func]]
+pc = 0x8008DBC8
+name = "GetVideoMode"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBETC.LIB"
+
+[[func]]
+pc = 0x8008DBE4
+name = "OpenTIM"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008DBF4
+name = "ReadTIM"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008DC58
+name = "OpenTMD"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008DC98
+name = "ReadTMD"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008F464
+name = "SetDefDrawEnv"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008F524
+name = "SetDefDispEnv"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008F564
+name = "GetTPage"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008F5A4
+name = "GetClut"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008F5C4
+name = "AddPrim"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008F604
+name = "SetSemiTrans"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008F634
+name = "SetPolyF4"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008F654
+name = "SetPolyFT4"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008F674
+name = "SetPolyG4"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008F694
+name = "SetPolyGT4"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008F6B4
+name = "SetSprt"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008F6D4
+name = "SetTile"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008F6F4
+name = "SetLineF2"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008F714
+name = "SetLineF3"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008F734
+name = "SetDrawTPage"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008F764
+name = "SetDrawMove"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008F7C4
+name = "MargePrim"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008F804
+name = "SetDrawMode"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBGPU.LIB"
+
+[[func]]
+pc = 0x8008F8A4
+name = "DecDCTReset"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPRESS.LIB"
+
+[[func]]
+pc = 0x8008F8D8
+name = "DecDCTGetEnv"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPRESS.LIB"
+
+[[func]]
+pc = 0x8008F964
+name = "DecDCTPutEnv"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPRESS.LIB"
+
+[[func]]
+pc = 0x8008F9FC
+name = "DecDCTin"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPRESS.LIB"
+
+[[func]]
+pc = 0x8008FA78
+name = "DecDCTout"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPRESS.LIB"
+
+[[func]]
+pc = 0x8008FA98
+name = "DecDCTinSync"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPRESS.LIB"
+
+[[func]]
+pc = 0x8008FAD4
+name = "DecDCToutSync"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPRESS.LIB"
+
+[[func]]
+pc = 0x8008FB10
+name = "DecDCTinCallback"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPRESS.LIB"
+
+[[func]]
+pc = 0x8008FB34
+name = "DecDCToutCallback"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPRESS.LIB"
+
+[[func]]
+pc = 0x8008FF24
+name = "DecDCTvlcSize"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPRESS.LIB"
+
+[[func]]
+pc = 0x8008FF54
+name = "DecDCTvlc"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPRESS.LIB"
+
+[[func]]
+pc = 0x800902A4
+name = "InitHeap"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x800902B4
+name = "FlushCache"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x800902C4
+name = "GPU_cw"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x800902D4
+name = "_bu_init"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x800902EC
+name = "_96_remove"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x80090304
+name = "DeliverEvent"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x80090314
+name = "OpenEvent"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x80090324
+name = "WaitEvent"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x80090334
+name = "TestEvent"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x80090344
+name = "EnableEvent"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x80090354
+name = "OpenTh"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x80090364
+name = "CloseTh"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x80090374
+name = "ChangeTh"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x80090384
+name = "ReturnFromException"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x80090394
+name = "ResetEntryInt"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x800903A4
+name = "HookEntryInt"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x800903B4
+name = "EnterCriticalSection"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x800903C4
+name = "ExitCriticalSection"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x800903D4
+name = "open"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x800903E4
+name = "lseek"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x800903F4
+name = "read"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x80090404
+name = "write"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x80090414
+name = "close"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x80090424
+name = "format"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x80090434
+name = "nextfile"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x80090444
+name = "Krom2RawAdd"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x80090454
+name = "ChangeClearPAD"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x80090464
+name = "GetGp"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x80090474
+name = "ChangeClearRCnt"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x80090484
+name = "SetRCnt"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x80090520
+name = "GetRCnt"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x80090558
+name = "StartRCnt"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x80090588
+name = "StopRCnt"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x800905BC
+name = "ResetRCnt"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x800905F4
+name = "firstfile"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x80090894
+name = "firstfile2"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x800908A4
+name = "exit"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBC.LIB"
+
+[[func]]
+pc = 0x800908BC
+name = "puts"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBC.LIB"
+
+[[func]]
+pc = 0x800908D4
+name = "strtol"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBC.LIB"
+
+[[func]]
+pc = 0x800908E4
+name = "setjmp"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBC.LIB"
+
+[[func]]
+pc = 0x800908F4
+name = "strcat"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBC.LIB"
+
+[[func]]
+pc = 0x80090904
+name = "strcmp"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBC.LIB"
+
+[[func]]
+pc = 0x80090914
+name = "strncmp"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBC.LIB"
+
+[[func]]
+pc = 0x80090924
+name = "strcpy"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBC.LIB"
+
+[[func]]
+pc = 0x80090934
+name = "strlen"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBC.LIB"
+
+[[func]]
+pc = 0x80090944
+name = "strchr"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBC.LIB"
+
+[[func]]
+pc = 0x80090954
+name = "strstr"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBC.LIB"
+
+[[func]]
+pc = 0x80090964
+name = "memcpy"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBC.LIB"
+
+[[func]]
+pc = 0x80090974
+name = "memset"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBC.LIB"
+
+[[func]]
+pc = 0x80090984
+name = "printf"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBC.LIB"
+
+[[func]]
+pc = 0x80091224
+name = "memchr"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBC.LIB"
+
+[[func]]
+pc = 0x80091234
+name = "memmove"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBC.LIB"
+
+[[func]]
+pc = 0x800912A4
+name = "PadChkVsync"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x800912C4
+name = "PadStartCom"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x800912E4
+name = "PadStopCom"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x80091304
+name = "PadChkMtap"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x80091350
+name = "PadGetState"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x8009141C
+name = "PadInfoMode"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x80091514
+name = "PadInfoAct"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x800915E8
+name = "PadInfoComb"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x80091690
+name = "PadSetActAlign"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x800916C8
+name = "PadSetMainMode"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x80091710
+name = "PadSetAct"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x80091764
+name = "PadEnableCom"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x8009187C
+name = "_padSetVsyncParam"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x80091AA0
+name = "_padChkVsync"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x80091AB4
+name = "_padStartCom"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x80091B80
+name = "_padStopCom"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x80091BC4
+name = "_padInitSioMode"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x80091FE8
+name = "_padSioRW"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x800921F8
+name = "_padSioRW2"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x80092470
+name = "_padClrIntSio0"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x80092500
+name = "_padWaitRXready"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x80092534
+name = "SysEnqIntRP"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x80092544
+name = "SysDeqIntRP"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBAPI.LIB"
+
+[[func]]
+pc = 0x80092554
+name = "_padSetAct"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x80092560
+name = "_padSetCmd"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x80092570
+name = "_padSendAtLoadInfo"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x800925F4
+name = "_padRecvAtLoadInfo"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x80092864
+name = "_padGetActSize"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x8009289C
+name = "_padLoadActInfo"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x80092E10
+name = "_padSetActAlign"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x80092F5C
+name = "_padSetMainMode"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x800930A8
+name = "_padCmdParaMode"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x80093784
+name = "PadInitDirect"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x80093DE4
+name = "bzero"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBC.LIB"
+
+[[func]]
+pc = 0x80093DF4
+name = "_padInitDirSeq"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x8009419C
+name = "_dirFailAuto"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x800942B4
+name = "setRC2wait"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x800942D4
+name = "chkRC2wait"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBPAD.LIB"
+
+[[func]]
+pc = 0x80094400
+name = "SsInitHot"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBSND.LIB"
+
+[[func]]
+pc = 0x80094430
+name = "InitCARD2"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCARD.LIB"
+
+[[func]]
+pc = 0x80094440
+name = "StartCARD2"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCARD.LIB"
+
+[[func]]
+pc = 0x80094450
+name = "StopCARD2"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCARD.LIB"
+
+[[func]]
+pc = 0x80094460
+name = "_ExitCard"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCARD.LIB"
+
+[[func]]
+pc = 0x80094538
+name = "_patch_card"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCARD.LIB"
+
+[[func]]
+pc = 0x800945F0
+name = "_patch_card2"
+emit = false
+status = "confirmed"
+note = "PsyQ LIBCARD.LIB"
+

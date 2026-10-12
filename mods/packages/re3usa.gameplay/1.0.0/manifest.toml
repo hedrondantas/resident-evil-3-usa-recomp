@@ -1,0 +1,158 @@
+format_version = 1
+id = "re3usa.gameplay"
+version = "1.0.0"
+name = "RE3 (USA) — Gameplay tweaks"
+author = "re3-usa-recomp"
+description = "Gameplay options for Resident Evil 3: Nemesis (USA, SLUS-00923), adapted from known NTSC-U GameShark codes. Every change checks the original bytes before it is applied."
+license = "MIT"
+resolver = "declarative"
+
+[[target]]
+game_id = "SLUS-00923"
+
+# Every patch is one aligned instruction word. `expected` / `replace` are the
+# bytes in memory order (little-endian). Sources: NTSC-U GameShark codes,
+# almarsguides.com (Resident Evil 3: Nemesis, GameShark).
+
+# ------------------------------------------------------------------ Save
+
+[[feature]]
+id = "save-without-ribbon"
+name = "Save without Ink Ribbon"
+description = "The typewriter saves even without an Ink Ribbon. Removes the call that checks for the ribbon (jal 0x8006CC8C at 0x80051404)."
+group = "Save"
+default_enabled = false
+
+[[patch]]
+feature = "save-without-ribbon"
+target = "main_exe"
+address = 0x80051404
+expected = "23 b3 01 0c"
+replace = "23 b3 00 24"
+
+[[feature]]
+id = "infinite-ink-ribbons"
+name = "Infinite Ink Ribbons"
+description = "Saving does not use up an Ink Ribbon. Removes the store of the decremented count (sb at 0x8006CD30)."
+group = "Save"
+default_enabled = false
+
+[[patch]]
+feature = "infinite-ink-ribbons"
+target = "main_exe"
+address = 0x8006CD30
+expected = "01 00 02 a2"
+replace = "01 00 00 3c"
+
+# ------------------------------------------------------------------ Items
+
+[[feature]]
+id = "infinite-items"
+name = "Infinite items"
+description = "Using an item does not lower the count in its slot. Removes the store of the decremented count (sb at 0x8006D0C8)."
+group = "Items"
+default_enabled = false
+
+[[patch]]
+feature = "infinite-items"
+target = "main_exe"
+address = 0x8006D0C8
+expected = "01 00 a2 a0"
+replace = "01 00 00 24"
+
+# ------------------------------------------------------------------ Difficulty
+
+[[feature]]
+id = "hardcore"
+name = "Hardcore mode (one-hit death)"
+description = "Any damage kills Jill. Changes the branch target in the damage calculation (bgez at 0x80044E18)."
+group = "Difficulty"
+default_enabled = false
+
+[[patch]]
+feature = "hardcore"
+target = "main_exe"
+address = 0x80044E18
+expected = "06 00 61 04"
+replace = "01 00 61 04"
+
+# ------------------------------------------------------------------ Video
+
+[[feature]]
+id = "skip-fmvs"
+name = "Skip FMVs"
+description = "Does not play the pre-rendered videos. Removes the call to the FMV player (jal 0x80083B4C at 0x80083454)."
+group = "Video"
+default_enabled = false
+
+[[patch]]
+feature = "skip-fmvs"
+target = "main_exe"
+address = 0x80083454
+expected = "d3 0e 02 0c"
+replace = "d3 0e 00 3c"
+
+# ------------------------------------------------------------------ Experimental
+
+[[feature]]
+id = "more-inventory-slots"
+name = "More inventory slots (experimental)"
+description = "Forces the inventory slot expansion path (beqz at 0x800667D8). Exact effect not confirmed."
+group = "Experimental"
+default_enabled = false
+
+[[patch]]
+feature = "more-inventory-slots"
+target = "main_exe"
+address = 0x800667D8
+expected = "03 00 60 10"
+replace = "03 00 00 24"
+
+[[feature]]
+id = "walk-through-walls"
+name = "Walk through walls (experimental)"
+description = "Turns off wall collision (beqz → b at 0x800339FC and 0x8004B2A0). Jill can get stuck outside the map: save first."
+group = "Experimental"
+default_enabled = false
+
+[[patch]]
+feature = "walk-through-walls"
+target = "main_exe"
+address = 0x800339FC
+expected = "17 00 40 10"
+replace = "17 00 00 10"
+
+[[patch]]
+feature = "walk-through-walls"
+target = "main_exe"
+address = 0x8004B2A0
+expected = "23 00 a0 12"
+replace = "23 00 00 10"
+
+[[feature]]
+id = "walk-through-enemies"
+name = "Walk through enemies (experimental)"
+description = "Turns off enemy collision (jal 0x80034814 at 0x80033980)."
+group = "Experimental"
+default_enabled = false
+
+[[patch]]
+feature = "walk-through-enemies"
+target = "main_exe"
+address = 0x80033980
+expected = "05 d2 00 0c"
+replace = "05 d2 00 24"
+
+[[feature]]
+id = "freeze-enemies"
+name = "Freeze enemies (experimental)"
+description = "Enemies stop in place: removes the update call (jalr at 0x80023EA8). Can stall events that depend on enemies."
+group = "Experimental"
+default_enabled = false
+
+[[patch]]
+feature = "freeze-enemies"
+target = "main_exe"
+address = 0x80023EA8
+expected = "09 f8 40 00"
+replace = "09 f8 00 24"

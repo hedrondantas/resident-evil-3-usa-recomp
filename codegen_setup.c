@@ -6,17 +6,17 @@
 #include "psxrecomp_codegen_host.h"
 
 static const PsxrecompCodegenHostConfig kCodegenConfig = {
-    .display_name = "Resident Evil 3: Nemesis",
-    .project_root_env = "RESIDENT_EVIL_3_PROJECT_ROOT",
-    .build_dir_env = "RESIDENT_EVIL_3_BUILD_DIR",
-    .force_setup_env = "RESIDENT_EVIL_3_FORCE_SETUP",
+    .display_name = "Resident Evil 3: Nemesis (USA)",
+    .project_root_env = "RESIDENT_EVIL_3_USA_PROJECT_ROOT",
+    .build_dir_env = "RESIDENT_EVIL_3_USA_BUILD_DIR",
+    .force_setup_env = "RESIDENT_EVIL_3_USA_FORCE_SETUP",
     .psxrecomp_cli_relpath = "psxrecomp/psxrecomp_cli.py",
     .seed_cfg_relpath = "game.toml",
     .game_toml_relpath = "game.toml",
-    .gen_marker_relpath = "generated/SLES_025.29_dispatch.c",
+    .gen_marker_relpath = "generated/SLUS_009.23_dispatch.c",
     .build_dir_name = "build-release",
     .cmake_target = "psx-runtime",
-    .exe_basename = "Resident_Evil_3__Nemesis_Recompiled",
+    .exe_basename = "Resident_Evil_3_Nemesis_USA_Recompiled",
     .prepare_note =
         "Uses your legal disc with the local psxrecomp SDK to generate "
         "BIOS + game C, then cmake --build. The product lives under "

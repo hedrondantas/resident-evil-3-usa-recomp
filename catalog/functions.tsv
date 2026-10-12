@@ -1,0 +1,2076 @@
+address	size	name	origin	library	subsystem	confidence	callers	callees	strings	notes
+0x80010000	164	func_80010000	capcom		unknown		3	0		
+0x800100A4	136	func_800100A4	capcom		unknown		23	0		
+0x8001012C	36	func_8001012C	capcom		utility	low	0	0		small leaf function
+0x80010150	80	func_80010150	capcom		unknown		7	0		
+0x800101A0	12	func_800101A0	capcom		utility	low	0	0		small leaf function
+0x800101AC	28	func_800101AC	capcom		time	high	0	0		game speed (hyper mode); reads hyper mode / speed; also: progress
+0x800101C8	60	func_800101C8	capcom		utility	low	7	0		small leaf function
+0x80010204	8	func_80010204	capcom		utility	low	0	0		small leaf function
+0x8001020C	212	func_8001020C	capcom		unknown		16	0		
+0x800102E0	8	func_800102E0	capcom		utility	low	0	0		small leaf function
+0x800102E8	52	func_800102E8	capcom		utility	low	243	0		small leaf function
+0x80011B80	160	__SN_ENTRY_POINT	psyq	NOHEAP.OBJ	system	confirmed	0	1		
+0x80011C20	112	__main	psyq	NOHEAP.OBJ	system	confirmed	1	0		
+0x80011C90	104	__do_global_dtors	psyq	NOHEAP.OBJ	system	confirmed	0	0		
+0x80011CF8	204	func_80011CF8	capcom		cd	high	1	6		reads system flags (bit 0x200 opens the item box); also: game_state
+0x80011DC4	48	func_80011DC4	capcom		unknown		1	1		
+0x80011DF4	628	func_80011DF4	capcom		cd	high	1	8		reads progress/save block (probable)
+0x80012068	96	func_80012068	capcom		cd	medium	0	2		reads system flags (bit 0x200 opens the item box); also: game_state
+0x800120C8	48	func_800120C8	capcom		audio	low	0	2		inferred from callees
+0x800120F8	64	func_800120F8	capcom		utility	low	1	0		small leaf function
+0x80012138	48	func_80012138	capcom		game_state	low	0	0		reads system flags (bit 0x200 opens the item box)
+0x80012168	136	func_80012168	capcom		system	medium	0	2		also: cd
+0x800121F0	132	func_800121F0	capcom		cd	medium	0	2		
+0x80012274	140	func_80012274	capcom		cd	medium	0	1		
+0x80012300	248	func_80012300	capcom		cd	medium	0	3		
+0x800123F8	100	func_800123F8	capcom		cd	medium	0	4		
+0x8001245C	956	func_8001245C	capcom		cd	high	2	16		also: audio, system
+0x80012818	1716	func_80012818	capcom		cd	high	27	28		also: system, audio
+0x80012ECC	468	func_80012ECC	capcom		audio	high	1	7		
+0x800130A0	1716	func_800130A0	capcom		graphics	high	1	14		
+0x80013754	348	func_80013754	capcom		unknown		1	1		
+0x800138B0	128	func_800138B0	capcom		unknown		1	0		
+0x80013930	168	func_80013930	capcom		unknown		0	2		
+0x800139D8	580	func_800139D8	capcom		unknown		3	2		
+0x80013C1C	732	func_80013C1C	capcom		cd	high	0	10		
+0x80013EF8	1032	func_80013EF8	capcom		cd	high	0	7		
+0x80014300	1292	func_80014300	capcom		cd	high	0	9		
+0x8001480C	348	func_8001480C	capcom		unknown		1	1		
+0x80014968	936	func_80014968	capcom		unknown		2	1		
+0x80014D10	928	func_80014D10	capcom		unknown		1	5		
+0x800150B0	52	func_800150B0	capcom		utility	low	7	0		small leaf function
+0x800150E4	380	func_800150E4	capcom		unknown		1	0		
+0x80015260	96	func_80015260	capcom		cd	medium	4	1		
+0x800152C0	128	func_800152C0	capcom		cd	low	3	2		inferred from callees
+0x80015340	44	func_80015340	capcom		utility	low	1	0		small leaf function
+0x8001536C	188	func_8001536C	capcom		cd	high	2	4		
+0x80015428	112	func_80015428	capcom		unknown		0	0		
+0x80015498	700	func_80015498	capcom		3d	medium	0	10		reads game state flags (bits used to skip to the ending); writes progress/save block (probable); also: game_state
+0x80015754	260	func_80015754	capcom		game_state	low	0	4		reads game state flags (bits used to skip to the ending); reads system flags (bit 0x200 opens the item box); writes progress/save block (probable)
+0x80015858	268	func_80015858	capcom		unknown		1	0		
+0x80015964	1076	func_80015964	capcom		3d	high	1	5		
+0x80015D98	952	func_80015D98	capcom		3d	medium	1	1		
+0x80016150	184	func_80016150	capcom		game_state	low	0	5		reads game state flags (bits used to skip to the ending)
+0x80016208	200	func_80016208	capcom		doors	medium	1	1	DOOR TEXTURE	reads progress/save block (probable); reads system flags (bit 0x200 opens the item box); also: game_state
+0x800162D0	100	func_800162D0	capcom		unknown		1	1		
+0x80016334	280	func_80016334	capcom		unknown		0	1		
+0x8001644C	436	func_8001644C	capcom		audio	high	1	8	DOOR SOUND	reads system flags (bit 0x200 opens the item box); reads progress/save block (probable); also: doors, game_state
+0x80016600	428	func_80016600	capcom		3d	low	0	6		inferred from callees
+0x800167AC	56	func_800167AC	capcom		unknown		0	2		
+0x800167E4	56	func_800167E4	capcom		unknown		0	2		
+0x8001681C	56	func_8001681C	capcom		unknown		0	2		
+0x80016854	56	func_80016854	capcom		unknown		0	2		
+0x8001688C	436	func_8001688C	capcom		3d	low	0	6		inferred from callees
+0x80016A40	436	func_80016A40	capcom		3d	low	0	6		inferred from callees
+0x80016BF4	168	func_80016BF4	capcom		unknown		0	1		
+0x80016C9C	260	func_80016C9C	capcom		3d	low	0	4	@@@@@@@@@@@@@@@@A | @@@@@@@@@@@@@@@@A	inferred from callees
+0x80016DA0	224	func_80016DA0	capcom		3d	low	0	4	@@@@@@@@@@@@@@@@A	inferred from callees
+0x80016E80	196	func_80016E80	capcom		unknown		0	3		
+0x80016F44	196	func_80016F44	capcom		unknown		0	3		
+0x80017008	320	func_80017008	capcom		unknown		0	2		
+0x80017148	148	func_80017148	capcom		unknown		3	4		
+0x800171DC	208	func_800171DC	capcom		3d	medium	4	4		
+0x800172AC	108	func_800172AC	capcom		unknown		1	2		
+0x80017318	552	func_80017318	capcom		3d	low	4	7		inferred from callees
+0x80017540	52	func_80017540	capcom		unknown		10	1		
+0x80017574	152	func_80017574	capcom		unknown		0	0		
+0x8001760C	1232	func_8001760C	capcom		game_state	low	1	7		reads system flags (bit 0x200 opens the item box)
+0x80017ADC	704	func_80017ADC	capcom		unknown		1	0		
+0x80017D9C	8	func_80017D9C	capcom		utility	low	0	0		small leaf function
+0x80017DA4	68	func_80017DA4	capcom		unknown		0	0		
+0x80017DE8	8	func_80017DE8	capcom		utility	low	0	0		small leaf function
+0x80017DF0	188	func_80017DF0	capcom		3d	medium	51	2		
+0x80017EAC	160	func_80017EAC	capcom		3d	medium	0	2		
+0x80017F4C	140	func_80017F4C	capcom		3d	medium	1	2		
+0x80017FD8	180	func_80017FD8	capcom		3d	medium	0	3		
+0x8001808C	132	func_8001808C	capcom		3d	medium	14	1		
+0x80018110	188	func_80018110	capcom		3d	low	30	1		inferred from callees
+0x800181CC	132	func_800181CC	capcom		3d	low	28	1		inferred from callees
+0x80018250	84	func_80018250	capcom		unknown		21	0		
+0x800182A4	32	func_800182A4	capcom		utility	low	0	0		small leaf function
+0x800182C4	52	func_800182C4	capcom		utility	low	3	0		small leaf function
+0x800182F8	16	func_800182F8	capcom		utility	low	0	0		small leaf function
+0x80018308	8	func_80018308	capcom		utility	low	0	0		small leaf function
+0x80018310	120	func_80018310	capcom		3d	low	0	1		inferred from callees
+0x80018388	100	func_80018388	capcom		3d	medium	0	1		
+0x800183EC	224	func_800183EC	capcom		3d	medium	0	2		
+0x800184CC	32	func_800184CC	capcom		utility	low	3	0		small leaf function
+0x800184EC	80	func_800184EC	capcom		3d	low	3	1		inferred from callees
+0x8001853C	88	func_8001853C	capcom		3d	low	5	1		inferred from callees
+0x80018594	36	func_80018594	capcom		utility	low	4	0		small leaf function
+0x800185B8	24	func_800185B8	capcom		utility	low	0	0		small leaf function
+0x800185D0	508	func_800185D0	capcom		3d	high	0	6		
+0x800187CC	288	func_800187CC	capcom		3d	medium	1	3		
+0x800188EC	244	func_800188EC	capcom		3d	medium	3	3		
+0x800189E0	216	func_800189E0	capcom		unknown		2	0		
+0x80018AB8	244	func_80018AB8	capcom		3d	medium	2	3		
+0x80018BAC	392	func_80018BAC	capcom		unknown		1	2		
+0x80018D34	404	func_80018D34	capcom		unknown		67	0		
+0x80018EC8	688	func_80018EC8	capcom		unknown		10	2		
+0x80019178	348	func_80019178	capcom		unknown		0	0		
+0x800192D4	68	func_800192D4	capcom		unknown		1	1		
+0x80019318	408	func_80019318	capcom		3d	high	9	9		
+0x800194B0	260	func_800194B0	capcom		graphics	high	1	5		
+0x800195B4	36	func_800195B4	capcom		utility	low	1	0		small leaf function
+0x800195D8	76	func_800195D8	capcom		unknown		1	0		
+0x80019624	108	func_80019624	capcom		unknown		0	0		
+0x80019690	144	func_80019690	capcom		unknown		3	0		
+0x80019720	816	func_80019720	capcom		unknown		0	0		
+0x80019A50	236	func_80019A50	capcom		3d	medium	2	2		
+0x80019B3C	696	func_80019B3C	capcom		3d	high	1	6		
+0x80019DF4	996	func_80019DF4	capcom		3d	high	1	7		
+0x8001A1D8	40	func_8001A1D8	capcom		utility	low	1	0		small leaf function
+0x8001A200	72	func_8001A200	capcom		unknown		3	0		
+0x8001A248	1472	func_8001A248	capcom		3d	medium	3	2		
+0x8001A808	564	func_8001A808	capcom		3d	medium	0	2		
+0x8001AA3C	540	func_8001AA3C	capcom		3d	low	0	1		inferred from callees
+0x8001AC58	288	func_8001AC58	capcom		3d	high	3	3		
+0x8001AD78	144	func_8001AD78	capcom		unknown		0	0		
+0x8001AE08	36	func_8001AE08	capcom		utility	low	0	0		small leaf function
+0x8001AE2C	160	func_8001AE2C	capcom		game_state	low	0	3		reads game state flags (bits used to skip to the ending); reads progress/save block (probable)
+0x8001AECC	112	func_8001AECC	capcom		unknown		0	0		
+0x8001AF3C	268	func_8001AF3C	capcom		unknown		0	2		
+0x8001B048	68	func_8001B048	capcom		unknown		0	0		
+0x8001B08C	188	func_8001B08C	capcom		cd	low	1	2		inferred from callees
+0x8001B148	188	func_8001B148	capcom		graphics	low	1	2		inferred from callees
+0x8001B204	152	func_8001B204	capcom		unknown		2	0		
+0x8001B29C	8	func_8001B29C	capcom		utility	low	0	0		small leaf function
+0x8001B2A4	184	func_8001B2A4	capcom		graphics	medium	1	2		
+0x8001B35C	296	func_8001B35C	capcom		3d	low	103	3		inferred from callees
+0x8001B484	1040	func_8001B484	capcom		3d	low	229	10		inferred from callees
+0x8001B894	56	func_8001B894	capcom		utility	low	33	0		small leaf function
+0x8001B8CC	20	func_8001B8CC	capcom		utility	low	0	0		small leaf function
+0x8001B8E0	88	func_8001B8E0	capcom		unknown		0	0		
+0x8001B938	52	func_8001B938	capcom		utility	low	0	0		small leaf function
+0x8001B96C	80	func_8001B96C	capcom		unknown		0	0		
+0x8001B9BC	56	func_8001B9BC	capcom		utility	low	0	0		small leaf function
+0x8001B9F4	56	func_8001B9F4	capcom		utility	low	0	0		small leaf function
+0x8001BA2C	28	func_8001BA2C	capcom		utility	low	0	0		small leaf function
+0x8001BA48	128	func_8001BA48	capcom		unknown		2	0		
+0x8001BAC8	92	func_8001BAC8	capcom		unknown		0	0		
+0x8001BB24	348	func_8001BB24	capcom		3d	low	1	4		inferred from callees
+0x8001BC80	124	func_8001BC80	capcom		unknown		6	0		
+0x8001BCFC	720	func_8001BCFC	capcom		3d	medium	6	4		
+0x8001BFCC	412	func_8001BFCC	capcom		unknown		3	3		
+0x8001C168	236	func_8001C168	capcom		unknown		2	0		
+0x8001C254	136	func_8001C254	capcom		unknown		2	1		
+0x8001C2DC	96	func_8001C2DC	capcom		unknown		0	0		
+0x8001C33C	8	func_8001C33C	capcom		utility	low	0	0		small leaf function
+0x8001C344	64	func_8001C344	capcom		utility	low	0	0		small leaf function
+0x8001C384	8	func_8001C384	capcom		utility	low	0	0		small leaf function
+0x8001C38C	224	func_8001C38C	capcom		game_state	low	0	4		inferred from callees
+0x8001C46C	48	func_8001C46C	capcom		unknown		0	1		
+0x8001C49C	288	func_8001C49C	capcom		game_state	low	0	4		inferred from callees
+0x8001C5BC	976	func_8001C5BC	capcom		game_state	low	0	12		inferred from callees
+0x8001C98C	376	func_8001C98C	capcom		unknown		0	1		
+0x8001CB04	348	func_8001CB04	capcom		3d	low	0	4		inferred from callees
+0x8001CC60	260	func_8001CC60	capcom		unknown		0	1		
+0x8001CD64	8	func_8001CD64	capcom		utility	low	0	0		small leaf function
+0x8001CD6C	8	func_8001CD6C	capcom		utility	low	0	0		small leaf function
+0x8001CD74	8	func_8001CD74	capcom		utility	low	0	0		small leaf function
+0x8001CD7C	8	func_8001CD7C	capcom		utility	low	0	0		small leaf function
+0x8001CD84	8	func_8001CD84	capcom		utility	low	0	0		small leaf function
+0x8001CD8C	8	func_8001CD8C	capcom		utility	low	0	0		small leaf function
+0x8001CD94	8	func_8001CD94	capcom		utility	low	0	0		small leaf function
+0x8001CD9C	8	func_8001CD9C	capcom		utility	low	0	0		small leaf function
+0x8001CDA4	128	func_8001CDA4	capcom		unknown		9	1		
+0x8001CE24	256	func_8001CE24	capcom		unknown		7	2		
+0x8001CF24	208	func_8001CF24	capcom		unknown		3	1		
+0x8001CFF4	540	func_8001CFF4	capcom		3d	low	1	6		inferred from callees
+0x8001D210	624	func_8001D210	capcom		game_state	low	0	7		inferred from callees
+0x8001D480	180	func_8001D480	capcom		unknown		0	2		
+0x8001D534	652	func_8001D534	capcom		3d	low	0	7		inferred from callees
+0x8001D7C0	8	func_8001D7C0	capcom		utility	low	0	0		small leaf function
+0x8001D7C8	8	func_8001D7C8	capcom		utility	low	0	0		small leaf function
+0x8001D7D0	2340	func_8001D7D0	capcom		3d	low	0	39		inferred from callees
+0x8001E0F4	848	func_8001E0F4	capcom		3d	low	0	14		inferred from callees
+0x8001E444	3524	func_8001E444	capcom		game_state	low	0	53		reads system flags (bit 0x200 opens the item box)
+0x8001F208	368	func_8001F208	capcom		unknown		0	5		
+0x8001F378	304	func_8001F378	capcom		unknown		0	3		
+0x8001F4A8	76	func_8001F4A8	capcom		unknown		0	0		
+0x8001F4F4	384	func_8001F4F4	capcom		3d	low	0	4		inferred from callees
+0x8001F674	432	func_8001F674	capcom		unknown		0	2		
+0x8001F824	620	func_8001F824	capcom		unknown		0	7		
+0x8001FA90	832	func_8001FA90	capcom		3d	low	0	7		inferred from callees
+0x8001FDD0	412	func_8001FDD0	capcom		3d	low	0	7		inferred from callees
+0x8001FF6C	812	func_8001FF6C	capcom		unknown		0	15		
+0x80020298	544	func_80020298	capcom		unknown		0	3		
+0x800204B8	584	func_800204B8	capcom		unknown		0	4		
+0x80020700	288	func_80020700	capcom		unknown		0	4		
+0x80020820	440	func_80020820	capcom		unknown		0	4		
+0x800209D8	404	func_800209D8	capcom		unknown		0	5		
+0x80020B6C	160	func_80020B6C	capcom		unknown		0	1		
+0x80020C0C	432	func_80020C0C	capcom		unknown		0	4		
+0x80020DBC	252	func_80020DBC	capcom		unknown		0	2		
+0x80020EB8	1680	func_80020EB8	capcom		3d	low	0	21		inferred from callees
+0x80021548	516	func_80021548	capcom		3d	low	0	7		inferred from callees
+0x8002174C	56	func_8002174C	capcom		utility	low	0	0		small leaf function
+0x80021784	8	func_80021784	capcom		utility	low	0	0		small leaf function
+0x8002178C	8	func_8002178C	capcom		utility	low	0	0		small leaf function
+0x80021794	8	func_80021794	capcom		utility	low	0	0		small leaf function
+0x8002179C	8	func_8002179C	capcom		utility	low	0	0		small leaf function
+0x800217A4	8	func_800217A4	capcom		utility	low	0	0		small leaf function
+0x800217AC	8	func_800217AC	capcom		utility	low	0	0		small leaf function
+0x800217B4	264	func_800217B4	capcom		unknown		0	2		
+0x800218BC	208	func_800218BC	capcom		unknown		0	2		
+0x8002198C	972	func_8002198C	capcom		game_state	low	0	9		reads system flags (bit 0x200 opens the item box)
+0x80021D58	332	func_80021D58	capcom		unknown		0	2		
+0x80021EA4	8	func_80021EA4	capcom		utility	low	0	0		small leaf function
+0x80021EAC	836	func_80021EAC	capcom		unknown		0	10		
+0x800221F0	424	func_800221F0	capcom		unknown		0	10		
+0x80022398	8	func_80022398	capcom		utility	low	0	0		small leaf function
+0x800223A0	8	func_800223A0	capcom		utility	low	0	0		small leaf function
+0x800223A8	344	func_800223A8	capcom		unknown		0	2		
+0x80022500	352	func_80022500	capcom		unknown		0	3		
+0x80022660	8	func_80022660	capcom		utility	low	0	0		small leaf function
+0x80022668	564	func_80022668	capcom		unknown		0	3		
+0x8002289C	244	func_8002289C	capcom		unknown		0	2		
+0x80022990	828	func_80022990	capcom		3d	high	1	10		reads progress/save block (probable)
+0x80022CCC	732	func_80022CCC	capcom		3d	low	1	0		
+0x80022FA8	588	func_80022FA8	capcom		3d	low	1	0		
+0x800231F4	76	func_800231F4	capcom		unknown		1	1		
+0x80023240	40	func_80023240	capcom		utility	low	2	0		small leaf function
+0x80023268	4380	func_80023268	capcom		enemies	medium	0	81	%2d^ | %d%d. | %d%d	soft reset; enemy update/movement; reads countdown timer; reads game state flags (bits used to skip to the ending); writes progress/save block (probable); reads system flags (bit 0x200 opens the item box); reads time (counter); reads enemy attack flag; writes item box menu state; reads routine pointer (used to open the save screen); also: system, time
+0x80024384	444	func_80024384	capcom		3d	low	1	3		inferred from callees
+0x80024540	96	func_80024540	capcom		unknown		1	2		
+0x800245A0	836	func_800245A0	capcom		3d	medium	1	19		reads game state flags (bits used to skip to the ending); writes progress/save block (probable); also: system, game_state
+0x800248E4	592	func_800248E4	capcom		enemies	medium	1	14		reads system flags (bit 0x200 opens the item box); writes enemy attack flag; reads game state flags (bits used to skip to the ending); reads progress/save block (probable); also: game_state
+0x80024B34	284	func_80024B34	capcom		time	medium	1	1		reads total play time; writes player health (Jill); also: player
+0x80024C50	8	func_80024C50	capcom		utility	low	0	0		small leaf function
+0x80024C58	144	func_80024C58	capcom		unknown		1	0		
+0x80024CE8	652	func_80024CE8	capcom		game_state	low	0	21		reads game state flags (bits used to skip to the ending); reads system flags (bit 0x200 opens the item box)
+0x80024F74	344	func_80024F74	capcom		game_state	low	2	5		reads system flags (bit 0x200 opens the item box); reads game state flags (bits used to skip to the ending)
+0x800250CC	136	func_800250CC	capcom		game_state	low	3	5		inferred from callees
+0x80025154	168	func_80025154	capcom		graphics	low	2	5		inferred from callees
+0x800251FC	500	func_800251FC	capcom		3d	high	2	8		reads system flags (bit 0x200 opens the item box); also: game_state
+0x800253F0	188	func_800253F0	capcom		3d	low	1	3		inferred from callees
+0x800254AC	356	func_800254AC	capcom		3d	low	1	3		inferred from callees
+0x80025610	1048	func_80025610	capcom		3d	medium	2	11		
+0x80025A28	476	func_80025A28	capcom		unknown		0	2		
+0x80025C04	484	func_80025C04	capcom		3d	low	1	10		inferred from callees
+0x80025DE8	456	func_80025DE8	capcom		3d	low	1	9		inferred from callees
+0x80025FB0	188	func_80025FB0	capcom		3d	low	1	3		inferred from callees
+0x8002606C	268	func_8002606C	capcom		3d	low	1	5		inferred from callees
+0x80026178	52	func_80026178	capcom		utility	low	4	0		small leaf function
+0x800261AC	604	func_800261AC	capcom		unknown		5	2		
+0x80026408	100	func_80026408	capcom		unknown		0	0		
+0x8002646C	44	func_8002646C	capcom		utility	low	0	0		small leaf function
+0x80026498	52	func_80026498	capcom		utility	low	1	0		small leaf function
+0x800264CC	380	func_800264CC	capcom		unknown		0	0		
+0x80026648	164	func_80026648	capcom		unknown		1	0		
+0x800266EC	8	func_800266EC	capcom		utility	low	0	0		small leaf function
+0x800266F4	32	func_800266F4	capcom		utility	low	0	0		small leaf function
+0x80026714	20	func_80026714	capcom		utility	low	0	0		small leaf function
+0x80026728	472	func_80026728	capcom		3d	medium	9	1		
+0x80026900	744	func_80026900	capcom		3d	medium	0	1		
+0x80026BE8	268	func_80026BE8	capcom		3d	low	48	3		inferred from callees
+0x80026CF4	1304	func_80026CF4	capcom		3d	medium	1	1		
+0x8002720C	300	func_8002720C	capcom		3d	medium	3	0		
+0x80027338	560	func_80027338	capcom		3d	medium	2	2		
+0x80027568	724	func_80027568	capcom		3d	high	1	9		
+0x8002783C	260	func_8002783C	capcom		3d	medium	3	3		
+0x80027940	276	func_80027940	capcom		3d	low	84	3		inferred from callees
+0x80027A54	1336	func_80027A54	capcom		3d	high	1	6		
+0x80027F8C	552	func_80027F8C	capcom		3d	medium	1	2		
+0x800281B4	340	func_800281B4	capcom		3d	medium	1	4		
+0x80028308	1472	func_80028308	capcom		3d	high	0	3		
+0x800288C8	596	func_800288C8	capcom		3d	medium	1	6		
+0x80028B1C	204	func_80028B1C	capcom		game_state	low	1	4		reads system flags (bit 0x200 opens the item box)
+0x80028BE8	220	func_80028BE8	capcom		graphics	low	1	1		inferred from callees
+0x80028CC4	340	func_80028CC4	capcom		graphics	medium	3	1		
+0x80028E18	52	func_80028E18	capcom		utility	low	3	0		small leaf function
+0x80028E4C	180	func_80028E4C	capcom		unknown		4	0		
+0x80028F00	56	func_80028F00	capcom		utility	low	1	0		small leaf function
+0x80028F38	860	func_80028F38	capcom		graphics	high	1	23		writes controller buttons (raw, inverted); reads system flags (bit 0x200 opens the item box); also: input, system
+0x80029294	1132	func_80029294	capcom		graphics	high	1	24		reads hyper mode / speed; reads system flags (bit 0x200 opens the item box); reads progress/save block (probable); reads game state flags (bits used to skip to the ending); also: 3d, progress
+0x80029700	252	func_80029700	capcom		graphics	high	1	3		
+0x800297FC	396	func_800297FC	capcom		graphics	medium	1	22		writes hyper mode / speed; also: system, controller
+0x80029988	524	func_80029988	capcom		graphics	high	2	10		reads game state flags (bits used to skip to the ending); writes progress/save block (probable); also: game_state
+0x80029B94	364	func_80029B94	capcom		graphics	medium	0	13		reads game state flags (bits used to skip to the ending); also: controller, game_state
+0x80029D00	8	func_80029D00	capcom		utility	low	0	0		small leaf function
+0x80029D08	48	func_80029D08	capcom		graphics	low	1	3		inferred from callees
+0x80029D38	260	func_80029D38	capcom		graphics	high	1	3		reads system flags (bit 0x200 opens the item box); reads game state flags (bits used to skip to the ending); also: game_state
+0x80029E3C	956	func_80029E3C	capcom		fmv	high	2	20		reads progress/save block (probable); reads game state flags (bits used to skip to the ending); reads system flags (bit 0x200 opens the item box); also: graphics, 3d
+0x8002A1F8	192	func_8002A1F8	capcom		system	high	1	14		also: graphics
+0x8002A2B8	128	func_8002A2B8	capcom		graphics	medium	1	4		
+0x8002A338	36	func_8002A338	capcom		utility	low	15	0		small leaf function
+0x8002A35C	252	func_8002A35C	capcom		graphics	high	22	3		
+0x8002A458	68	func_8002A458	capcom		unknown		0	0		
+0x8002A49C	512	func_8002A49C	capcom		graphics	medium	1	2		reads hyper mode / speed; also: progress
+0x8002A69C	32	func_8002A69C	capcom		utility	low	9	0		small leaf function
+0x8002A6BC	36	func_8002A6BC	capcom		utility	low	15	0		small leaf function
+0x8002A6E0	364	func_8002A6E0	capcom		graphics	high	1	10		reads game state flags (bits used to skip to the ending); also: system, game_state
+0x8002A84C	236	func_8002A84C	capcom		unknown		2	2		
+0x8002A938	48	func_8002A938	capcom		unknown		8	1		
+0x8002A968	68	func_8002A968	capcom		unknown		2	0		
+0x8002A9AC	392	func_8002A9AC	capcom		system	high	1	16		writes progress/save block (probable)
+0x8002AB34	268	func_8002AB34	capcom		unknown		6	1		
+0x8002AC40	88	func_8002AC40	capcom		unknown		1	0		
+0x8002AC98	288	func_8002AC98	capcom		unknown		1	0		
+0x8002ADB8	304	func_8002ADB8	capcom		unknown		0	0		
+0x8002AEE8	180	func_8002AEE8	capcom		3d	high	4	3		
+0x8002AF9C	500	func_8002AF9C	capcom		3d	medium	1	0		
+0x8002B190	300	func_8002B190	capcom		3d	medium	1	2		
+0x8002B2BC	832	func_8002B2BC	capcom		unknown		7	1		
+0x8002B5FC	256	func_8002B5FC	capcom		unknown		1	0		
+0x8002B6FC	368	func_8002B6FC	capcom		3d	medium	1	0		
+0x8002B86C	464	func_8002B86C	capcom		3d	medium	1	0		
+0x8002BA3C	1580	func_8002BA3C	capcom		3d	medium	2	2		
+0x8002C068	1560	func_8002C068	capcom		unknown		2	1		
+0x8002C680	304	func_8002C680	capcom		unknown		0	0		
+0x8002C7B0	116	func_8002C7B0	capcom		unknown		1	0		
+0x8002C824	664	func_8002C824	capcom		3d	high	2	2		
+0x8002CABC	844	func_8002CABC	capcom		3d	medium	2	1		
+0x8002CE08	392	func_8002CE08	capcom		3d	medium	2	0		
+0x8002CF90	500	func_8002CF90	capcom		3d	medium	2	0		
+0x8002D184	664	func_8002D184	capcom		3d	medium	1	0		
+0x8002D41C	148	func_8002D41C	capcom		unknown		2	0		
+0x8002D4B0	296	func_8002D4B0	capcom		unknown		37	0		
+0x8002D5D8	256	func_8002D5D8	capcom		3d	medium	4	0		
+0x8002D6D8	448	func_8002D6D8	capcom		3d	medium	2	0		
+0x8002D898	532	func_8002D898	capcom		3d	medium	2	0		
+0x8002DAAC	492	func_8002DAAC	capcom		3d	medium	0	0		
+0x8002DC98	372	func_8002DC98	capcom		3d	medium	1	0		
+0x8002DE0C	468	func_8002DE0C	capcom		3d	medium	1	0		
+0x8002DFE0	384	func_8002DFE0	capcom		3d	medium	1	0		
+0x8002E160	440	func_8002E160	capcom		3d	medium	1	0		
+0x8002E318	772	func_8002E318	capcom		unknown		0	1		
+0x8002E61C	304	func_8002E61C	capcom		unknown		1	0		
+0x8002E74C	904	func_8002E74C	capcom		3d	low	1	5		inferred from callees
+0x8002EAD4	200	func_8002EAD4	capcom		3d	low	1	3		inferred from callees
+0x8002EB9C	1884	func_8002EB9C	capcom		3d	high	3	7		
+0x8002F2F8	32	func_8002F2F8	capcom		utility	low	7	0		small leaf function
+0x8002F318	28	func_8002F318	capcom		utility	low	3	0		small leaf function
+0x8002F334	36	func_8002F334	capcom		cd	low	0	1		inferred from callees
+0x8002F358	8	func_8002F358	capcom		utility	low	6	0		small leaf function
+0x8002F360	60	func_8002F360	capcom		cd	low	0	1		inferred from callees
+0x8002F3A0	72	func_8002F3A0	capcom		cd	low	0	1		inferred from callees
+0x8002F3E8	4	func_8002F3E8	capcom		utility	low	4	0		small leaf function
+0x8002F3EC	84	func_8002F3EC	capcom		cd	low	0	1		inferred from callees
+0x8002F440	1356	func_8002F440	capcom		cd	medium	4	2	0123456789ABCDEF	
+0x8002F98C	392	func_8002F98C	capcom		graphics	medium	1	1		
+0x8002FB14	540	func_8002FB14	capcom		graphics	medium	1	3		
+0x8002FD30	40	func_8002FD30	capcom		utility	low	30	0		small leaf function
+0x8002FD58	276	func_8002FD58	capcom		unknown		0	0	3EHH	
+0x8002FE6C	116	func_8002FE6C	capcom		game_state	low	1	2		inferred from callees
+0x8002FEE0	1260	func_8002FEE0	capcom		game_state	low	1	10		reads progress/save block (probable); reads system flags (bit 0x200 opens the item box)
+0x800303CC	24	func_800303CC	capcom		utility	low	2	0		small leaf function
+0x800303E4	8	func_800303E4	capcom		utility	low	0	0		small leaf function
+0x800303EC	888	func_800303EC	capcom		game_state	low	1	6		reads progress/save block (probable); inferred from callees
+0x80030764	1364	func_80030764	capcom		graphics	high	1	12		reads progress/save block (probable); reads system flags (bit 0x200 opens the item box); reads game state flags (bits used to skip to the ending); also: game_state
+0x80030CB8	1172	func_80030CB8	capcom		graphics	high	1	10		
+0x8003114C	952	func_8003114C	capcom		graphics	high	5	11		
+0x80031504	984	func_80031504	capcom		graphics	high	9	11		
+0x800318DC	148	func_800318DC	capcom		unknown		3	1		reads progress/save block (probable)
+0x80031970	84	func_80031970	capcom		unknown		2	0		
+0x800319C4	44	func_800319C4	capcom		utility	low	0	0		small leaf function
+0x800319F0	8	func_800319F0	capcom		utility	low	0	0		small leaf function
+0x800319F8	72	func_800319F8	capcom		unknown		9	0		
+0x80031A40	8	func_80031A40	capcom		utility	low	0	0		small leaf function
+0x80031A48	216	func_80031A48	capcom		graphics	high	1	5		
+0x80031B20	188	func_80031B20	capcom		graphics	medium	2	2		
+0x80031BDC	460	func_80031BDC	capcom		system	high	0	10		
+0x80031DA8	180	func_80031DA8	capcom		system	medium	1	1		
+0x80031E5C	244	func_80031E5C	capcom		system	high	1	4		
+0x80031F50	112	func_80031F50	capcom		cd	low	10	2		inferred from callees
+0x80031FC0	92	func_80031FC0	capcom		cd	low	2	2		inferred from callees
+0x8003201C	32	func_8003201C	capcom		utility	low	5	0		small leaf function
+0x8003203C	52	func_8003203C	capcom		system	medium	36	1		
+0x80032070	72	func_80032070	capcom		system	high	5	4		
+0x800320B8	88	func_800320B8	capcom		system	high	3	3		
+0x80032110	80	func_80032110	capcom		system	high	1	4		
+0x80032160	36	func_80032160	capcom		utility	low	1	0		small leaf function
+0x80032184	36	func_80032184	capcom		utility	low	1	0		small leaf function
+0x800321A8	28	func_800321A8	capcom		utility	low	4	0		small leaf function
+0x800321C4	732	func_800321C4	capcom		game_state	low	1	1		reads game state flags (bits used to skip to the ending)
+0x800324A0	260	func_800324A0	capcom		game_state	low	1	0		reads game state flags (bits used to skip to the ending)
+0x800325A4	512	func_800325A4	capcom		graphics	high	0	14		
+0x800327A4	576	func_800327A4	capcom		graphics	high	0	9		reads controller buttons (current); also: input, system
+0x800329E4	240	func_800329E4	capcom		graphics	medium	4	5		reads game state flags (bits used to skip to the ending); also: game_state
+0x80032AD4	580	func_80032AD4	capcom		graphics	high	0	6		reads game state flags (bits used to skip to the ending); also: game_state
+0x80032D18	576	func_80032D18	capcom		cd	high	2	14		also: fmv, system
+0x80032F58	320	func_80032F58	capcom		cd	medium	1	5		also: system, fmv
+0x80033098	92	func_80033098	capcom		cd	high	1	7		also: fmv
+0x800330F4	200	func_800330F4	capcom		fmv	high	1	3		
+0x800331BC	184	func_800331BC	capcom		cd	medium	0	3		also: graphics, fmv
+0x80033274	88	func_80033274	capcom		cd	low	1	1		inferred from callees
+0x800332CC	80	func_800332CC	capcom		cd	low	2	2		inferred from callees
+0x8003331C	120	func_8003331C	capcom		cd	medium	5	1		
+0x80033394	372	func_80033394	capcom		cd	high	0	10		also: system
+0x80033508	120	func_80033508	capcom		unknown		1	1		
+0x80033580	308	func_80033580	capcom		3d	low	3	2		inferred from callees
+0x800336B4	52	func_800336B4	capcom		utility	low	1	0		small leaf function
+0x800336E8	8	func_800336E8	capcom		utility	low	0	0		small leaf function
+0x800336F0	200	func_800336F0	capcom		collision	high	1	0		collision (walls and enemies)
+0x800337B8	228	func_800337B8	capcom		unknown		1	2		
+0x8003389C	644	func_8003389C	capcom		collision	high	1	4		enemy collision; wall collision; wall collision
+0x80033B20	104	func_80033B20	capcom		collision	low	1	5		inferred from callees
+0x80033B88	364	func_80033B88	capcom		unknown		1	2		
+0x80033CF4	580	func_80033CF4	capcom		unknown		1	6		
+0x80033F38	132	func_80033F38	capcom		unknown		4	1		
+0x80033FBC	360	func_80033FBC	capcom		3d	high	1	3		
+0x80034124	352	func_80034124	capcom		3d	medium	9	3		
+0x80034284	452	func_80034284	capcom		unknown		5	0		
+0x80034448	376	func_80034448	capcom		3d	low	1	1		inferred from callees
+0x800345C0	236	func_800345C0	capcom		3d	low	2	1		inferred from callees
+0x800346AC	360	func_800346AC	capcom		3d	medium	1	1		
+0x80034814	1376	func_80034814	capcom		game_state	low	1	4		reads system flags (bit 0x200 opens the item box)
+0x80034D74	260	func_80034D74	capcom		enemies	low	1	3		inferred from callees
+0x80034E78	144	func_80034E78	capcom		unknown		2	1		
+0x80034F08	636	func_80034F08	capcom		enemies	medium	1	1		reads enemy attack flag
+0x80035184	584	func_80035184	capcom		game_state	low	1	2		inferred from callees
+0x800353CC	368	func_800353CC	capcom		game_state	low	1	2		reads system flags (bit 0x200 opens the item box)
+0x8003553C	156	func_8003553C	capcom		unknown		1	0		
+0x800355D8	152	func_800355D8	capcom		unknown		0	0		
+0x80035670	8	func_80035670	capcom		utility	low	0	0		small leaf function
+0x80035678	280	func_80035678	capcom		unknown		1	1		
+0x80035790	216	func_80035790	capcom		unknown		3	4		
+0x80035868	52	func_80035868	capcom		utility	low	1	0		small leaf function
+0x8003589C	744	func_8003589C	capcom		unknown		1	1		
+0x80035B84	148	func_80035B84	capcom		3d	low	1	2		inferred from callees
+0x80035C18	388	func_80035C18	capcom		graphics	medium	0	1		
+0x80035D9C	60	func_80035D9C	capcom		unknown		0	4		
+0x80035DD8	76	func_80035DD8	capcom		unknown		1	0		
+0x80035E24	88	func_80035E24	capcom		unknown		1	0		
+0x80035E7C	96	func_80035E7C	capcom		unknown		1	0		
+0x80035EDC	80	func_80035EDC	capcom		unknown		1	0		
+0x80035F2C	160	func_80035F2C	capcom		unknown		1	0		
+0x80035FCC	84	func_80035FCC	capcom		unknown		1	4		
+0x80036020	124	func_80036020	capcom		unknown		1	0		
+0x8003609C	136	func_8003609C	capcom		unknown		1	0		
+0x80036124	144	func_80036124	capcom		unknown		1	0		
+0x800361B4	128	func_800361B4	capcom		unknown		1	0		
+0x80036234	20	func_80036234	capcom		utility	low	1	0		small leaf function
+0x80036248	248	func_80036248	capcom		unknown		1	0		
+0x80036340	40	func_80036340	capcom		utility	low	0	0		small leaf function
+0x80036368	24	func_80036368	capcom		utility	low	0	0		small leaf function
+0x80036380	292	func_80036380	capcom		graphics	medium	1	4		
+0x800364A4	204	func_800364A4	capcom		game_state	low	1	2		reads system flags (bit 0x200 opens the item box)
+0x80036570	176	func_80036570	capcom		game_state	low	1	0		reads system flags (bit 0x200 opens the item box)
+0x80036620	32	func_80036620	capcom		utility	low	0	0		small leaf function
+0x80036640	12	func_80036640	capcom		utility	low	1	0		small leaf function
+0x8003664C	160	func_8003664C	capcom		unknown		0	0		
+0x800366EC	1396	func_800366EC	capcom		3d	low	3	34		inferred from callees
+0x80036C60	308	func_80036C60	capcom		unknown		0	3		
+0x80036D94	484	func_80036D94	capcom		unknown		0	3		
+0x80036F78	1316	func_80036F78	capcom		3d	low	0	3		reads progress/save block (probable); inferred from callees
+0x8003749C	484	func_8003749C	capcom		3d	low	0	1		inferred from callees
+0x80037680	444	func_80037680	capcom		3d	low	0	2		inferred from callees
+0x8003783C	40	func_8003783C	capcom		utility	low	0	0		small leaf function
+0x80037864	20	func_80037864	capcom		utility	low	0	0		small leaf function
+0x80037878	36	func_80037878	capcom		utility	low	0	0		small leaf function
+0x8003789C	44	func_8003789C	capcom		utility	low	0	0		small leaf function
+0x800378C8	456	func_800378C8	capcom		3d	high	1	12		
+0x80037A90	424	func_80037A90	capcom		game_state	low	0	0		reads system flags (bit 0x200 opens the item box); reads progress/save block (probable)
+0x80037C38	280	func_80037C38	capcom		unknown		1	2		
+0x80037D50	304	func_80037D50	capcom		unknown		7	2		reads progress/save block (probable)
+0x80037E80	288	func_80037E80	capcom		graphics	medium	1	1		
+0x80037FA0	1684	func_80037FA0	capcom		controller	high	2	9		writes controller buttons (raw, inverted); reads system flags (bit 0x200 opens the item box); reads game state flags (bits used to skip to the ending); reads controller buttons (current); also: input, game_state
+0x80038634	68	func_80038634	capcom		unknown		2	0		
+0x80038678	140	func_80038678	capcom		unknown		16	2		
+0x80038704	152	func_80038704	capcom		unknown		17	2		
+0x8003879C	176	func_8003879C	capcom		unknown		18	2		
+0x8003884C	240	func_8003884C	capcom		unknown		9	3		
+0x8003893C	100	func_8003893C	capcom		unknown		5	0		
+0x800389A0	176	func_800389A0	capcom		unknown		2	0		
+0x80038A50	40	func_80038A50	capcom		utility	low	3	0		small leaf function
+0x80038A78	52	func_80038A78	capcom		utility	low	3	0		small leaf function
+0x80038AAC	464	func_80038AAC	capcom		graphics	medium	2	10		
+0x80038C7C	468	func_80038C7C	capcom		game_state	low	3	9		reads system flags (bit 0x200 opens the item box)
+0x80038E50	32	func_80038E50	capcom		utility	low	0	0		small leaf function
+0x80038E70	296	func_80038E70	capcom		unknown		0	2		
+0x80038F98	136	func_80038F98	capcom		unknown		1	1		
+0x80039020	236	func_80039020	capcom		unknown		0	0		
+0x8003910C	160	func_8003910C	capcom		game_state	low	0	0		reads system flags (bit 0x200 opens the item box)
+0x800391AC	232	func_800391AC	capcom		unknown		0	0		
+0x80039294	744	func_80039294	capcom		game_state	low	0	12		reads system flags (bit 0x200 opens the item box)
+0x8003957C	608	func_8003957C	capcom		game_state	low	0	1		reads system flags (bit 0x200 opens the item box)
+0x800397DC	328	func_800397DC	capcom		game_state	low	0	4		reads system flags (bit 0x200 opens the item box)
+0x80039924	608	func_80039924	capcom		game_state	low	0	1		reads system flags (bit 0x200 opens the item box)
+0x80039B84	328	func_80039B84	capcom		game_state	low	0	4		reads system flags (bit 0x200 opens the item box)
+0x80039CCC	572	func_80039CCC	capcom		game_state	low	0	1		reads system flags (bit 0x200 opens the item box)
+0x80039F08	728	func_80039F08	capcom		game_state	low	0	9		reads system flags (bit 0x200 opens the item box)
+0x8003A1E0	440	func_8003A1E0	capcom		3d	medium	1	4		
+0x8003A398	160	func_8003A398	capcom		game_state	low	0	0		reads system flags (bit 0x200 opens the item box)
+0x8003A438	316	func_8003A438	capcom		unknown		0	0		
+0x8003A574	240	func_8003A574	capcom		game_state	low	0	2		reads system flags (bit 0x200 opens the item box)
+0x8003A664	36	func_8003A664	capcom		utility	low	0	0		small leaf function
+0x8003A688	176	func_8003A688	capcom		game_state	low	0	1		reads system flags (bit 0x200 opens the item box)
+0x8003A738	152	func_8003A738	capcom		unknown		0	3		
+0x8003A7D0	8	func_8003A7D0	capcom		utility	low	0	0		small leaf function
+0x8003A7D8	2208	func_8003A7D8	capcom		game_state	low	0	13		reads system flags (bit 0x200 opens the item box); reads progress/save block (probable); reads game state flags (bits used to skip to the ending)
+0x8003B078	8	func_8003B078	capcom		utility	low	0	0		small leaf function
+0x8003B080	324	func_8003B080	capcom		menu	medium	0	1		reads system flags (bit 0x200 opens the item box); reads game state flags (bits used to skip to the ending); writes item box menu state; also: game_state
+0x8003B1C4	128	func_8003B1C4	capcom		game_state	low	0	2		reads system flags (bit 0x200 opens the item box)
+0x8003B244	696	func_8003B244	capcom		game_state	low	0	10		reads system flags (bit 0x200 opens the item box)
+0x8003B4FC	648	func_8003B4FC	capcom		unknown		0	1		
+0x8003B784	632	func_8003B784	capcom		3d	low	0	15		inferred from callees
+0x8003B9FC	680	func_8003B9FC	capcom		game_state	low	0	1		reads system flags (bit 0x200 opens the item box)
+0x8003BCA4	644	func_8003BCA4	capcom		3d	low	0	15		inferred from callees
+0x8003BF28	476	func_8003BF28	capcom		unknown		0	1		
+0x8003C104	652	func_8003C104	capcom		3d	low	0	15		inferred from callees
+0x8003C390	280	func_8003C390	capcom		unknown		11	0		
+0x8003C4A8	12	func_8003C4A8	capcom		utility	low	0	0		small leaf function
+0x8003C4B4	232	func_8003C4B4	capcom		unknown		0	0		
+0x8003C59C	20	func_8003C59C	capcom		utility	low	0	0		small leaf function
+0x8003C5B0	208	func_8003C5B0	capcom		unknown		4	0		
+0x8003C680	12	func_8003C680	capcom		utility	low	0	0		small leaf function
+0x8003C68C	152	func_8003C68C	capcom		unknown		0	0		
+0x8003C724	20	func_8003C724	capcom		utility	low	0	0		small leaf function
+0x8003C738	8	func_8003C738	capcom		utility	low	0	0		small leaf function
+0x8003C740	832	func_8003C740	capcom		game_state	low	0	10		reads system flags (bit 0x200 opens the item box)
+0x8003CA80	8	func_8003CA80	capcom		utility	low	0	0		small leaf function
+0x8003CA88	1040	func_8003CA88	capcom		game_state	low	0	17		reads system flags (bit 0x200 opens the item box)
+0x8003CE98	8	func_8003CE98	capcom		utility	low	0	0		small leaf function
+0x8003CEA0	684	func_8003CEA0	capcom		game_state	low	0	10		reads system flags (bit 0x200 opens the item box); reads progress/save block (probable); reads game state flags (bits used to skip to the ending)
+0x8003D14C	92	func_8003D14C	capcom		game_state	low	0	0		reads system flags (bit 0x200 opens the item box)
+0x8003D1A8	304	func_8003D1A8	capcom		game_state	low	0	6		reads system flags (bit 0x200 opens the item box)
+0x8003D2D8	488	func_8003D2D8	capcom		game_state	low	0	6		reads system flags (bit 0x200 opens the item box)
+0x8003D4C0	704	func_8003D4C0	capcom		3d	low	0	14		inferred from callees
+0x8003D780	608	func_8003D780	capcom		game_state	low	0	11		inferred from callees
+0x8003D9E0	92	func_8003D9E0	capcom		game_state	low	0	0		reads system flags (bit 0x200 opens the item box)
+0x8003DA3C	464	func_8003DA3C	capcom		game_state	low	0	12		inferred from callees
+0x8003DC0C	8	func_8003DC0C	capcom		utility	low	0	0		small leaf function
+0x8003DC14	108	func_8003DC14	capcom		game_state	low	0	0		reads system flags (bit 0x200 opens the item box)
+0x8003DC80	92	func_8003DC80	capcom		game_state	low	0	0		reads system flags (bit 0x200 opens the item box)
+0x8003DCDC	160	func_8003DCDC	capcom		unknown		0	1		
+0x8003DD7C	92	func_8003DD7C	capcom		player	medium	1	0		reads player health (Jill)
+0x8003DDD8	8	func_8003DDD8	capcom		utility	low	0	0		small leaf function
+0x8003DDE0	72	func_8003DDE0	capcom		unknown		0	0		
+0x8003DE28	40	func_8003DE28	capcom		game_state	low	0	0		reads game state flags (bits used to skip to the ending)
+0x8003DE50	12	func_8003DE50	capcom		utility	low	0	0		small leaf function
+0x8003DE5C	72	func_8003DE5C	capcom		player	medium	0	0		reads player health (Jill)
+0x8003DEA4	484	func_8003DEA4	capcom		unknown		1	2		
+0x8003E088	424	func_8003E088	capcom		unknown		10	14		
+0x8003E230	116	func_8003E230	capcom		unknown		17	3		
+0x8003E2A4	8	func_8003E2A4	capcom		utility	low	0	0		small leaf function
+0x8003E2AC	488	func_8003E2AC	capcom		game_state	low	0	4		reads game state flags (bits used to skip to the ending); reads system flags (bit 0x200 opens the item box)
+0x8003E494	60	func_8003E494	capcom		utility	low	0	0		small leaf function
+0x8003E4D0	1420	func_8003E4D0	capcom		3d	high	0	28		
+0x8003EA5C	204	func_8003EA5C	capcom		3d	low	0	4		inferred from callees
+0x8003EB28	60	func_8003EB28	capcom		utility	low	0	0		small leaf function
+0x8003EB64	932	func_8003EB64	capcom		3d	low	0	10		inferred from callees
+0x8003EF08	768	func_8003EF08	capcom		3d	low	0	6		inferred from callees
+0x8003F208	524	func_8003F208	capcom		3d	low	0	6		inferred from callees
+0x8003F414	268	func_8003F414	capcom		game_state	low	0	4		reads system flags (bit 0x200 opens the item box)
+0x8003F520	400	func_8003F520	capcom		3d	low	0	7		inferred from callees
+0x8003F6B0	236	func_8003F6B0	capcom		unknown		0	3		
+0x8003F79C	668	func_8003F79C	capcom		unknown		1	2		
+0x8003FA38	320	func_8003FA38	capcom		3d	low	0	5		inferred from callees
+0x8003FB78	624	func_8003FB78	capcom		game_state	low	0	6		inferred from callees
+0x8003FDE8	160	func_8003FDE8	capcom		unknown		0	1		
+0x8003FE88	116	func_8003FE88	capcom		unknown		0	1		
+0x8003FEFC	160	func_8003FEFC	capcom		game_state	low	0	1		reads system flags (bit 0x200 opens the item box)
+0x8003FF9C	60	func_8003FF9C	capcom		utility	low	0	0		small leaf function
+0x8003FFD8	44	func_8003FFD8	capcom		utility	low	0	0		small leaf function
+0x80040004	20	func_80040004	capcom		utility	low	0	0		small leaf function
+0x80040018	8	func_80040018	capcom		utility	low	0	0		small leaf function
+0x80040020	4	func_80040020	capcom		utility	low	0	0		small leaf function
+0x80040024	4	func_80040024	capcom		utility	low	0	0		small leaf function
+0x80040028	4	func_80040028	capcom		utility	low	0	0		small leaf function
+0x8004002C	4	func_8004002C	capcom		utility	low	0	0		small leaf function
+0x80040030	4	func_80040030	capcom		utility	low	0	0		small leaf function
+0x80040034	704	func_80040034	capcom		3d	low	0	8		inferred from callees
+0x800402F4	1136	func_800402F4	capcom		3d	low	0	12		inferred from callees
+0x80040764	352	func_80040764	capcom		3d	low	0	6		inferred from callees
+0x800408C4	60	func_800408C4	capcom		utility	low	0	0		small leaf function
+0x80040900	1060	func_80040900	capcom		3d	low	0	20		inferred from callees
+0x80040D24	28	func_80040D24	capcom		utility	low	5	0		small leaf function
+0x80040D40	156	func_80040D40	capcom		3d	medium	1	1		
+0x80040DDC	148	func_80040DDC	capcom		3d	medium	1	1		
+0x80040E70	16	func_80040E70	capcom		utility	low	2	0		small leaf function
+0x80040E80	180	func_80040E80	capcom		3d	medium	1	1		
+0x80040F34	92	func_80040F34	capcom		game_state	low	0	1		inferred from callees
+0x80040F90	108	func_80040F90	capcom		3d	low	0	2		inferred from callees
+0x80040FFC	8	func_80040FFC	capcom		unknown		0	1		
+0x80041004	244	func_80041004	capcom		game_state	low	0	5		inferred from callees
+0x800410F8	1180	func_800410F8	capcom		3d	low	0	31		inferred from callees
+0x80041594	824	func_80041594	capcom		3d	low	0	25		inferred from callees
+0x800418CC	436	func_800418CC	capcom		game_state	low	0	9		inferred from callees
+0x80041A80	436	func_80041A80	capcom		game_state	low	0	9		inferred from callees
+0x80041C34	436	func_80041C34	capcom		game_state	low	0	9		inferred from callees
+0x80041DE8	436	func_80041DE8	capcom		game_state	low	0	9		inferred from callees
+0x80041F9C	96	func_80041F9C	capcom		game_state	low	0	2		inferred from callees
+0x80041FFC	508	func_80041FFC	capcom		game_state	low	0	6		reads system flags (bit 0x200 opens the item box)
+0x800421F8	636	func_800421F8	capcom		3d	low	0	12		inferred from callees
+0x80042474	492	func_80042474	capcom		game_state	low	0	11		inferred from callees
+0x80042660	376	func_80042660	capcom		3d	low	0	8		inferred from callees
+0x800427D8	636	func_800427D8	capcom		3d	low	0	11		inferred from callees
+0x80042A54	144	func_80042A54	capcom		3d	low	0	4		inferred from callees
+0x80042AE4	848	func_80042AE4	capcom		3d	low	0	15		inferred from callees
+0x80042E34	444	func_80042E34	capcom		3d	low	0	11		inferred from callees
+0x80042FF0	20	func_80042FF0	capcom		utility	low	0	0		small leaf function
+0x80043004	804	func_80043004	capcom		3d	low	0	25		inferred from callees
+0x80043328	220	func_80043328	capcom		3d	low	0	5		inferred from callees
+0x80043404	244	func_80043404	capcom		unknown		0	5		
+0x800434F8	776	func_800434F8	capcom		3d	low	0	21		inferred from callees
+0x80043800	504	func_80043800	capcom		game_state	low	0	12		reads system flags (bit 0x200 opens the item box)
+0x800439F8	492	func_800439F8	capcom		game_state	low	0	11		inferred from callees
+0x80043BE4	28	func_80043BE4	capcom		utility	low	7	0	WEP DATA	small leaf function
+0x80043C00	740	func_80043C00	capcom		graphics	high	0	9		
+0x80043EE4	48	func_80043EE4	capcom		utility	low	6	0		small leaf function
+0x80043F14	68	func_80043F14	capcom		unknown		1	0		
+0x80043F58	80	func_80043F58	capcom		unknown		1	0		
+0x80043FA8	8	func_80043FA8	capcom		utility	low	0	0		small leaf function
+0x80043FB0	64	func_80043FB0	capcom		utility	low	0	0		small leaf function
+0x80043FF0	100	func_80043FF0	capcom		unknown		0	0		
+0x80044054	88	func_80044054	capcom		unknown		0	0		
+0x800440AC	72	func_800440AC	capcom		unknown		0	0		
+0x800440F4	64	func_800440F4	capcom		utility	low	0	0		small leaf function
+0x80044134	72	func_80044134	capcom		unknown		0	0		
+0x8004417C	80	func_8004417C	capcom		unknown		0	0		
+0x800441CC	596	func_800441CC	capcom		3d	medium	3	2		
+0x80044420	424	func_80044420	capcom		3d	medium	0	2		
+0x800445C8	324	func_800445C8	capcom		3d	medium	6	2		
+0x8004470C	36	func_8004470C	capcom		utility	low	2	0		small leaf function
+0x80044730	100	func_80044730	capcom		unknown		0	0		
+0x80044794	8	func_80044794	capcom		utility	low	0	0		small leaf function
+0x8004479C	96	func_8004479C	capcom		unknown		4	0		
+0x800447FC	4	func_800447FC	capcom		utility	low	0	0		small leaf function
+0x80044800	4	func_80044800	capcom		utility	low	0	0		small leaf function
+0x80044804	1676	func_80044804	capcom		3d	high	24	12		player damage calculation ("One Hit Death"); also: combat
+0x80044E90	164	func_80044E90	capcom		3d	medium	0	2		
+0x80044F34	352	func_80044F34	capcom		3d	high	2	4		
+0x80045094	548	func_80045094	capcom		3d	high	1	6		
+0x800452B8	40	func_800452B8	capcom		graphics	low	2	2		inferred from callees
+0x800452E0	8	func_800452E0	capcom		utility	low	0	0		small leaf function
+0x800452E8	284	func_800452E8	capcom		unknown		0	1		
+0x80045404	272	func_80045404	capcom		3d	high	0	6		
+0x80045514	8	func_80045514	capcom		utility	low	0	0		small leaf function
+0x8004551C	152	func_8004551C	capcom		unknown		4	4		
+0x800455B4	424	func_800455B4	capcom		unknown		2	3		
+0x8004575C	72	func_8004575C	capcom		unknown		1	0		
+0x800457A4	428	func_800457A4	capcom		3d	medium	1	4		
+0x80045950	4284	func_80045950	capcom		3d	high	1	86		
+0x80046A0C	316	func_80046A0C	capcom		3d	medium	1	1		
+0x80046B48	44	func_80046B48	capcom		utility	low	3	0		small leaf function
+0x80046B74	32	func_80046B74	capcom		utility	low	0	0		small leaf function
+0x80046B94	148	func_80046B94	capcom		3d	medium	3	3		
+0x80046C28	104	func_80046C28	capcom		3d	medium	2	1		
+0x80046C90	292	func_80046C90	capcom		graphics	high	4	5		
+0x80046DB4	20	func_80046DB4	capcom		utility	low	5	0		small leaf function
+0x80046DC8	48	func_80046DC8	capcom		utility	low	4	0		small leaf function
+0x80046DF8	8	func_80046DF8	capcom		utility	low	1	0		small leaf function
+0x80046E00	196	func_80046E00	capcom		unknown		3	0		
+0x80046EC4	560	func_80046EC4	capcom		3d	high	1	5		reads progress/save block (probable)
+0x800470F4	504	func_800470F4	capcom		3d	medium	2	2		
+0x800472EC	1396	func_800472EC	capcom		3d	high	27	10		reads game state flags (bits used to skip to the ending); also: game_state
+0x80047860	880	func_80047860	capcom		3d	high	13	10		
+0x80047BD0	512	func_80047BD0	capcom		3d	high	18	4		
+0x80047DD0	416	func_80047DD0	capcom		3d	medium	1	2		
+0x80047F70	920	func_80047F70	capcom		3d	high	1	5		
+0x80048308	68	func_80048308	capcom		time	medium	11	0		reads time (counter); reads reward received; also: progress
+0x8004834C	468	func_8004834C	capcom		time	low	2	5		inferred from callees
+0x80048520	272	func_80048520	capcom		game_state	low	1	3	[%dsec	inferred from callees
+0x80048630	152	func_80048630	capcom		unknown		1	0		
+0x800486C8	40	func_800486C8	capcom		utility	low	1	0		reads progress/save block (probable); small leaf function
+0x800486F0	340	func_800486F0	capcom		unknown		1	0		reads progress/save block (probable)
+0x80048844	304	func_80048844	capcom		unknown		1	1		reads progress/save block (probable)
+0x80048974	200	func_80048974	capcom		game_state	low	1	2		reads system flags (bit 0x200 opens the item box)
+0x80048A3C	1016	func_80048A3C	capcom		3d	medium	1	10		
+0x80048E34	448	func_80048E34	capcom		3d	high	1	2		
+0x80048FF4	548	func_80048FF4	capcom		3d	medium	2	5		reads progress/save block (probable)
+0x80049218	468	func_80049218	capcom		unknown		1	4		
+0x800493EC	1196	func_800493EC	capcom		player	medium	2	22	BIN FILE	reads system flags (bit 0x200 opens the item box); reads progress/save block (probable); writes player health (Jill); writes inventory slot count; reads game state flags (bits used to skip to the ending); also: inventory, game_state
+0x80049898	88	func_80049898	capcom		system	low	2	2		reads progress/save block (probable); inferred from callees
+0x800498F0	352	func_800498F0	capcom		unknown		1	0		
+0x80049A50	344	func_80049A50	capcom		unknown		1	1		
+0x80049BA8	728	func_80049BA8	capcom		3d	low	4	4		inferred from callees
+0x80049E80	88	func_80049E80	capcom		unknown		0	1		
+0x80049ED8	152	func_80049ED8	capcom		unknown		5	0		
+0x80049F70	16	func_80049F70	capcom		utility	low	0	0		small leaf function
+0x80049F80	84	func_80049F80	capcom		unknown		2	0		
+0x80049FD4	164	func_80049FD4	capcom		unknown		0	0		
+0x8004A078	8	func_8004A078	capcom		utility	low	0	0		small leaf function
+0x8004A080	1908	func_8004A080	capcom		3d	medium	1	8		
+0x8004A7F4	200	func_8004A7F4	capcom		3d	medium	2	1		
+0x8004A8BC	120	func_8004A8BC	capcom		unknown		2	0		
+0x8004A934	800	func_8004A934	capcom		3d	medium	0	0		
+0x8004AC54	320	func_8004AC54	capcom		unknown		0	0		
+0x8004AD94	368	func_8004AD94	capcom		3d	medium	0	0		
+0x8004AF04	1136	func_8004AF04	capcom		collision	high	2	4		wall collision
+0x8004B374	1140	func_8004B374	capcom		enemies	medium	3	15		reads enemy attack flag; reads system flags (bit 0x200 opens the item box); also: game_state
+0x8004B7E8	128	func_8004B7E8	capcom		unknown		1	0		
+0x8004B868	12	func_8004B868	capcom		utility	low	0	0		small leaf function
+0x8004B874	728	func_8004B874	capcom		3d	medium	8	4		
+0x8004BB4C	2236	func_8004BB4C	capcom		unknown		0	0		
+0x8004C408	372	func_8004C408	capcom		3d	medium	5	1		
+0x8004C57C	368	func_8004C57C	capcom		3d	low	0	2		inferred from callees
+0x8004C6EC	368	func_8004C6EC	capcom		3d	low	0	2		inferred from callees
+0x8004C85C	260	func_8004C85C	capcom		unknown		1	1		
+0x8004C960	756	func_8004C960	capcom		unknown		2	1		
+0x8004CC54	348	func_8004CC54	capcom		unknown		2	0		
+0x8004CDB0	124	func_8004CDB0	capcom		unknown		0	0		
+0x8004CE2C	872	func_8004CE2C	capcom		3d	low	0	4		inferred from callees
+0x8004D194	484	func_8004D194	capcom		3d	low	0	3		inferred from callees
+0x8004D378	140	func_8004D378	capcom		3d	medium	2	1		
+0x8004D404	396	func_8004D404	capcom		3d	medium	1	3		
+0x8004D590	288	func_8004D590	capcom		3d	medium	2	0		
+0x8004D6B0	8	func_8004D6B0	capcom		utility	low	0	0		small leaf function
+0x8004D6B8	104	func_8004D6B8	capcom		unknown		7	0		
+0x8004D720	1008	func_8004D720	capcom		unknown		24	2		
+0x8004DB10	692	func_8004DB10	capcom		3d	low	1	3		inferred from callees
+0x8004DDC4	68	func_8004DDC4	capcom		unknown		1	0		
+0x8004DE08	56	func_8004DE08	capcom		utility	low	0	0		small leaf function
+0x8004DE40	104	func_8004DE40	capcom		3d	medium	4	1		
+0x8004DEA8	8	func_8004DEA8	capcom		utility	low	0	0		small leaf function
+0x8004DEB0	36	func_8004DEB0	capcom		utility	low	0	0		small leaf function
+0x8004DED4	80	func_8004DED4	capcom		3d	low	0	1		inferred from callees
+0x8004DF24	104	func_8004DF24	capcom		unknown		0	0		
+0x8004DF8C	96	func_8004DF8C	capcom		unknown		0	0		
+0x8004DFEC	96	func_8004DFEC	capcom		unknown		0	0		
+0x8004E04C	96	func_8004E04C	capcom		unknown		0	0		
+0x8004E0AC	96	func_8004E0AC	capcom		unknown		0	0		
+0x8004E10C	292	func_8004E10C	capcom		unknown		1	0		
+0x8004E230	348	func_8004E230	capcom		unknown		0	1		
+0x8004E38C	312	func_8004E38C	capcom		3d	low	0	2		inferred from callees
+0x8004E4C4	312	func_8004E4C4	capcom		3d	low	0	2		inferred from callees
+0x8004E5FC	168	func_8004E5FC	capcom		unknown		0	0		
+0x8004E6A4	56	func_8004E6A4	capcom		utility	low	0	0		small leaf function
+0x8004E6DC	36	func_8004E6DC	capcom		utility	low	0	0		small leaf function
+0x8004E750	224	func_8004E750	capcom		3d	medium	0	1		
+0x8004E830	1308	func_8004E830	capcom		unknown		13	7		
+0x8004ED4C	552	func_8004ED4C	capcom		unknown		1	3		
+0x8004EF74	184	func_8004EF74	capcom		3d	medium	44	0		
+0x8004F02C	8	func_8004F02C	capcom		utility	low	0	0		small leaf function
+0x8004F034	100	func_8004F034	capcom		3d	low	0	1		inferred from callees
+0x8004F098	448	func_8004F098	capcom		3d	medium	0	3		
+0x8004F258	368	func_8004F258	capcom		3d	low	0	4		inferred from callees
+0x8004F3C8	208	func_8004F3C8	capcom		3d	low	0	2		inferred from callees
+0x8004F498	284	func_8004F498	capcom		3d	low	0	3		inferred from callees
+0x8004F5B4	280	func_8004F5B4	capcom		3d	low	0	3		inferred from callees
+0x8004F6CC	220	func_8004F6CC	capcom		3d	low	0	2		inferred from callees
+0x8004F7A8	384	func_8004F7A8	capcom		3d	low	0	4		inferred from callees
+0x8004F928	684	func_8004F928	capcom		3d	low	2	8		inferred from callees
+0x8004FBD4	668	func_8004FBD4	capcom		3d	low	2	8		inferred from callees
+0x8004FE70	460	func_8004FE70	capcom		3d	low	1	4		inferred from callees
+0x8005003C	460	func_8005003C	capcom		3d	low	1	4		inferred from callees
+0x80050208	176	func_80050208	capcom		unknown		0	0		
+0x800502B8	304	func_800502B8	capcom		unknown		2	0		
+0x800503E8	316	func_800503E8	capcom		unknown		0	0		
+0x80050524	136	func_80050524	capcom		unknown		1	1		
+0x800505AC	1452	func_800505AC	capcom		enemies	medium	5	5		reads progress/save block (probable); reads enemy attack flag; reads system flags (bit 0x200 opens the item box); also: game_state
+0x80050B58	424	func_80050B58	capcom		player	medium	1	5		reads player health (Jill); reads enemy attack flag; reads system flags (bit 0x200 opens the item box); also: enemies, game_state
+0x80050D00	40	func_80050D00	capcom		utility	low	0	0		writes progress/save block (probable); small leaf function
+0x80050D28	696	func_80050D28	capcom		doors	medium	0	12		reads system flags (bit 0x200 opens the item box); reads game state flags (bits used to skip to the ending); reads unlocked door flags; also: game_state
+0x80050FE0	208	func_80050FE0	capcom		save	low	0	3		reads progress/save block (probable); inferred from callees
+0x800510B0	108	func_800510B0	capcom		unknown		0	0		reads progress/save block (probable)
+0x8005111C	60	func_8005111C	capcom		utility	low	0	0		small leaf function
+0x80051158	68	func_80051158	capcom		menu	medium	0	0		writes item box menu state
+0x8005119C	20	func_8005119C	capcom		utility	low	0	0		small leaf function
+0x800511B0	204	func_800511B0	capcom		menu	medium	0	1		writes item box menu state; reads system flags (bit 0x200 opens the item box); also: game_state
+0x8005127C	8	func_8005127C	capcom		utility	low	0	0		small leaf function
+0x80051284	56	func_80051284	capcom		unknown		0	1		
+0x800512BC	64	func_800512BC	capcom		unknown		0	1		
+0x800512FC	112	func_800512FC	capcom		unknown		0	0		
+0x8005136C	28	func_8005136C	capcom		utility	low	0	0		small leaf function
+0x80051388	68	func_80051388	capcom		menu	medium	0	0		writes routine pointer (used to open the save screen); writes progress/save block (probable)
+0x800513CC	248	func_800513CC	capcom		save	high	0	3		save screen routine (target of the "Save Anywhere" code); ink ribbon check when saving; writes routine pointer (used to open the save screen); reads progress/save block (probable); reads game state flags (bits used to skip to the ending); also: menu, game_state
+0x800514C4	44	func_800514C4	capcom		menu	high	0	0		writes item box menu state; writes routine pointer (used to open the save screen)
+0x800514F0	404	func_800514F0	capcom		menu	medium	0	1		reads system flags (bit 0x200 opens the item box); writes routine pointer (used to open the save screen); also: game_state
+0x80051684	32	func_80051684	capcom		game_state	low	0	0		reads game state flags (bits used to skip to the ending)
+0x800516A4	616	func_800516A4	capcom		enemies	medium	0	6		reads enemy attack flag; reads system flags (bit 0x200 opens the item box); reads progress/save block (probable); reads unlocked door flags; also: doors, game_state
+0x8005190C	564	func_8005190C	capcom		doors	medium	0	4		reads progress/save block (probable); reads unlocked door flags; reads system flags (bit 0x200 opens the item box); writes item box menu state; also: menu, game_state
+0x80051B40	368	func_80051B40	capcom		3d	low	0	4		inferred from callees
+0x80051CB0	120	func_80051CB0	capcom		enemies	medium	0	0		reads system flags (bit 0x200 opens the item box); reads enemy attack flag; also: game_state
+0x80051D28	56	func_80051D28	capcom		menu	medium	0	0		writes routine pointer (used to open the save screen)
+0x80051D60	232	func_80051D60	capcom		menu	medium	0	2		reads progress/save block (probable); writes routine pointer (used to open the save screen)
+0x80051E48	304	func_80051E48	capcom		unknown		5	2		
+0x80051F78	76	func_80051F78	capcom		unknown		1	0		
+0x80051FC4	208	func_80051FC4	capcom		unknown		0	0		
+0x80052094	56	func_80052094	capcom		utility	low	1	0		small leaf function
+0x800520CC	12	func_800520CC	capcom		utility	low	0	0		small leaf function
+0x800520D8	56	func_800520D8	capcom		utility	low	1	0		small leaf function
+0x80052110	12	func_80052110	capcom		utility	low	0	0		small leaf function
+0x8005211C	60	func_8005211C	capcom		utility	low	1	0		small leaf function
+0x80052158	20	func_80052158	capcom		utility	low	0	0		small leaf function
+0x8005216C	40	func_8005216C	capcom		utility	low	1	0		small leaf function
+0x80052194	256	func_80052194	capcom		graphics	low	1	1		inferred from callees
+0x80052294	60	func_80052294	capcom		utility	low	2	0		writes progress/save block (probable); small leaf function
+0x800522D0	8	func_800522D0	capcom		utility	low	1	0		small leaf function
+0x800522D8	236	func_800522D8	capcom		unknown		2	1		writes progress/save block (probable)
+0x800523C4	104	func_800523C4	capcom		unknown		3	2		writes progress/save block (probable)
+0x8005242C	76	func_8005242C	capcom		unknown		3	0		
+0x80052478	272	func_80052478	capcom		unknown		5	1		
+0x80052588	188	func_80052588	capcom		unknown		1	1		
+0x80052644	504	func_80052644	capcom		game_state	low	1	12		reads system flags (bit 0x200 opens the item box)
+0x8005283C	152	func_8005283C	capcom		unknown		1	1		
+0x800528D4	56	func_800528D4	capcom		utility	low	2	0		small leaf function
+0x8005290C	92	func_8005290C	capcom		unknown		1	1		reads progress/save block (probable)
+0x80052968	300	func_80052968	capcom		game_state	low	1	2		reads system flags (bit 0x200 opens the item box); reads progress/save block (probable)
+0x80052A94	132	func_80052A94	capcom		game_state	low	1	8		inferred from callees
+0x80052B18	140	func_80052B18	capcom		game_state	low	1	6		inferred from callees
+0x80052BA4	580	func_80052BA4	capcom		unknown		2	2		
+0x80052DE8	24	func_80052DE8	capcom		utility	low	0	0		small leaf function
+0x80052E00	32	func_80052E00	capcom		utility	low	0	0		small leaf function
+0x80052E20	64	func_80052E20	capcom		utility	low	0	0		small leaf function
+0x80052E60	24	func_80052E60	capcom		utility	low	0	0		small leaf function
+0x80052E78	44	func_80052E78	capcom		unknown		0	1		
+0x80052EA4	56	func_80052EA4	capcom		unknown		0	1		
+0x80052EDC	116	func_80052EDC	capcom		unknown		0	0		
+0x80052F50	68	func_80052F50	capcom		unknown		0	0		
+0x80052F94	64	func_80052F94	capcom		utility	low	0	0		small leaf function
+0x80052FD4	60	func_80052FD4	capcom		utility	low	0	0		small leaf function
+0x80053010	60	func_80053010	capcom		utility	low	0	0		small leaf function
+0x8005304C	72	func_8005304C	capcom		unknown		0	0		
+0x80053094	100	func_80053094	capcom		unknown		0	0		
+0x800530F8	52	func_800530F8	capcom		utility	low	0	0		small leaf function
+0x8005312C	88	func_8005312C	capcom		game_state	low	0	0		reads system flags (bit 0x200 opens the item box)
+0x80053184	164	func_80053184	capcom		unknown		0	0		
+0x80053228	192	func_80053228	capcom		unknown		0	0		reads progress/save block (probable)
+0x800532E8	124	func_800532E8	capcom		unknown		0	0		
+0x80053364	188	func_80053364	capcom		unknown		0	1		
+0x80053420	68	func_80053420	capcom		unknown		0	0		
+0x80053464	100	func_80053464	capcom		unknown		0	0		
+0x800534C8	136	func_800534C8	capcom		unknown		0	1		
+0x80053550	232	func_80053550	capcom		unknown		2	0		
+0x80053638	212	func_80053638	capcom		unknown		0	0		reads progress/save block (probable)
+0x8005370C	24	func_8005370C	capcom		utility	low	0	0		small leaf function
+0x80053724	24	func_80053724	capcom		utility	low	0	0		small leaf function
+0x8005373C	52	func_8005373C	capcom		utility	low	0	0		small leaf function
+0x80053770	76	func_80053770	capcom		unknown		0	0		
+0x800537BC	104	func_800537BC	capcom		unknown		0	0		
+0x80053824	88	func_80053824	capcom		unknown		0	0		
+0x8005387C	76	func_8005387C	capcom		unknown		0	0		
+0x800538C8	24	func_800538C8	capcom		utility	low	0	0		small leaf function
+0x800538E0	100	func_800538E0	capcom		unknown		0	0		reads progress/save block (probable)
+0x80053944	52	func_80053944	capcom		utility	low	0	0		reads progress/save block (probable); small leaf function
+0x80053978	64	func_80053978	capcom		utility	low	0	0		reads progress/save block (probable); small leaf function
+0x800539B8	72	func_800539B8	capcom		unknown		0	1		reads progress/save block (probable)
+0x80053A00	84	func_80053A00	capcom		unknown		0	1		reads progress/save block (probable)
+0x80053A54	60	func_80053A54	capcom		utility	low	4	0		small leaf function
+0x80053A90	20	func_80053A90	capcom		utility	low	0	0		small leaf function
+0x80053AA4	24	func_80053AA4	capcom		utility	low	0	0		small leaf function
+0x80053ABC	24	func_80053ABC	capcom		utility	low	0	0		small leaf function
+0x80053AD4	24	func_80053AD4	capcom		utility	low	0	0		small leaf function
+0x80053AEC	20	func_80053AEC	capcom		utility	low	0	0		small leaf function
+0x80053B00	20	func_80053B00	capcom		utility	low	0	0		small leaf function
+0x80053B14	20	func_80053B14	capcom		utility	low	0	0		small leaf function
+0x80053B28	20	func_80053B28	capcom		utility	low	0	0		small leaf function
+0x80053B3C	20	func_80053B3C	capcom		utility	low	0	0		small leaf function
+0x80053B50	36	func_80053B50	capcom		utility	low	0	0		small leaf function
+0x80053B74	76	func_80053B74	capcom		unknown		0	1		
+0x80053BC0	96	func_80053BC0	capcom		unknown		0	1		reads progress/save block (probable)
+0x80053C20	84	func_80053C20	capcom		unknown		0	1		reads progress/save block (probable)
+0x80053C74	192	func_80053C74	capcom		unknown		0	1		
+0x80053D34	108	func_80053D34	capcom		unknown		0	2		
+0x80053DA0	112	func_80053DA0	capcom		unknown		0	2		reads progress/save block (probable)
+0x80053E10	48	func_80053E10	capcom		unknown		2	42		
+0x80053E40	8	func_80053E40	capcom		utility	low	1	0		small leaf function
+0x80053E48	8	func_80053E48	capcom		utility	low	1	0		small leaf function
+0x80053E50	8	func_80053E50	capcom		utility	low	1	0		small leaf function
+0x80053E58	8	func_80053E58	capcom		utility	low	1	0		small leaf function
+0x80053E60	8	func_80053E60	capcom		utility	low	1	0		small leaf function
+0x80053E68	8	func_80053E68	capcom		utility	low	1	0		small leaf function
+0x80053E70	8	func_80053E70	capcom		utility	low	1	0		small leaf function
+0x80053E78	8	func_80053E78	capcom		utility	low	1	0		small leaf function
+0x80053E80	8	func_80053E80	capcom		utility	low	1	0		small leaf function
+0x80053E88	8	func_80053E88	capcom		utility	low	1	0		small leaf function
+0x80053E90	8	func_80053E90	capcom		utility	low	1	0		small leaf function
+0x80053E98	8	func_80053E98	capcom		utility	low	1	0		small leaf function
+0x80053EA0	8	func_80053EA0	capcom		utility	low	1	0		small leaf function
+0x80053EA8	8	func_80053EA8	capcom		utility	low	1	0		small leaf function
+0x80053EB0	8	func_80053EB0	capcom		utility	low	1	0		small leaf function
+0x80053EB8	8	func_80053EB8	capcom		utility	low	1	0		small leaf function
+0x80053EC0	8	func_80053EC0	capcom		utility	low	1	0		small leaf function
+0x80053EC8	8	func_80053EC8	capcom		utility	low	1	0		small leaf function
+0x80053ED0	8	func_80053ED0	capcom		utility	low	1	0		small leaf function
+0x80053ED8	8	func_80053ED8	capcom		utility	low	1	0		small leaf function
+0x80053EE0	8	func_80053EE0	capcom		utility	low	1	0		small leaf function
+0x80053EE8	8	func_80053EE8	capcom		utility	low	1	0		small leaf function
+0x80053EF0	8	func_80053EF0	capcom		utility	low	1	0		small leaf function
+0x80053EF8	8	func_80053EF8	capcom		utility	low	1	0		small leaf function
+0x80053F00	8	func_80053F00	capcom		utility	low	1	0		small leaf function
+0x80053F08	8	func_80053F08	capcom		utility	low	1	0		small leaf function
+0x80053F10	8	func_80053F10	capcom		utility	low	1	0		small leaf function
+0x80053F18	8	func_80053F18	capcom		utility	low	1	0		small leaf function
+0x80053F20	8	func_80053F20	capcom		utility	low	1	0		small leaf function
+0x80053F28	8	func_80053F28	capcom		utility	low	1	0		small leaf function
+0x80053F30	8	func_80053F30	capcom		utility	low	1	0		small leaf function
+0x80053F38	12	func_80053F38	capcom		utility	low	1	0		small leaf function
+0x80053F44	12	func_80053F44	capcom		utility	low	1	0		small leaf function
+0x80053F50	12	func_80053F50	capcom		utility	low	1	0		small leaf function
+0x80053F5C	12	func_80053F5C	capcom		utility	low	1	0		small leaf function
+0x80053F68	12	func_80053F68	capcom		utility	low	1	0		small leaf function
+0x80053F74	12	func_80053F74	capcom		utility	low	1	0		small leaf function
+0x80053F80	8	func_80053F80	capcom		utility	low	1	0		small leaf function
+0x80053F88	8	func_80053F88	capcom		utility	low	1	0		small leaf function
+0x80053F90	8	func_80053F90	capcom		utility	low	1	0		small leaf function
+0x80053F98	8	func_80053F98	capcom		utility	low	1	0		small leaf function
+0x80053FA0	12	func_80053FA0	capcom		utility	low	1	0		small leaf function
+0x80053FAC	52	func_80053FAC	capcom		unknown		2	42		
+0x80053FE0	12	func_80053FE0	capcom		utility	low	1	0		small leaf function
+0x80053FEC	12	func_80053FEC	capcom		utility	low	1	0		small leaf function
+0x80053FF8	12	func_80053FF8	capcom		utility	low	1	0		small leaf function
+0x80054004	12	func_80054004	capcom		utility	low	1	0		small leaf function
+0x80054010	12	func_80054010	capcom		utility	low	1	0		small leaf function
+0x8005401C	12	func_8005401C	capcom		utility	low	1	0		small leaf function
+0x80054028	12	func_80054028	capcom		utility	low	1	0		small leaf function
+0x80054034	12	func_80054034	capcom		utility	low	1	0		small leaf function
+0x80054040	12	func_80054040	capcom		utility	low	1	0		small leaf function
+0x8005404C	12	func_8005404C	capcom		utility	low	1	0		small leaf function
+0x80054058	12	func_80054058	capcom		utility	low	1	0		small leaf function
+0x80054064	12	func_80054064	capcom		utility	low	1	0		small leaf function
+0x80054070	12	func_80054070	capcom		utility	low	1	0		small leaf function
+0x8005407C	12	func_8005407C	capcom		utility	low	1	0		small leaf function
+0x80054088	12	func_80054088	capcom		utility	low	1	0		small leaf function
+0x80054094	12	func_80054094	capcom		utility	low	1	0		small leaf function
+0x800540A0	12	func_800540A0	capcom		utility	low	1	0		small leaf function
+0x800540AC	12	func_800540AC	capcom		utility	low	1	0		small leaf function
+0x800540B8	12	func_800540B8	capcom		utility	low	1	0		small leaf function
+0x800540C4	12	func_800540C4	capcom		utility	low	1	0		small leaf function
+0x800540D0	12	func_800540D0	capcom		utility	low	1	0		small leaf function
+0x800540DC	12	func_800540DC	capcom		utility	low	1	0		small leaf function
+0x800540E8	12	func_800540E8	capcom		utility	low	1	0		small leaf function
+0x800540F4	12	func_800540F4	capcom		utility	low	1	0		small leaf function
+0x80054100	12	func_80054100	capcom		utility	low	1	0		small leaf function
+0x8005410C	12	func_8005410C	capcom		utility	low	1	0		small leaf function
+0x80054118	12	func_80054118	capcom		utility	low	1	0		small leaf function
+0x80054124	12	func_80054124	capcom		utility	low	1	0		small leaf function
+0x80054130	12	func_80054130	capcom		utility	low	1	0		small leaf function
+0x8005413C	12	func_8005413C	capcom		utility	low	1	0		small leaf function
+0x80054148	12	func_80054148	capcom		utility	low	1	0		small leaf function
+0x80054154	16	func_80054154	capcom		utility	low	1	0		small leaf function
+0x80054164	16	func_80054164	capcom		utility	low	1	0		small leaf function
+0x80054174	16	func_80054174	capcom		utility	low	1	0		small leaf function
+0x80054184	16	func_80054184	capcom		utility	low	1	0		small leaf function
+0x80054194	16	func_80054194	capcom		utility	low	1	0		small leaf function
+0x800541A4	16	func_800541A4	capcom		utility	low	1	0		small leaf function
+0x800541B4	12	func_800541B4	capcom		utility	low	1	0		small leaf function
+0x800541C0	12	func_800541C0	capcom		utility	low	1	0		small leaf function
+0x800541CC	12	func_800541CC	capcom		utility	low	1	0		small leaf function
+0x800541D8	12	func_800541D8	capcom		utility	low	1	0		small leaf function
+0x800541E4	12	func_800541E4	capcom		utility	low	1	0		small leaf function
+0x800541F0	48	func_800541F0	capcom		unknown		2	42		
+0x80054220	8	func_80054220	capcom		utility	low	1	0		small leaf function
+0x80054228	8	func_80054228	capcom		utility	low	1	0		small leaf function
+0x80054230	8	func_80054230	capcom		utility	low	1	0		small leaf function
+0x80054238	8	func_80054238	capcom		utility	low	1	0		small leaf function
+0x80054240	8	func_80054240	capcom		utility	low	1	0		small leaf function
+0x80054248	8	func_80054248	capcom		utility	low	1	0		small leaf function
+0x80054250	8	func_80054250	capcom		utility	low	1	0		small leaf function
+0x80054258	8	func_80054258	capcom		utility	low	1	0		small leaf function
+0x80054260	8	func_80054260	capcom		utility	low	1	0		small leaf function
+0x80054268	8	func_80054268	capcom		utility	low	1	0		small leaf function
+0x80054270	8	func_80054270	capcom		utility	low	1	0		small leaf function
+0x80054278	8	func_80054278	capcom		utility	low	1	0		small leaf function
+0x80054280	8	func_80054280	capcom		utility	low	1	0		small leaf function
+0x80054288	8	func_80054288	capcom		utility	low	1	0		small leaf function
+0x80054290	8	func_80054290	capcom		utility	low	1	0		small leaf function
+0x80054298	8	func_80054298	capcom		utility	low	1	0		small leaf function
+0x800542A0	8	func_800542A0	capcom		utility	low	1	0		small leaf function
+0x800542A8	8	func_800542A8	capcom		utility	low	1	0		small leaf function
+0x800542B0	8	func_800542B0	capcom		utility	low	1	0		small leaf function
+0x800542B8	8	func_800542B8	capcom		utility	low	1	0		small leaf function
+0x800542C0	8	func_800542C0	capcom		utility	low	1	0		small leaf function
+0x800542C8	8	func_800542C8	capcom		utility	low	1	0		small leaf function
+0x800542D0	8	func_800542D0	capcom		utility	low	1	0		small leaf function
+0x800542D8	8	func_800542D8	capcom		utility	low	1	0		small leaf function
+0x800542E0	8	func_800542E0	capcom		utility	low	2	0		small leaf function
+0x800542E8	8	func_800542E8	capcom		utility	low	1	0		small leaf function
+0x800542F0	8	func_800542F0	capcom		utility	low	1	0		small leaf function
+0x800542F8	8	func_800542F8	capcom		utility	low	1	0		small leaf function
+0x80054300	8	func_80054300	capcom		utility	low	1	0		small leaf function
+0x80054308	8	func_80054308	capcom		utility	low	1	0		small leaf function
+0x80054310	12	func_80054310	capcom		utility	low	1	0		small leaf function
+0x8005431C	12	func_8005431C	capcom		utility	low	1	0		small leaf function
+0x80054328	12	func_80054328	capcom		utility	low	1	0		small leaf function
+0x80054334	12	func_80054334	capcom		utility	low	1	0		small leaf function
+0x80054340	12	func_80054340	capcom		utility	low	1	0		small leaf function
+0x8005434C	12	func_8005434C	capcom		utility	low	1	0		small leaf function
+0x80054358	8	func_80054358	capcom		utility	low	1	0		small leaf function
+0x80054360	8	func_80054360	capcom		utility	low	1	0		small leaf function
+0x80054368	8	func_80054368	capcom		utility	low	1	0		small leaf function
+0x80054370	8	func_80054370	capcom		utility	low	1	0		small leaf function
+0x80054378	12	func_80054378	capcom		utility	low	1	0		small leaf function
+0x80054384	152	func_80054384	capcom		graphics	low	0	1		inferred from callees
+0x8005441C	240	func_8005441C	capcom		unknown		0	0		
+0x8005450C	44	func_8005450C	capcom		utility	low	0	0		small leaf function
+0x80054538	124	func_80054538	capcom		unknown		0	0		
+0x800545B4	116	func_800545B4	capcom		unknown		0	0		
+0x80054628	164	func_80054628	capcom		3d	low	0	1		inferred from callees
+0x800546CC	96	func_800546CC	capcom		unknown		0	0		
+0x8005472C	148	func_8005472C	capcom		unknown		0	0		
+0x800547C0	20	func_800547C0	capcom		utility	low	0	0		small leaf function
+0x800547D4	20	func_800547D4	capcom		utility	low	0	0		small leaf function
+0x800547E8	8	func_800547E8	capcom		utility	low	0	0		small leaf function
+0x800547F0	104	func_800547F0	capcom		unknown		0	6		reads progress/save block (probable)
+0x80054858	8	func_80054858	capcom		utility	low	1	0		small leaf function
+0x80054860	12	func_80054860	capcom		utility	low	1	0		small leaf function
+0x8005486C	8	func_8005486C	capcom		utility	low	1	0		small leaf function
+0x80054874	12	func_80054874	capcom		utility	low	1	0		small leaf function
+0x80054880	12	func_80054880	capcom		utility	low	1	0		small leaf function
+0x8005488C	16	func_8005488C	capcom		utility	low	1	0		small leaf function
+0x8005489C	44	func_8005489C	capcom		unknown		0	1		
+0x800548C8	152	func_800548C8	capcom		game_state	low	0	1		reads system flags (bit 0x200 opens the item box)
+0x80054960	100	func_80054960	capcom		game_state	low	0	1		reads system flags (bit 0x200 opens the item box)
+0x800549C4	64	func_800549C4	capcom		unknown		2	1		reads progress/save block (probable)
+0x80054A04	100	func_80054A04	capcom		game_state	low	0	0		reads system flags (bit 0x200 opens the item box)
+0x80054A68	224	func_80054A68	capcom		unknown		0	1		
+0x80054B48	120	func_80054B48	capcom		unknown		0	0		
+0x80054BC0	104	func_80054BC0	capcom		3d	low	0	1		inferred from callees
+0x80054C28	48	func_80054C28	capcom		utility	low	0	0		small leaf function
+0x80054C58	76	func_80054C58	capcom		unknown		0	1		
+0x80054CA4	80	func_80054CA4	capcom		unknown		0	1		
+0x80054CF4	84	func_80054CF4	capcom		unknown		0	1		
+0x80054D48	44	func_80054D48	capcom		utility	low	0	0		small leaf function
+0x80054D74	120	func_80054D74	capcom		unknown		0	1		
+0x80054DEC	60	func_80054DEC	capcom		game_state	low	0	0		reads system flags (bit 0x200 opens the item box)
+0x80054E28	72	func_80054E28	capcom		game_state	low	0	1		inferred from callees
+0x80054E70	208	func_80054E70	capcom		graphics	low	0	3		inferred from callees
+0x80054F40	108	func_80054F40	capcom		unknown		0	1		
+0x80054FAC	88	func_80054FAC	capcom		graphics	low	0	1		inferred from callees
+0x80055004	52	func_80055004	capcom		unknown		0	1		
+0x80055038	340	func_80055038	capcom		game_state	low	0	1		inferred from callees
+0x8005518C	828	func_8005518C	capcom		game_state	low	0	4		reads game state flags (bits used to skip to the ending)
+0x800554C8	88	func_800554C8	capcom		game_state	low	0	1		reads system flags (bit 0x200 opens the item box)
+0x80055520	72	func_80055520	capcom		game_state	low	0	1		inferred from callees
+0x80055568	84	func_80055568	capcom		unknown		0	1		
+0x800555BC	100	func_800555BC	capcom		unknown		0	0		
+0x80055620	64	func_80055620	capcom		unknown		0	1		
+0x80055660	56	func_80055660	capcom		utility	low	0	0		small leaf function
+0x80055698	8	func_80055698	capcom		utility	low	0	0		small leaf function
+0x800556A0	56	func_800556A0	capcom		utility	low	0	0		small leaf function
+0x800556D8	8	func_800556D8	capcom		utility	low	0	0		small leaf function
+0x800556E0	72	func_800556E0	capcom		unknown		0	0		
+0x80055728	120	func_80055728	capcom		unknown		0	0		
+0x800557A0	228	func_800557A0	capcom		unknown		0	2		
+0x80055884	192	func_80055884	capcom		unknown		0	0		
+0x80055944	92	func_80055944	capcom		unknown		0	0		
+0x800559A0	120	func_800559A0	capcom		unknown		0	0		
+0x80055A18	216	func_80055A18	capcom		unknown		0	2		reads progress/save block (probable)
+0x80055AF0	64	func_80055AF0	capcom		unknown		0	1		
+0x80055B30	44	func_80055B30	capcom		game_state	low	0	0		reads game state flags (bits used to skip to the ending)
+0x80055B5C	96	func_80055B5C	capcom		unknown		0	0		
+0x80055BBC	120	func_80055BBC	capcom		unknown		0	0		
+0x80055C34	96	func_80055C34	capcom		unknown		0	0		
+0x80055C94	120	func_80055C94	capcom		unknown		0	0		
+0x80055D0C	112	func_80055D0C	capcom		unknown		0	0		
+0x80055D7C	188	func_80055D7C	capcom		unknown		0	0		
+0x80055E38	80	func_80055E38	capcom		unknown		7	0		
+0x80055E88	16	func_80055E88	capcom		utility	low	0	0		small leaf function
+0x80055E98	16	func_80055E98	capcom		utility	low	0	0		small leaf function
+0x80055EA8	32	func_80055EA8	capcom		utility	low	0	0		small leaf function
+0x80055EC8	52	func_80055EC8	capcom		utility	low	0	0		small leaf function
+0x80055EFC	8	func_80055EFC	capcom		utility	low	0	0		small leaf function
+0x80055F04	216	func_80055F04	capcom		unknown		0	0		
+0x80055FDC	40	func_80055FDC	capcom		utility	low	0	0		small leaf function
+0x80056004	180	func_80056004	capcom		unknown		0	2		
+0x800560B8	192	func_800560B8	capcom		unknown		0	2		
+0x80056178	212	func_80056178	capcom		unknown		0	2		
+0x8005624C	224	func_8005624C	capcom		unknown		0	2		
+0x8005632C	104	func_8005632C	capcom		unknown		0	2		
+0x80056394	80	func_80056394	capcom		unknown		0	1		
+0x800563E4	168	func_800563E4	capcom		unknown		0	2		
+0x8005648C	132	func_8005648C	capcom		unknown		0	2		
+0x80056510	1088	func_80056510	capcom		3d	medium	0	7		reads progress/save block (probable)
+0x80056950	48	func_80056950	capcom		utility	low	0	0		small leaf function
+0x80056980	172	func_80056980	capcom		unknown		0	0		
+0x80056A2C	916	func_80056A2C	capcom		game_state	low	0	1		reads progress/save block (probable); reads game state flags (bits used to skip to the ending)
+0x80056DC0	104	func_80056DC0	capcom		unknown		0	0		
+0x80056E28	52	func_80056E28	capcom		utility	low	0	0		small leaf function
+0x80056E5C	428	func_80056E5C	capcom		unknown		0	0	A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0 | A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0A0	
+0x80057008	56	func_80057008	capcom		utility	low	0	0		small leaf function
+0x80057040	92	func_80057040	capcom		unknown		0	0		
+0x8005709C	372	func_8005709C	capcom		unknown		0	0		
+0x80057210	112	func_80057210	capcom		3d	low	0	1		inferred from callees
+0x80057280	72	func_80057280	capcom		unknown		0	0		
+0x800572C8	132	func_800572C8	capcom		unknown		0	0		
+0x8005734C	100	func_8005734C	capcom		unknown		0	0		
+0x800573B0	44	func_800573B0	capcom		utility	low	0	0		small leaf function
+0x800573DC	128	func_800573DC	capcom		game_state	low	0	1		reads system flags (bit 0x200 opens the item box); reads progress/save block (probable)
+0x8005745C	92	func_8005745C	capcom		game_state	low	0	0		reads system flags (bit 0x200 opens the item box)
+0x800574B8	60	func_800574B8	capcom		utility	low	0	0		small leaf function
+0x800574F4	464	func_800574F4	capcom		game_state	low	0	2		reads progress/save block (probable); reads game state flags (bits used to skip to the ending)
+0x800576C4	476	func_800576C4	capcom		game_state	low	0	2		reads progress/save block (probable); reads game state flags (bits used to skip to the ending)
+0x800578A0	352	func_800578A0	capcom		unknown		0	2		
+0x80057A00	464	func_80057A00	capcom		unknown		0	0		
+0x80057BD0	296	func_80057BD0	capcom		unknown		0	7		reads progress/save block (probable)
+0x80057CF8	224	func_80057CF8	capcom		unknown		0	4		reads progress/save block (probable)
+0x80057DD8	80	func_80057DD8	capcom		unknown		0	0		
+0x80057E28	76	func_80057E28	capcom		menu	medium	0	0		writes item box menu state; reads system flags (bit 0x200 opens the item box); also: game_state
+0x80057E74	128	func_80057E74	capcom		unknown		0	0		
+0x80057EF4	80	func_80057EF4	capcom		unknown		0	2		
+0x80057F44	64	func_80057F44	capcom		game_state	low	0	0		reads system flags (bit 0x200 opens the item box)
+0x80057F84	1720	func_80057F84	capcom		3d	medium	0	9	YZ*[\*n	reads game state flags (bits used to skip to the ending); reads progress/save block (probable); reads system flags (bit 0x200 opens the item box); reads epilogue pictures; also: progress, game_state
+0x8005863C	184	func_8005863C	capcom		unknown		0	0		
+0x800586F4	168	func_800586F4	capcom		unknown		0	0		
+0x8005879C	100	func_8005879C	capcom		unknown		0	0		writes progress/save block (probable)
+0x80058800	84	func_80058800	capcom		unknown		0	0		reads progress/save block (probable)
+0x80058854	156	func_80058854	capcom		unknown		0	0		
+0x800588F0	40	func_800588F0	capcom		utility	low	0	0		small leaf function
+0x80058918	228	func_80058918	capcom		unknown		0	0		
+0x800589FC	260	func_800589FC	capcom		unknown		0	1		
+0x80058B00	48	func_80058B00	capcom		game_state	low	0	0		reads system flags (bit 0x200 opens the item box)
+0x80058B30	84	func_80058B30	capcom		unknown		0	0		
+0x80058B84	160	func_80058B84	capcom		enemies	medium	0	0		reads enemy attack flag; reads system flags (bit 0x200 opens the item box); also: game_state
+0x80058C24	76	func_80058C24	capcom		time	low	0	1		inferred from callees
+0x80058C70	96	func_80058C70	capcom		menu	medium	0	0		writes item box menu state; reads system flags (bit 0x200 opens the item box); also: game_state
+0x80058CD0	260	func_80058CD0	capcom		unknown		0	3		reads progress/save block (probable)
+0x80058DD4	404	func_80058DD4	capcom		3d	low	0	5		inferred from callees
+0x80058F68	936	func_80058F68	capcom		game_state	low	0	3		reads system flags (bit 0x200 opens the item box); reads progress/save block (probable)
+0x80059310	336	func_80059310	capcom		unknown		1	0		
+0x80059460	116	func_80059460	capcom		unknown		1	0		
+0x800594D4	796	func_800594D4	capcom		game_state	low	0	18		reads system flags (bit 0x200 opens the item box)
+0x800597F0	52	func_800597F0	capcom		unknown		0	1		
+0x80059824	508	func_80059824	capcom		3d	medium	1	5		reads system flags (bit 0x200 opens the item box); also: game_state
+0x80059A20	416	func_80059A20	capcom		utility	low	1	2		inferred from callees
+0x80059BC0	132	func_80059BC0	capcom		unknown		0	0		
+0x80059C44	132	func_80059C44	capcom		unknown		0	0		
+0x80059CC8	132	func_80059CC8	capcom		unknown		0	0		
+0x80059D4C	132	func_80059D4C	capcom		unknown		0	0		
+0x80059DD0	132	func_80059DD0	capcom		unknown		0	0		
+0x80059E54	132	func_80059E54	capcom		unknown		0	0		
+0x80059ED8	132	func_80059ED8	capcom		unknown		0	0		
+0x80059F5C	132	func_80059F5C	capcom		unknown		0	0		
+0x80059FE0	132	func_80059FE0	capcom		unknown		0	0		
+0x8005A064	132	func_8005A064	capcom		unknown		0	0		
+0x8005A0E8	132	func_8005A0E8	capcom		unknown		0	0		
+0x8005A16C	132	func_8005A16C	capcom		unknown		0	0		
+0x8005A1F0	132	func_8005A1F0	capcom		unknown		0	0		
+0x8005A274	232	func_8005A274	capcom		unknown		0	2		
+0x8005A35C	188	func_8005A35C	capcom		unknown		0	0		
+0x8005A418	192	func_8005A418	capcom		unknown		0	2		
+0x8005A4D8	212	func_8005A4D8	capcom		unknown		0	0		
+0x8005A5AC	8	func_8005A5AC	capcom		utility	low	0	0		small leaf function
+0x8005A5B4	8	func_8005A5B4	capcom		utility	low	0	0		small leaf function
+0x8005A5BC	8	func_8005A5BC	capcom		utility	low	0	0		small leaf function
+0x8005A5C4	8	func_8005A5C4	capcom		utility	low	0	0		small leaf function
+0x8005A5CC	632	func_8005A5CC	capcom		unknown		0	6		
+0x8005A844	260	func_8005A844	capcom		unknown		0	1		
+0x8005A948	460	func_8005A948	capcom		unknown		0	2		
+0x8005AB14	176	func_8005AB14	capcom		unknown		0	0		
+0x8005ABC4	216	func_8005ABC4	capcom		unknown		0	2		
+0x8005AC9C	100	func_8005AC9C	capcom		unknown		0	0		
+0x8005AD00	72	func_8005AD00	capcom		unknown		0	0		
+0x8005AD48	116	func_8005AD48	capcom		unknown		0	0		
+0x8005ADBC	8	func_8005ADBC	capcom		utility	low	0	0		small leaf function
+0x8005ADC4	8	func_8005ADC4	capcom		utility	low	0	0		small leaf function
+0x8005ADCC	772	func_8005ADCC	capcom		unknown		0	7		
+0x8005B0D0	508	func_8005B0D0	capcom		unknown		0	6		
+0x8005B2CC	364	func_8005B2CC	capcom		unknown		0	3		
+0x8005B438	476	func_8005B438	capcom		3d	low	0	4		inferred from callees
+0x8005B614	528	func_8005B614	capcom		unknown		0	6		
+0x8005B824	428	func_8005B824	capcom		unknown		0	5		
+0x8005B9D0	260	func_8005B9D0	capcom		unknown		0	2		
+0x8005BAD4	340	func_8005BAD4	capcom		3d	low	0	4		inferred from callees
+0x8005BC28	252	func_8005BC28	capcom		unknown		0	3		
+0x8005BD24	352	func_8005BD24	capcom		3d	low	0	5		inferred from callees
+0x8005BE84	100	func_8005BE84	capcom		unknown		0	2		
+0x8005BEE8	216	func_8005BEE8	capcom		unknown		0	2		
+0x8005BFC0	60	func_8005BFC0	capcom		utility	low	0	0		small leaf function
+0x8005BFFC	156	func_8005BFFC	capcom		3d	low	0	2		inferred from callees
+0x8005C098	60	func_8005C098	capcom		utility	low	1	0		small leaf function
+0x8005C0D4	8	func_8005C0D4	capcom		utility	low	0	0		small leaf function
+0x8005C0DC	308	func_8005C0DC	capcom		3d	low	0	6		inferred from callees
+0x8005C210	96	func_8005C210	capcom		unknown		0	0		
+0x8005C270	16	func_8005C270	capcom		utility	low	0	0		small leaf function
+0x8005C280	60	func_8005C280	capcom		utility	low	0	0		small leaf function
+0x8005C2BC	12	func_8005C2BC	capcom		utility	low	0	0		small leaf function
+0x8005C2C8	48	func_8005C2C8	capcom		utility	low	0	0		small leaf function
+0x8005C2F8	248	func_8005C2F8	capcom		unknown		0	1		
+0x8005C3F0	584	func_8005C3F0	capcom		unknown		0	0		
+0x8005C638	248	func_8005C638	capcom		3d	low	0	3		inferred from callees
+0x8005C730	8	func_8005C730	capcom		utility	low	0	0		small leaf function
+0x8005C738	228	func_8005C738	capcom		3d	low	0	3		inferred from callees
+0x8005C81C	8	func_8005C81C	capcom		utility	low	0	0		small leaf function
+0x8005C824	172	func_8005C824	capcom		3d	low	0	3		inferred from callees
+0x8005C8D0	8	func_8005C8D0	capcom		utility	low	0	0		small leaf function
+0x8005C8D8	148	func_8005C8D8	capcom		3d	low	0	3		inferred from callees
+0x8005C96C	8	func_8005C96C	capcom		utility	low	0	0		small leaf function
+0x8005C974	152	func_8005C974	capcom		unknown		0	2		
+0x8005CA0C	8	func_8005CA0C	capcom		utility	low	0	0		small leaf function
+0x8005CA14	272	func_8005CA14	capcom		3d	low	0	5		inferred from callees
+0x8005CB24	8	func_8005CB24	capcom		utility	low	0	0		small leaf function
+0x8005CB2C	196	func_8005CB2C	capcom		unknown		0	1		
+0x8005CBF0	8	func_8005CBF0	capcom		utility	low	0	0		small leaf function
+0x8005CBF8	8	func_8005CBF8	capcom		utility	low	0	0		small leaf function
+0x8005CC00	8	func_8005CC00	capcom		utility	low	0	0		small leaf function
+0x8005CC08	628	func_8005CC08	capcom		game_state	low	0	4		reads system flags (bit 0x200 opens the item box)
+0x8005CE7C	8	func_8005CE7C	capcom		utility	low	0	0		small leaf function
+0x8005CE84	692	func_8005CE84	capcom		game_state	low	0	5		reads system flags (bit 0x200 opens the item box)
+0x8005D138	8	func_8005D138	capcom		utility	low	0	0		small leaf function
+0x8005D140	8	func_8005D140	capcom		utility	low	0	0		small leaf function
+0x8005D148	92	func_8005D148	capcom		unknown		0	2		
+0x8005D1A4	100	func_8005D1A4	capcom		unknown		0	2		
+0x8005D208	136	func_8005D208	capcom		unknown		0	2		
+0x8005D290	8	func_8005D290	capcom		utility	low	0	0		small leaf function
+0x8005D298	284	func_8005D298	capcom		unknown		0	1		
+0x8005D3B4	208	func_8005D3B4	capcom		unknown		0	1		
+0x8005D484	84	func_8005D484	capcom		unknown		0	2		
+0x8005D4D8	124	func_8005D4D8	capcom		unknown		0	1		
+0x8005D554	432	func_8005D554	capcom		unknown		0	2		
+0x8005D704	8	func_8005D704	capcom		utility	low	0	0		small leaf function
+0x8005D70C	824	func_8005D70C	capcom		3d	low	0	5		inferred from callees
+0x8005DA44	392	func_8005DA44	capcom		unknown		0	2		
+0x8005DBCC	624	func_8005DBCC	capcom		3d	low	0	15		inferred from callees
+0x8005DE3C	272	func_8005DE3C	capcom		unknown		0	3		
+0x8005DF4C	644	func_8005DF4C	capcom		3d	low	0	15		inferred from callees
+0x8005E1D0	572	func_8005E1D0	capcom		unknown		0	2		
+0x8005E40C	636	func_8005E40C	capcom		3d	low	0	15		inferred from callees
+0x8005E688	68	func_8005E688	capcom		unknown		0	0		
+0x8005E6CC	252	func_8005E6CC	capcom		unknown		0	2		
+0x8005E7C8	324	func_8005E7C8	capcom		3d	low	0	3		inferred from callees
+0x8005E90C	692	func_8005E90C	capcom		3d	low	0	14		inferred from callees
+0x8005EBC0	596	func_8005EBC0	capcom		3d	low	0	11		inferred from callees
+0x8005EE14	92	func_8005EE14	capcom		game_state	low	0	0		reads system flags (bit 0x200 opens the item box)
+0x8005EE70	428	func_8005EE70	capcom		game_state	low	0	9		reads game state flags (bits used to skip to the ending)
+0x8005F01C	160	func_8005F01C	capcom		unknown		0	1		
+0x8005F0BC	476	func_8005F0BC	capcom		3d	high	1	6		
+0x8005F298	968	func_8005F298	capcom		utility	medium	1	10	%x %d %d	also: 3d
+0x8005F660	392	func_8005F660	capcom		unknown		1	2		
+0x8005F7E8	264	func_8005F7E8	capcom		unknown		3	1		
+0x8005F8F0	136	func_8005F8F0	capcom		unknown		2	0		
+0x8005F978	12	func_8005F978	capcom		utility	low	0	0		small leaf function
+0x8005F984	108	func_8005F984	capcom		unknown		1	0		reads progress/save block (probable)
+0x8005F9F0	32	func_8005F9F0	capcom		utility	low	0	0		small leaf function
+0x8005FA10	220	func_8005FA10	capcom		unknown		0	1		reads progress/save block (probable)
+0x8005FAEC	300	func_8005FAEC	capcom		3d	low	0	5		inferred from callees
+0x8005FC18	712	func_8005FC18	capcom		3d	low	0	12		inferred from callees
+0x8005FEE0	784	func_8005FEE0	capcom		3d	low	0	12		inferred from callees
+0x800601F0	396	func_800601F0	capcom		3d	low	0	5		inferred from callees
+0x8006037C	232	func_8006037C	capcom		3d	low	2	2		inferred from callees
+0x80060464	248	func_80060464	capcom		unknown		2	1		
+0x8006055C	100	func_8006055C	capcom		unknown		11	1		
+0x800605C0	56	func_800605C0	capcom		unknown		0	2		
+0x800605F8	56	func_800605F8	capcom		unknown		0	2		
+0x80060630	56	func_80060630	capcom		unknown		0	2		
+0x80060668	56	func_80060668	capcom		unknown		0	2		
+0x800606A0	280	func_800606A0	capcom		unknown		1	2		
+0x800607B8	272	func_800607B8	capcom		3d	low	0	7		inferred from callees
+0x800608C8	808	func_800608C8	capcom		3d	low	1	16		inferred from callees
+0x80060BF0	672	func_80060BF0	capcom		3d	low	1	8		inferred from callees
+0x80060E90	632	func_80060E90	capcom		3d	low	1	15		inferred from callees
+0x80061108	216	func_80061108	capcom		unknown		0	1		
+0x800611E0	432	func_800611E0	capcom		3d	low	1	6		inferred from callees
+0x80061390	804	func_80061390	capcom		3d	low	1	15		inferred from callees
+0x800616B4	380	func_800616B4	capcom		3d	low	0	4		inferred from callees
+0x80061830	308	func_80061830	capcom		unknown		0	3		
+0x80061964	12	func_80061964	capcom		utility	low	1	0		small leaf function
+0x80061970	128	func_80061970	capcom		unknown		0	1		
+0x800619F0	224	func_800619F0	capcom		3d	low	0	3		inferred from callees
+0x80061AD0	244	func_80061AD0	capcom		3d	low	0	4		inferred from callees
+0x80061BC4	560	func_80061BC4	capcom		3d	low	0	10		inferred from callees
+0x80061DF4	652	func_80061DF4	capcom		unknown		0	8		
+0x80062080	368	func_80062080	capcom		3d	low	0	7		inferred from callees
+0x800621F0	232	func_800621F0	capcom		3d	low	0	4		reads progress/save block (probable); inferred from callees
+0x800622D8	148	func_800622D8	capcom		3d	low	0	3		inferred from callees
+0x8006236C	88	func_8006236C	capcom		unknown		0	1		
+0x800623C4	1452	func_800623C4	capcom		3d	low	1	14		reads progress/save block (probable); inferred from callees
+0x80062970	8	func_80062970	capcom		utility	low	0	0		small leaf function
+0x80062978	176	func_80062978	capcom		unknown		0	3		
+0x80062A28	320	func_80062A28	capcom		unknown		0	2		
+0x80062B68	148	func_80062B68	capcom		unknown		3	4		
+0x80062BFC	212	func_80062BFC	capcom		3d	medium	7	4		
+0x80062CD0	108	func_80062CD0	capcom		unknown		1	2		
+0x80062D3C	552	func_80062D3C	capcom		3d	low	4	7		inferred from callees
+0x80062F64	564	func_80062F64	capcom		3d	low	0	10		inferred from callees
+0x80063198	288	func_80063198	capcom		3d	medium	3	6		
+0x800632B8	572	func_800632B8	capcom		unknown		27	1		
+0x800634F4	412	func_800634F4	capcom		unknown		8	1		
+0x80063690	44	func_80063690	capcom		utility	low	2	0		small leaf function
+0x800636BC	16	func_800636BC	capcom		utility	low	0	0		small leaf function
+0x800636CC	8	func_800636CC	capcom		utility	low	0	0		small leaf function
+0x800636D4	380	func_800636D4	capcom		graphics	low	0	4		inferred from callees
+0x80063850	1116	func_80063850	capcom		input	medium	0	5		reads controller buttons (current)
+0x80063CAC	496	func_80063CAC	capcom		cd	low	0	7	FILEI.TIM	reads progress/save block (probable); inferred from callees
+0x80063E9C	328	func_80063E9C	capcom		graphics	high	1	9		
+0x80063FE4	492	func_80063FE4	capcom		graphics	high	1	8		
+0x800641D0	260	func_800641D0	capcom		cd	low	2	2	FILEG.PIX	inferred from callees
+0x800642D4	272	func_800642D4	capcom		graphics	medium	2	1		
+0x800643E8	60	func_800643E8	capcom		utility	low	0	0		small leaf function
+0x80064424	60	func_80064424	capcom		utility	low	0	0		small leaf function
+0x80064460	12	func_80064460	capcom		utility	low	0	0		small leaf function
+0x8006446C	644	func_8006446C	capcom		game_state	low	0	4		reads progress/save block (probable); inferred from callees
+0x800646F0	1936	func_800646F0	capcom		graphics	medium	0	15		reads progress/save block (probable); reads controller buttons (current); also: input
+0x80064E80	468	func_80064E80	capcom		graphics	low	0	1		reads progress/save block (probable); inferred from callees
+0x80065054	60	func_80065054	capcom		utility	low	0	0		small leaf function
+0x80065090	44	func_80065090	capcom		utility	low	0	0		small leaf function
+0x800650BC	96	func_800650BC	capcom		game_state	low	0	1		inferred from callees
+0x8006511C	908	func_8006511C	capcom		graphics	high	1	25		
+0x800654A8	1788	func_800654A8	capcom		graphics	high	1	26		reads inventory slot count; reads progress/save block (probable); also: inventory
+0x80065BA4	232	func_80065BA4	capcom		graphics	high	2	6		
+0x80065C8C	120	func_80065C8C	capcom		graphics	medium	1	2		
+0x80065D04	476	func_80065D04	capcom		graphics	medium	1	1		
+0x80065EE0	724	func_80065EE0	capcom		unknown		1	0		
+0x800661B4	892	func_800661B4	capcom		graphics	high	1	5		
+0x80066530	152	func_80066530	capcom		unknown		0	0		
+0x800665C8	60	func_800665C8	capcom		utility	low	0	0		small leaf function
+0x80066604	736	func_80066604	capcom		inventory	high	0	6		inventory slot count; reads progress/save block (probable)
+0x800668E4	60	func_800668E4	capcom		unknown		0	1		
+0x80066920	368	func_80066920	capcom		game_state	low	0	1		reads progress/save block (probable); inferred from callees
+0x80066A90	76	func_80066A90	capcom		unknown		0	1		
+0x80066ADC	452	func_80066ADC	capcom		unknown		0	1		
+0x80066CA0	2584	func_80066CA0	capcom		progress	medium	0	7		reads files obtained
+0x800676B8	1208	func_800676B8	capcom		player	medium	0	8		reads progress/save block (probable); reads player health (Jill)
+0x80067B70	60	func_80067B70	capcom		utility	low	0	0		small leaf function
+0x80067BAC	104	func_80067BAC	capcom		unknown		0	0		
+0x80067C14	1040	func_80067C14	capcom		game_state	low	0	12		reads progress/save block (probable); inferred from callees
+0x80068024	2608	func_80068024	capcom		game_state	low	3	19		reads progress/save block (probable); reads game state flags (bits used to skip to the ending)
+0x80068A54	96	func_80068A54	capcom		game_state	low	0	1		inferred from callees
+0x80068AB4	168	func_80068AB4	capcom		game_state	low	0	4		reads progress/save block (probable); inferred from callees
+0x80068B5C	100	func_80068B5C	capcom		game_state	low	0	1		reads progress/save block (probable); inferred from callees
+0x80068BC0	1728	func_80068BC0	capcom		graphics	low	0	5		reads progress/save block (probable); inferred from callees
+0x80069280	716	func_80069280	capcom		game_state	low	0	8		reads progress/save block (probable); inferred from callees
+0x8006954C	200	func_8006954C	capcom		unknown		0	0		reads progress/save block (probable)
+0x80069614	492	func_80069614	capcom		unknown		3	0		reads progress/save block (probable)
+0x80069800	32	func_80069800	capcom		utility	low	0	0		small leaf function
+0x80069828	580	func_80069828	capcom		unknown		0	0		
+0x80069A6C	464	func_80069A6C	capcom		graphics	low	0	1		reads progress/save block (probable); inferred from callees
+0x80069C3C	1528	func_80069C3C	capcom		game_state	low	0	14		reads progress/save block (probable); inferred from callees
+0x8006A234	872	func_8006A234	capcom		game_state	low	0	6		inferred from callees
+0x8006A59C	748	func_8006A59C	capcom		progress	medium	0	4		reads files obtained; reads progress/save block (probable)
+0x8006A888	16	func_8006A888	capcom		utility	low	0	0		small leaf function
+0x8006A898	68	func_8006A898	capcom		unknown		1	0		
+0x8006A8DC	60	func_8006A8DC	capcom		utility	low	0	0		small leaf function
+0x8006A918	40	func_8006A918	capcom		utility	low	2	0		small leaf function
+0x8006A940	28	func_8006A940	capcom		utility	low	0	0		small leaf function
+0x8006A95C	72	func_8006A95C	capcom		unknown		1	0		
+0x8006A9A4	8	func_8006A9A4	capcom		utility	low	0	0		small leaf function
+0x8006A9AC	216	func_8006A9AC	capcom		graphics	medium	2	2	ITEMI.PIX	
+0x8006AA84	132	func_8006AA84	capcom		cd	low	7	1	ITEMI.PIX	inferred from callees
+0x8006AB08	96	func_8006AB08	capcom		graphics	medium	2	1		
+0x8006AB68	144	func_8006AB68	capcom		graphics	medium	2	2		
+0x8006ABF8	144	func_8006ABF8	capcom		graphics	medium	3	2		
+0x8006AC88	176	func_8006AC88	capcom		cd	low	3	2	ITEMG.PIX	inferred from callees
+0x8006AD38	232	func_8006AD38	capcom		graphics	high	3	6		
+0x8006AE20	112	func_8006AE20	capcom		graphics	medium	15	2		
+0x8006AE90	2012	func_8006AE90	capcom		graphics	high	4	58		
+0x8006B66C	3332	func_8006B66C	capcom		graphics	high	1	53		reads progress/save block (probable); reads files obtained; reads inventory slot count; also: progress, inventory
+0x8006C370	276	func_8006C370	capcom		graphics	medium	1	1		
+0x8006C484	588	func_8006C484	capcom		graphics	medium	1	1		
+0x8006C6D0	832	func_8006C6D0	capcom		graphics	medium	5	1		
+0x8006CA10	636	func_8006CA10	capcom		graphics	high	1	4		reads progress/save block (probable)
+0x8006CC8C	72	func_8006CC8C	capcom		unknown		13	0		reads progress/save block (probable)
+0x8006CCD4	28	func_8006CCD4	capcom		utility	low	0	0		small leaf function
+0x8006CCF0	120	func_8006CCF0	capcom		save	high	2	1		ink ribbon consumption; ink ribbon consumption; reads progress/save block (probable)
+0x8006CD68	320	func_8006CD68	capcom		unknown		5	0		reads progress/save block (probable)
+0x8006CEA8	100	func_8006CEA8	capcom		unknown		0	1		reads progress/save block (probable)
+0x8006CF0C	292	func_8006CF0C	capcom		save	low	6	3		reads progress/save block (probable); inferred from callees
+0x8006D030	88	func_8006D030	capcom		unknown		21	0		reads progress/save block (probable)
+0x8006D088	80	func_8006D088	capcom		inventory	high	0	0		item use/consumption
+0x8006D0D8	1608	func_8006D0D8	capcom		progress	high	0	17		reads game state flags (bits used to skip to the ending); reads progress/save block (probable); writes inventory slot count; reads epilogue pictures; reads files obtained; reads maps obtained; also: inventory, game_state
+0x8006D720	552	func_8006D720	capcom		menu	medium	1	9	STMAIN1.TIM | STMAIN2.TIM | STMAIN3.TIM	reads game state flags (bits used to skip to the ending); reads progress/save block (probable); writes item box menu state; also: graphics, game_state
+0x8006D948	1684	func_8006D948	capcom		graphics	high	1	36	SEEK ITEMI.PIX	reads progress/save block (probable); reads files obtained; also: cd, progress
+0x8006DFDC	200	func_8006DFDC	capcom		graphics	low	0	7		inferred from callees
+0x8006E0A4	452	func_8006E0A4	capcom		graphics	high	1	8	SEEK BSS	reads progress/save block (probable); also: cd
+0x8006E268	228	func_8006E268	capcom		player	low	1	1		inferred from callees
+0x8006E34C	216	func_8006E34C	capcom		graphics	low	1	5		inferred from callees
+0x8006E424	168	func_8006E424	capcom		unknown		0	1		
+0x8006E4CC	204	func_8006E4CC	capcom		graphics	low	0	2		inferred from callees
+0x8006E598	36	func_8006E598	capcom		player	medium	1	0		reads player health (Jill)
+0x8006E5BC	16	func_8006E5BC	capcom		utility	low	0	0		small leaf function
+0x8006E5CC	16	func_8006E5CC	capcom		utility	low	0	0		small leaf function
+0x8006E5DC	24	func_8006E5DC	capcom		utility	low	0	0		small leaf function
+0x8006E5F4	12	func_8006E5F4	capcom		utility	low	0	0		small leaf function
+0x8006E600	216	func_8006E600	capcom		unknown		43	0		
+0x8006E6D8	252	func_8006E6D8	capcom		unknown		19	0		
+0x8006E7D4	120	func_8006E7D4	capcom		unknown		4	0		
+0x8006E84C	112	func_8006E84C	capcom		unknown		1	0		
+0x8006E8BC	280	func_8006E8BC	capcom		graphics	medium	34	1		
+0x8006E9D4	284	func_8006E9D4	capcom		graphics	medium	18	1		
+0x8006EAF0	252	func_8006EAF0	capcom		graphics	medium	4	1		
+0x8006EBEC	196	func_8006EBEC	capcom		graphics	high	2	5		
+0x8006ECB0	120	func_8006ECB0	capcom		unknown		1	0		writes progress/save block (probable)
+0x8006ED28	112	func_8006ED28	capcom		unknown		2	2		reads progress/save block (probable)
+0x8006ED98	2356	func_8006ED98	capcom		graphics	medium	0	6		reads game state flags (bits used to skip to the ending); reads progress/save block (probable); also: game_state
+0x8006F6CC	60	func_8006F6CC	capcom		utility	low	0	0		small leaf function
+0x8006F708	988	func_8006F708	capcom		game_state	low	0	8		inferred from callees
+0x8006FAE4	196	func_8006FAE4	capcom		unknown		0	0		
+0x8006FBA8	192	func_8006FBA8	capcom		unknown		0	0		
+0x8006FC68	584	func_8006FC68	capcom		game_state	low	0	6		inferred from callees
+0x8006FEB0	152	func_8006FEB0	capcom		graphics	low	0	2		inferred from callees
+0x8006FF48	220	func_8006FF48	capcom		graphics	low	0	2		inferred from callees
+0x80070024	544	func_80070024	capcom		graphics	low	0	6		inferred from callees
+0x80070244	3880	func_80070244	capcom		graphics	high	2	18		reads progress/save block (probable)
+0x8007116C	624	func_8007116C	capcom		graphics	medium	2	1		
+0x800713DC	308	func_800713DC	capcom		graphics	low	1	3		inferred from callees
+0x80071510	344	func_80071510	capcom		unknown		1	2		reads progress/save block (probable)
+0x80071668	60	func_80071668	capcom		utility	low	5	0		reads progress/save block (probable); small leaf function
+0x800716A4	468	func_800716A4	capcom		unknown		1	3		reads progress/save block (probable)
+0x80071878	3812	func_80071878	capcom		doors	medium	1	29		reads progress/save block (probable); reads game state flags (bits used to skip to the ending); reads unlocked door flags; also: game_state
+0x8007275C	912	func_8007275C	capcom		game_state	low	1	8		reads game state flags (bits used to skip to the ending); reads progress/save block (probable)
+0x80072AEC	588	func_80072AEC	capcom		game_state	low	1	1		reads game state flags (bits used to skip to the ending)
+0x80072D38	2964	func_80072D38	capcom		doors	medium	1	32		reads progress/save block (probable); reads system flags (bit 0x200 opens the item box); reads game state flags (bits used to skip to the ending); reads unlocked door flags; also: game_state
+0x800738CC	764	func_800738CC	capcom		doors	medium	1	3		reads game state flags (bits used to skip to the ending); reads unlocked door flags; reads progress/save block (probable); also: game_state
+0x80073BC8	100	func_80073BC8	capcom		unknown		2	0		
+0x80073C2C	8	func_80073C2C	capcom		utility	low	0	0		small leaf function
+0x80073C34	80	func_80073C34	capcom		unknown		0	0		
+0x80073C84	12	func_80073C84	capcom		utility	low	0	0		small leaf function
+0x80073C90	40	func_80073C90	capcom		utility	low	0	0		small leaf function
+0x80073CB8	20	func_80073CB8	capcom		utility	low	0	0		small leaf function
+0x80073CCC	432	func_80073CCC	capcom		unknown		3	2		reads progress/save block (probable)
+0x80073E7C	8	func_80073E7C	capcom		utility	low	1	0		small leaf function
+0x80073E84	300	func_80073E84	capcom		system	high	1	14		also: audio
+0x80073FB0	40	func_80073FB0	capcom		unknown		1	2		
+0x80073FD8	212	func_80073FD8	capcom		unknown		2	0		
+0x800740AC	244	func_800740AC	capcom		audio	high	1	5		
+0x800741A0	1208	func_800741A0	capcom		audio	high	1	7		
+0x80074658	104	func_80074658	capcom		audio	medium	6	1		
+0x800746C0	176	func_800746C0	capcom		game_state	low	155	0		reads game state flags (bits used to skip to the ending)
+0x80074770	176	func_80074770	capcom		unknown		0	3		
+0x80074820	248	func_80074820	capcom		unknown		0	2		
+0x80074918	52	func_80074918	capcom		utility	low	0	0		small leaf function
+0x8007494C	12	func_8007494C	capcom		utility	low	0	0		small leaf function
+0x80074958	60	func_80074958	capcom		utility	low	0	0		small leaf function
+0x80074994	12	func_80074994	capcom		utility	low	0	0		small leaf function
+0x800749A0	816	func_800749A0	capcom		3d	low	1	5		inferred from callees
+0x80074CD0	628	func_80074CD0	capcom		audio	medium	2	4		
+0x80074F44	416	func_80074F44	capcom		3d	high	1	3		reads progress/save block (probable)
+0x800750E4	52	func_800750E4	capcom		utility	low	3	0		small leaf function
+0x80075118	8	func_80075118	capcom		utility	low	0	0		small leaf function
+0x80075120	52	func_80075120	capcom		audio	medium	3	1		
+0x80075154	2008	func_80075154	capcom		3d	high	1	8		reads progress/save block (probable)
+0x8007592C	100	func_8007592C	capcom		3d	medium	4	1		
+0x80075990	72	func_80075990	capcom		unknown		1	0		
+0x800759D8	168	func_800759D8	capcom		unknown		2	0		
+0x80075A80	100	func_80075A80	capcom		unknown		2	2		
+0x80075AE4	172	func_80075AE4	capcom		unknown		2	0		
+0x80075B90	160	func_80075B90	capcom		unknown		2	0		
+0x80075C30	1252	func_80075C30	capcom		audio	high	0	8		
+0x80076114	436	func_80076114	capcom		unknown		0	3		
+0x800762C8	196	func_800762C8	capcom		unknown		2	1		
+0x8007638C	1280	func_8007638C	capcom		audio	low	0	5		inferred from callees
+0x8007688C	800	func_8007688C	capcom		audio	medium	0	2		
+0x80076BAC	184	func_80076BAC	capcom		unknown		0	1		
+0x80076C64	536	func_80076C64	capcom		audio	medium	0	3		
+0x80076E7C	436	func_80076E7C	capcom		unknown		0	1		
+0x80077030	12	func_80077030	capcom		utility	low	0	0		small leaf function
+0x8007703C	64	func_8007703C	capcom		utility	low	6	0		small leaf function
+0x8007707C	96	func_8007707C	capcom		unknown		2	0		
+0x800770DC	324	func_800770DC	capcom		audio	medium	1	1		
+0x80077220	104	func_80077220	capcom		unknown		1	0		
+0x80077288	24	func_80077288	capcom		utility	low	0	0		small leaf function
+0x800772A0	292	func_800772A0	capcom		unknown		1	0		
+0x800773C4	80	func_800773C4	capcom		unknown		3	0		
+0x80077414	72	func_80077414	capcom		unknown		1	1		
+0x8007745C	248	func_8007745C	capcom		audio	medium	4	2		
+0x80077554	76	func_80077554	capcom		unknown		4	0		
+0x800775A0	120	func_800775A0	capcom		game_state	low	13	1		inferred from callees
+0x80077618	152	func_80077618	capcom		game_state	low	0	1		inferred from callees
+0x800776B0	1236	func_800776B0	capcom		game_state	low	34	20		inferred from callees
+0x80077B84	200	func_80077B84	capcom		unknown		1	1		
+0x80077C4C	648	func_80077C4C	capcom		unknown		2	0		reads progress/save block (probable)
+0x80077ED4	140	func_80077ED4	capcom		system	low	1	2		inferred from callees
+0x80077F60	316	func_80077F60	capcom		game_state	low	2	3		inferred from callees
+0x8007809C	360	func_8007809C	capcom		cd	low	2	4	Vab Header | Vab Body	inferred from callees
+0x80078204	240	func_80078204	capcom		unknown		1	2		
+0x800782F4	120	func_800782F4	capcom		unknown		1	0		
+0x8007836C	80	func_8007836C	capcom		unknown		5	0		
+0x800783BC	88	func_800783BC	capcom		unknown		4	0		
+0x80078414	16	func_80078414	capcom		utility	low	0	0		small leaf function
+0x80078424	28	func_80078424	capcom		utility	low	0	0		small leaf function
+0x80078440	16	func_80078440	capcom		utility	low	0	0		small leaf function
+0x80078450	72	func_80078450	capcom		unknown		1	1		
+0x80078498	72	func_80078498	capcom		unknown		1	0		
+0x800784E0	260	func_800784E0	capcom		graphics	high	12	5		
+0x800785E4	60	func_800785E4	capcom		game_state	low	2	0		reads game state flags (bits used to skip to the ending)
+0x80078620	52	func_80078620	capcom		game_state	low	2	0		reads game state flags (bits used to skip to the ending)
+0x80078654	60	func_80078654	capcom		graphics	medium	1	1		
+0x80078690	100	func_80078690	capcom		3d	medium	9	2		
+0x800786F4	124	func_800786F4	capcom		3d	high	0	3		
+0x80078770	364	func_80078770	capcom		3d	high	2	10		
+0x800788DC	40	func_800788DC	capcom		utility	low	46	0		small leaf function
+0x80078904	44	func_80078904	capcom		utility	low	6	0		small leaf function
+0x80078930	36	func_80078930	capcom		utility	low	108	0		small leaf function
+0x80078954	592	func_80078954	capcom		3d	high	3	5		
+0x80078BA4	48	func_80078BA4	capcom		3d	low	5	2		inferred from callees
+0x80078BD4	136	func_80078BD4	capcom		3d	low	1	1		reads progress/save block (probable); inferred from callees
+0x80078C5C	500	func_80078C5C	capcom		3d	medium	2	3		
+0x80078E50	232	func_80078E50	capcom		3d	medium	1	1		
+0x80078F38	176	func_80078F38	capcom		unknown		4	1		reads progress/save block (probable)
+0x80078FE8	132	func_80078FE8	capcom		progress	high	2	0		reads progress/save block (probable); reads epilogue pictures; reads save count; reads reward total
+0x8007906C	132	func_8007906C	capcom		progress	high	2	0		writes progress/save block (probable); writes epilogue pictures; writes save count; writes reward total
+0x800790F0	256	func_800790F0	capcom		cd	low	1	1		reads progress/save block (probable); inferred from callees
+0x800791F0	268	func_800791F0	capcom		player	medium	1	7		writes player health (Jill); reads progress/save block (probable); reads game state flags (bits used to skip to the ending); also: game_state
+0x800792FC	120	func_800792FC	capcom		cd	low	1	4	INIT_SUB	inferred from callees
+0x80079374	684	func_80079374	capcom		3d	high	2	7		
+0x80079620	44	func_80079620	capcom		utility	low	13	0		small leaf function
+0x8007964C	68	func_8007964C	capcom		unknown		1	0		
+0x80079690	472	func_80079690	capcom		3d	medium	37	2		
+0x80079868	1032	func_80079868	capcom		3d	high	37	32		
+0x80079C70	80	func_80079C70	capcom		3d	medium	1	2		
+0x80079CC0	504	func_80079CC0	capcom		3d	high	1	6		also: utility
+0x80079EB8	8	func_80079EB8	capcom		utility	low	0	0		small leaf function
+0x80079EC0	28	func_80079EC0	capcom		utility	low	0	0		small leaf function
+0x80079EDC	312	func_80079EDC	capcom		system	high	0	4		
+0x8007A014	48	func_8007A014	capcom		utility	low	0	0		small leaf function
+0x8007A044	40	func_8007A044	capcom		system	medium	0	1		
+0x8007A06C	176	func_8007A06C	capcom		system	low	0	1		inferred from callees
+0x8007A11C	64	func_8007A11C	capcom		utility	low	0	0		small leaf function
+0x8007A15C	376	func_8007A15C	capcom		system	high	2	6		
+0x8007A2D4	124	func_8007A2D4	capcom		unknown		4	0		
+0x8007A350	320	func_8007A350	capcom		3d	low	1	6		inferred from callees
+0x8007A490	368	func_8007A490	capcom		3d	low	1	6		inferred from callees
+0x8007A600	792	func_8007A600	capcom		unknown		1	1		
+0x8007A918	884	func_8007A918	capcom		unknown		1	1		
+0x8007AC8C	1648	func_8007AC8C	capcom		unknown		1	0		
+0x8007B2FC	540	func_8007B2FC	capcom		3d	low	2	0		
+0x8007B518	780	func_8007B518	capcom		unknown		2	0		
+0x8007B824	1112	func_8007B824	capcom		unknown		2	0		
+0x8007BC7C	380	func_8007BC7C	capcom		3d	medium	0	0		
+0x8007BDF8	452	func_8007BDF8	capcom		3d	medium	0	0		
+0x8007BFBC	1144	func_8007BFBC	capcom		unknown		1	0		
+0x8007C434	1256	func_8007C434	capcom		unknown		1	0		
+0x8007C91C	1708	func_8007C91C	capcom		unknown		1	0		
+0x8007CFC8	32	func_8007CFC8	capcom		audio	medium	1	1		
+0x8007CFE8	232	_SpuInit	psyq	LIBSPU.LIB	audio	confirmed	1	4		
+0x8007D0D0	112	SpuStart	psyq	LIBSPU.LIB	audio	confirmed	1	5		
+0x8007D148	640	_spu_init	psyq	LIBSPU.LIB	audio	confirmed	1	11	SPU:T/O [%s] 	
+0x8007D3C8	448	func_8007D3C8	capcom		audio	high	2	6	SPU:T/O [%s]  | SPU:T/O [%s] 	also: utility
+0x8007D588	36	_spu_FiDMA	psyq	LIBSPU.LIB	audio	confirmed	0	1		
+0x8007D5AC	152	func_8007D5AC	capcom		system	medium	0	1		
+0x8007D644	168	_spu_Fr_	psyq	LIBSPU.LIB	audio	confirmed	0	3		
+0x8007D6EC	16	_spu_t	psyq	LIBSPU.LIB	audio	confirmed	9	0		
+0x8007D6FC	624	func_8007D6FC	capcom		unknown		0	2		
+0x8007D96C	132	_spu_Fw	psyq	LIBSPU.LIB	audio	confirmed	2	4		
+0x8007D9F0	100	_spu_Fr	psyq	LIBSPU.LIB	audio	confirmed	0	3		
+0x8007DA54	68	_spu_FsetRXX	psyq	LIBSPU.LIB	audio	confirmed	2	0		
+0x8007DA98	164	_spu_FsetRXXa	psyq	LIBSPU.LIB	audio	confirmed	4	0		
+0x8007DB3C	60	_spu_FgetRXXa	psyq	LIBSPU.LIB	audio	confirmed	0	0		
+0x8007DB78	88	_spu_FsetPCR	psyq	LIBSPU.LIB	audio	confirmed	0	0		
+0x8007DBD0	40	func_8007DBD0	capcom		utility	low	1	0		small leaf function
+0x8007DBF8	40	func_8007DBF8	capcom		utility	low	2	0		small leaf function
+0x8007DC20	92	_spu_Fw1ts	psyq	LIBSPU.LIB	audio	confirmed	16	0		
+0x8007DC88	36	_SpuDataCallback	psyq	LIBSPU.LIB	audio	confirmed	1	1		
+0x8007DCB8	204	SpuSetReverb	psyq	LIBSPU.LIB	audio	confirmed	2	1		
+0x8007DD88	128	_SpuIsInAllocateArea	psyq	LIBSPU.LIB	audio	confirmed	0	0		
+0x8007DE08	140	_SpuIsInAllocateArea_	psyq	LIBSPU.LIB	audio	confirmed	4	0		
+0x8007DE98	1236	SpuSetReverbModeParam	psyq	LIBSPU.LIB	audio	confirmed	2	4		
+0x8007E378	1232	_spu_setReverbAttr	psyq	LIBSPU.LIB	audio	confirmed	1	0		
+0x8007E848	76	SpuReserveReverbWorkArea	psyq	LIBSPU.LIB	audio	confirmed	1	1		
+0x8007E898	120	SpuSetReverbDepth	psyq	LIBSPU.LIB	audio	confirmed	1	0		
+0x8007E918	36	SpuSetReverbVoice	psyq	LIBSPU.LIB	audio	confirmed	3	1		
+0x8007E948	700	_SpuSetAnyVoice	psyq	LIBSPU.LIB	audio	confirmed	1	0		
+0x8007EC08	404	SpuClearReverbWorkArea	psyq	LIBSPU.LIB	audio	confirmed	2	5		
+0x8007EDA8	444	SpuSetKey	psyq	LIBSPU.LIB	audio	confirmed	6	0		
+0x8007EF68	92	SpuRead	psyq	LIBSPU.LIB	audio	confirmed	1	1		
+0x8007EFC8	92	SpuSetTransferStartAddr	psyq	LIBSPU.LIB	audio	confirmed	3	1		
+0x8007F028	48	SpuSetTransferMode	psyq	LIBSPU.LIB	audio	confirmed	2	0		
+0x8007F058	136	SpuWritePartly	psyq	LIBSPU.LIB	audio	confirmed	3	2		
+0x8007F0E8	164	SpuIsTransferCompleted	psyq	LIBSPU.LIB	audio	confirmed	6	2		
+0x8007F198	892	SpuSetCommonAttr	psyq	LIBSPU.LIB	audio	confirmed	2	0		
+0x8007F518	212	SpuRGetAllKeysStatus	psyq	LIBSPU.LIB	audio	confirmed	2	0		
+0x8007F5EC	136	SpuGetAllKeysStatus	psyq	LIBSPU.LIB	audio	confirmed	0	0		
+0x8007F678	124	SpuSetVoiceVolume	psyq	LIBSPU.LIB	audio	confirmed	2	0		
+0x8007F6F8	96	SpuSetVoicePitch	psyq	LIBSPU.LIB	audio	confirmed	1	0		
+0x8007F758	16	func_8007F758	capcom		utility	low	0	0		small leaf function
+0x8007F768	1528	SpuSetVoiceAttr	psyq	LIBSPU.LIB	audio	confirmed	2	3		
+0x8007FD68	208	_spu_note2pitch	psyq	LIBSPU.LIB	audio	confirmed	1	0		
+0x8007FE38	304	_spu_pitch2note	psyq	LIBSPU.LIB	audio	confirmed	1	0		
+0x8007FF68	188	SpuGetVoiceAttr	psyq	LIBSPU.LIB	audio	confirmed	0	0		
+0x80080024	8	func_80080024	capcom		utility	low	0	0		small leaf function
+0x8008002C	4	func_8008002C	capcom		utility	low	0	0		small leaf function
+0x80080030	4	func_80080030	capcom		utility	low	0	0		small leaf function
+0x80080034	792	func_80080034	capcom		audio	medium	0	1		
+0x80080358	32	PCopen	psyq	LIBSN.LIB	system	confirmed	1	0		
+0x80080378	16	PCclose	psyq	LIBSN.LIB	system	confirmed	1	0		
+0x80080388	36	PClseek	psyq	LIBSN.LIB	system	confirmed	4	0		
+0x800803AC	192	PCread	psyq	LIBSN.LIB	system	confirmed	4	1		
+0x8008046C	24	_SN_read	psyq	LIBSN.LIB	system	confirmed	1	0		
+0x80080484	376	VSync	psyq	LIBETC.LIB	system	confirmed	39	2		
+0x800805FC	152	func_800805FC	capcom		system	medium	2	3		also: utility
+0x80080694	48	ResetCallback	psyq	LIBETC.LIB	system	confirmed	7	0		
+0x800806C4	48	InterruptCallback	psyq	LIBETC.LIB	system	confirmed	4	0		
+0x800806F4	48	DMACallback	psyq	LIBETC.LIB	system	confirmed	13	0		
+0x80080724	52	VSyncCallback	psyq	LIBETC.LIB	system	confirmed	1	0		
+0x80080758	48	VSyncCallbacks	psyq	LIBETC.LIB	system	confirmed	2	0		
+0x80080788	48	StopCallback	psyq	LIBETC.LIB	system	confirmed	0	0		
+0x800807B8	48	RestartCallback	psyq	LIBETC.LIB	system	confirmed	0	0		
+0x800807E8	16	CheckCallback	psyq	LIBETC.LIB	system	confirmed	3	0		
+0x800807F8	24	GetIntrMask	psyq	LIBETC.LIB	system	confirmed	0	0		
+0x80080810	24	SetIntrMask	psyq	LIBETC.LIB	system	confirmed	9	0		
+0x80080828	216	func_80080828	capcom		system	high	0	8		also: utility
+0x80080900	464	func_80080900	capcom		system	medium	1	4	intr timeout(%04x:%04x) 	frame timing (hyper mode); also: time, utility
+0x80080AD0	328	func_80080AD0	capcom		system	high	0	5		
+0x80080C18	160	func_80080C18	capcom		system	medium	0	2		
+0x80080CB8	120	func_80080CB8	capcom		system	medium	0	2		
+0x80080D30	36	func_80080D30	capcom		utility	low	1	0		small leaf function
+0x80080D54	88	startIntrVSync	psyq	LIBETC.LIB	system	confirmed	1	2		
+0x80080DAC	108	func_80080DAC	capcom		unknown		0	0		
+0x80080E18	44	func_80080E18	capcom		utility	low	0	0		small leaf function
+0x80080E44	36	func_80080E44	capcom		utility	low	1	0		small leaf function
+0x80080E74	76	startIntrDMA	psyq	LIBETC.LIB	system	confirmed	1	2		
+0x80080EC0	352	func_80080EC0	capcom		utility	medium	0	2	DMA bus error: code=%08x  | MADR[%d]=%08x 	also: system
+0x80081020	32	func_80081020	capcom		utility	low	0	0		small leaf function
+0x80081040	172	func_80081040	capcom		unknown		0	0		
+0x800810EC	36	func_800810EC	capcom		utility	low	1	0		small leaf function
+0x80081114	44	StSetRing	psyq	LIBCD.LIB	cd	confirmed	1	1		
+0x80081144	96	StClearRing	psyq	LIBCD.LIB	cd	confirmed	1	1		
+0x800811A4	128	StUnSetRing	psyq	LIBCD.LIB	cd	confirmed	1	6		
+0x80081224	16	CdStatus	psyq	LIBCD.LIB	cd	confirmed	0	0		
+0x80081234	16	CdMode	psyq	LIBCD.LIB	cd	confirmed	0	0		
+0x80081244	16	CdLastCom	psyq	LIBCD.LIB	cd	confirmed	0	0		
+0x80081254	12	CdLastPos	psyq	LIBCD.LIB	cd	confirmed	0	0		
+0x80081260	108	CdReset	psyq	LIBCD.LIB	cd	confirmed	0	3		
+0x800812CC	32	CdFlush	psyq	LIBCD.LIB	cd	confirmed	0	1		
+0x800812EC	20	CdSetDebug	psyq	LIBCD.LIB	cd	confirmed	0	0		
+0x80081300	52	CdComstr	psyq	LIBCD.LIB	cd	confirmed	0	0	none	
+0x80081334	52	CdIntstr	psyq	LIBCD.LIB	cd	confirmed	0	0	none	
+0x80081368	32	CdSync	psyq	LIBCD.LIB	cd	confirmed	0	1		
+0x80081388	32	CdReady	psyq	LIBCD.LIB	cd	confirmed	1	1		
+0x800813A8	20	CdSyncCallback	psyq	LIBCD.LIB	cd	confirmed	0	0		
+0x800813BC	20	CdReadyCallback	psyq	LIBCD.LIB	cd	confirmed	1	0		
+0x800813D0	316	CdControl	psyq	LIBCD.LIB	cd	confirmed	0	3		
+0x8008150C	308	CdControlF	psyq	LIBCD.LIB	cd	confirmed	0	3		
+0x80081640	332	CdControlB	psyq	LIBCD.LIB	cd	confirmed	0	4		
+0x8008178C	32	CdMix	psyq	LIBCD.LIB	cd	confirmed	0	1		
+0x800817AC	32	CdGetSector	psyq	LIBCD.LIB	cd	confirmed	0	1		
+0x800817CC	32	CdGetSector2	psyq	LIBCD.LIB	cd	confirmed	0	1		
+0x800817EC	36	CdDataCallback	psyq	LIBCD.LIB	cd	confirmed	1	1		
+0x80081810	32	CdDataSync	psyq	LIBCD.LIB	cd	confirmed	0	1		
+0x80081834	1380	func_80081834	capcom		utility	high	4	4		
+0x80081D98	640	CD_sync	psyq	LIBCD.LIB	cd	confirmed	5	7	CD_sync	
+0x80082018	712	CD_ready	psyq	LIBCD.LIB	cd	confirmed	2	7	CD_ready	
+0x800822E0	1036	CD_cw	psyq	LIBCD.LIB	cd	confirmed	15	10	CD_cw	
+0x800826EC	136	CD_vol	psyq	LIBCD.LIB	cd	confirmed	2	0		
+0x80082774	212	CD_flush	psyq	LIBCD.LIB	cd	confirmed	9	0		
+0x80082848	240	CD_initvol	psyq	LIBCD.LIB	cd	confirmed	2	0		
+0x80082938	76	CD_initintr	psyq	LIBCD.LIB	cd	confirmed	1	2		
+0x80082984	480	CD_init	psyq	LIBCD.LIB	cd	confirmed	2	9	CD_init: | addr=%08x 	
+0x80082B64	168	CD_datasync	psyq	LIBCD.LIB	cd	confirmed	2	2	CD_datasync	
+0x80082C0C	192	func_80082C0C	capcom		utility	medium	0	3		also: cd
+0x80082CCC	256	CD_getsector	psyq	LIBCD.LIB	cd	confirmed	2	0		
+0x80082DCC	236	CD_getsector2	psyq	LIBCD.LIB	cd	confirmed	2	0		
+0x80082EB8	12	CD_set_test_parmnum	psyq	LIBCD.LIB	cd	confirmed	0	0		
+0x80082EC4	216	func_80082EC4	capcom		utility	low	0	1		inferred from callees
+0x80082FA4	132	StSetStream	psyq	LIBCD.LIB	cd	confirmed	1	1		
+0x80083034	172	StFreeRing	psyq	LIBCD.LIB	cd	confirmed	2	0		
+0x800830E4	52	init_ring_status	psyq	LIBCD.LIB	cd	confirmed	3	0		
+0x80083124	184	StGetNext	psyq	LIBCD.LIB	cd	confirmed	2	0		
+0x800831E4	28	StSetMask	psyq	LIBCD.LIB	cd	confirmed	1	0		
+0x80083204	2332	StCdInterrupt	psyq	LIBCD.LIB	cd	confirmed	2	10		
+0x80083B20	44	func_80083B20	capcom		utility	low	3	0		small leaf function
+0x80083B4C	424	func_80083B4C	capcom		utility	medium	3	1		
+0x80083CF4	140	func_80083CF4	capcom		unknown		1	0		
+0x80083D80	88	StGetBackloc	psyq	LIBCD.LIB	cd	confirmed	0	2		
+0x80083DE4	260	CdIntToPos	psyq	LIBCD.LIB	cd	confirmed	1	0		
+0x80083EE8	128	CdPosToInt	psyq	LIBCD.LIB	cd	confirmed	1	0		
+0x80083F74	48	func_80083F74	capcom		utility	low	2	0		small leaf function
+0x80083FA4	236	func_80083FA4	capcom		unknown		1	0		
+0x80084090	96	DS_CQ_flush	psyq	LIBDS.LIB	cd	confirmed	1	0		
+0x800840F0	84	func_800840F0	capcom		unknown		4	0		
+0x80084144	496	func_80084144	capcom		cd	low	1	1		inferred from callees
+0x80084334	112	func_80084334	capcom		cd	medium	3	2		
+0x800843A4	548	func_800843A4	capcom		cd	high	0	7		
+0x800845C8	140	func_800845C8	capcom		cd	medium	3	1		
+0x80084654	324	DsInit	psyq	LIBDS.LIB	cd	confirmed	1	9		
+0x80084798	268	DsReset	psyq	LIBDS.LIB	cd	confirmed	1	5		
+0x800848A4	32	DsClose	psyq	LIBDS.LIB	cd	confirmed	0	1		
+0x800848C4	580	DsCommand	psyq	LIBDS.LIB	cd	confirmed	34	8		
+0x80084B08	52	DsPacket	psyq	LIBDS.LIB	cd	confirmed	4	1		
+0x80084B3C	880	_DsPacket2	psyq	LIBDS.LIB	cd	confirmed	1	7		
+0x80084EAC	496	DsSync	psyq	LIBDS.LIB	cd	confirmed	3	2		
+0x8008509C	148	DsReady	psyq	LIBDS.LIB	cd	confirmed	1	2		
+0x80085130	144	DsFlush	psyq	LIBDS.LIB	cd	confirmed	6	3		
+0x800851C0	76	DsSystemStatus	psyq	LIBDS.LIB	cd	confirmed	3	2		
+0x8008520C	16	DsQueueLen	psyq	LIBDS.LIB	cd	confirmed	5	0		
+0x8008521C	32	DsStatus	psyq	LIBDS.LIB	cd	confirmed	2	1		
+0x8008523C	32	DsShellOpen	psyq	LIBDS.LIB	cd	confirmed	0	1		
+0x8008525C	32	DsLastCom	psyq	LIBDS.LIB	cd	confirmed	0	1		
+0x8008527C	164	func_8008527C	capcom		cd	high	0	3		
+0x80085320	212	func_80085320	capcom		cd	medium	0	2		
+0x800853F4	44	func_800853F4	capcom		utility	low	0	0		small leaf function
+0x80085424	152	DS_init	psyq	LIBDS.LIB	cd	confirmed	1	5		
+0x800854BC	224	DS_reset_members	psyq	LIBDS.LIB	cd	confirmed	1	1		
+0x8008559C	64	DS_close	psyq	LIBDS.LIB	cd	confirmed	1	2		
+0x800855DC	124	DS_cw	psyq	LIBDS.LIB	cd	confirmed	3	1		
+0x80085658	12	DS_vsync_callback	psyq	LIBDS.LIB	cd	confirmed	1	0		
+0x80085664	12	DS_sync_callback	psyq	LIBDS.LIB	cd	confirmed	1	0		
+0x80085670	12	DS_ready_callback	psyq	LIBDS.LIB	cd	confirmed	1	0		
+0x8008567C	12	DS_start_callback	psyq	LIBDS.LIB	cd	confirmed	1	0		
+0x80085688	24	DS_system_status	psyq	LIBDS.LIB	cd	confirmed	9	0		
+0x800856A0	16	DS_lastcom	psyq	LIBDS.LIB	cd	confirmed	1	0		
+0x800856B0	16	DS_lastmode	psyq	LIBDS.LIB	cd	confirmed	2	0		
+0x800856C0	12	DS_lastpos	psyq	LIBDS.LIB	cd	confirmed	5	0		
+0x800856CC	16	DS_lastseek	psyq	LIBDS.LIB	cd	confirmed	0	0		
+0x800856DC	16	DS_lastread	psyq	LIBDS.LIB	cd	confirmed	1	0		
+0x800856EC	16	DS_status	psyq	LIBDS.LIB	cd	confirmed	1	0		
+0x800856FC	36	DS_sync	psyq	LIBDS.LIB	cd	confirmed	1	1		
+0x80085720	36	DS_ready	psyq	LIBDS.LIB	cd	confirmed	1	1		
+0x80085744	16	DS_shell_open	psyq	LIBDS.LIB	cd	confirmed	1	0		
+0x80085754	64	DS_cw_system	psyq	LIBDS.LIB	cd	confirmed	1	1		
+0x80085794	472	func_80085794	capcom		cd	high	6	3		
+0x8008596C	720	func_8008596C	capcom		cd	low	0	5		inferred from callees
+0x80085C3C	136	func_80085C3C	capcom		cd	medium	1	2		
+0x80085CC4	272	func_80085CC4	capcom		cd	low	0	4		inferred from callees
+0x80085DD4	484	func_80085DD4	capcom		unknown		1	0		
+0x80085FB8	648	func_80085FB8	capcom		unknown		1	0		
+0x80086240	236	func_80086240	capcom		unknown		1	0		
+0x8008632C	148	func_8008632C	capcom		cd	low	0	1		inferred from callees
+0x800863C0	176	func_800863C0	capcom		cd	medium	2	1		
+0x80086470	120	DS_stop	psyq	LIBDS.LIB	cd	confirmed	3	1		
+0x800864E8	16	DS_restart	psyq	LIBDS.LIB	cd	confirmed	3	0		
+0x800864F8	16	DS_system_active	psyq	LIBDS.LIB	cd	confirmed	1	0		
+0x80086508	72	parcpy	psyq	LIBDS.LIB	cd	confirmed	5	0		
+0x80086550	72	rescpy	psyq	LIBDS.LIB	cd	confirmed	6	0		
+0x80086598	220	tipDsSystem	psyq	LIBDS.LIB	cd	confirmed	0	8	*** STATUS of DS system ***  |  last command: %02x %02x%02x%02x%02x  | none	
+0x80086674	32	DsMix	psyq	LIBDS.LIB	cd	confirmed	2	1		
+0x80086694	32	DsGetSector	psyq	LIBDS.LIB	cd	confirmed	12	1		
+0x800866B4	32	DsGetSector2	psyq	LIBDS.LIB	cd	confirmed	1	1		
+0x800866D4	32	DsDataSync	psyq	LIBDS.LIB	cd	confirmed	0	1		
+0x800866F4	260	DsIntToPos	psyq	LIBDS.LIB	cd	confirmed	8	0		
+0x800867F8	128	DsPosToInt	psyq	LIBDS.LIB	cd	confirmed	8	0		
+0x80086878	20	DsSetDebug	psyq	LIBDS.LIB	cd	confirmed	1	0		
+0x8008688C	84	DsLastPos	psyq	LIBDS.LIB	cd	confirmed	1	2		
+0x800868E4	40	DsControlF	psyq	LIBDS.LIB	cd	confirmed	0	1		
+0x8008690C	104	DsControl	psyq	LIBDS.LIB	cd	confirmed	0	2		
+0x80086974	104	DsControlB	psyq	LIBDS.LIB	cd	confirmed	5	2		
+0x800869E4	304	DsRead	psyq	LIBDS.LIB	cd	confirmed	0	5		
+0x80086B14	52	func_80086B14	capcom		cd	medium	0	1		
+0x80086B48	376	func_80086B48	capcom		system	high	0	7		also: cd
+0x80086CC0	212	func_80086CC0	capcom		system	medium	0	3		
+0x80086D94	112	DsReadSync	psyq	LIBDS.LIB	cd	confirmed	0	3		
+0x80086E04	20	DsReadCallback	psyq	LIBDS.LIB	cd	confirmed	0	0		
+0x80086E18	32	DsReadBreak	psyq	LIBDS.LIB	cd	confirmed	0	1		
+0x80086E38	156	func_80086E38	capcom		cd	high	5	7		
+0x80086ED4	28	DsReadMode	psyq	LIBDS.LIB	cd	confirmed	1	0		
+0x80086EF4	212	DsRead2	psyq	LIBDS.LIB	cd	confirmed	1	6		
+0x80086FC8	32	func_80086FC8	capcom		cd	medium	0	1		
+0x80086FF4	132	DsStartReadySystem	psyq	LIBDS.LIB	cd	confirmed	1	2		
+0x80087078	100	DsEndReadySystem	psyq	LIBDS.LIB	cd	confirmed	1	3		
+0x800870DC	20	DsReadySystemMode	psyq	LIBDS.LIB	cd	confirmed	2	0		
+0x800870F0	732	func_800870F0	capcom		cd	high	0	15		
+0x800873CC	184	func_800873CC	capcom		cd	high	0	4		
+0x80087484	120	func_80087484	capcom		cd	high	2	7		
+0x800874FC	48	func_800874FC	capcom		cd	medium	0	1		
+0x8008752C	16	ER_active	psyq	LIBDS.LIB	cd	confirmed	2	0		
+0x8008753C	80	ER_clear	psyq	LIBDS.LIB	cd	confirmed	3	2		
+0x80087594	20	DsSyncCallback	psyq	LIBDS.LIB	cd	confirmed	5	0		
+0x800875A8	20	DsReadyCallback	psyq	LIBDS.LIB	cd	confirmed	21	0		
+0x800875BC	20	DsStartCallback	psyq	LIBDS.LIB	cd	confirmed	6	0		
+0x800875D0	36	DsDataCallback	psyq	LIBDS.LIB	cd	confirmed	8	1		
+0x800875F4	60	rsin	psyq	LIBGTE.LIB	3d	confirmed	0	2		
+0x80087630	144	sin_1	psyq	LIBGTE.LIB	3d	confirmed	2	0		
+0x800876C4	160	rcos	psyq	LIBGTE.LIB	3d	confirmed	0	0		
+0x80087764	284	MatrixNormal_0	psyq	LIBGTE.LIB	3d	confirmed	1	5		
+0x80087880	284	MatrixNormal_1	psyq	LIBGTE.LIB	3d	confirmed	0	5		
+0x8008799C	284	MatrixNormal_2	psyq	LIBGTE.LIB	3d	confirmed	1	5		
+0x80087AC4	196	ccos	psyq	LIBGTE.LIB	3d	confirmed	1	3		
+0x80087B94	284	csincos	psyq	LIBGTE.LIB	3d	confirmed	10	0		
+0x80087CB4	160	csin_1	psyq	LIBGTE.LIB	3d	confirmed	0	3		
+0x80087D54	312	csin	psyq	LIBGTE.LIB	3d	confirmed	1	4		
+0x80087E94	208	catan	psyq	LIBGTE.LIB	3d	confirmed	5	0		
+0x80087F64	8	func_80087F64	capcom		utility	low	0	0		small leaf function
+0x80087F6C	128	InitGeom	psyq	LIBGTE.LIB	3d	confirmed	1	1		
+0x80087FF4	124	SquareRoot0	psyq	LIBGTE.LIB	3d	confirmed	52	0		
+0x80088070	8	func_80088070	capcom		utility	low	0	0		small leaf function
+0x80088084	132	InvSquareRoot	psyq	LIBGTE.LIB	3d	confirmed	0	0		
+0x80088108	8	func_80088108	capcom		utility	low	0	0		small leaf function
+0x80088110	20	VectorNormalS	psyq	LIBGTE.LIB	3d	confirmed	0	0		
+0x80088124	48	VectorNormal	psyq	LIBGTE.LIB	3d	confirmed	10	1		
+0x80088154	48	VectorNormalSS	psyq	LIBGTE.LIB	3d	confirmed	0	1		
+0x80088184	192	func_80088184	capcom		3d	medium	5	0		
+0x80088244	232	MatrixNormal	psyq	LIBGTE.LIB	3d	confirmed	1	3		
+0x80088334	80	LoadAverage12	psyq	LIBGTE.LIB	3d	confirmed	1	0		
+0x80088384	80	LoadAverage0	psyq	LIBGTE.LIB	3d	confirmed	0	0		
+0x800883D4	136	LoadAverageShort12	psyq	LIBGTE.LIB	3d	confirmed	0	0		
+0x8008845C	136	LoadAverageShort0	psyq	LIBGTE.LIB	3d	confirmed	0	0		
+0x800884E4	96	LoadAverageByte	psyq	LIBGTE.LIB	3d	confirmed	0	0		
+0x80088544	124	LoadAverageCol	psyq	LIBGTE.LIB	3d	confirmed	0	0		
+0x800885C4	128	SquareRoot12	psyq	LIBGTE.LIB	3d	confirmed	1	0		
+0x80088644	12	func_80088644	capcom		utility	low	0	0		small leaf function
+0x80088650	8	func_80088650	capcom		utility	low	0	0		small leaf function
+0x80088664	268	MulMatrix0	psyq	LIBGTE.LIB	3d	confirmed	6	0		
+0x80088774	352	ApplyMatrixLV	psyq	LIBGTE.LIB	3d	confirmed	3	0		
+0x800888D4	48	ApplyRotMatrix	psyq	LIBGTE.LIB	3d	confirmed	1	0		
+0x80088904	64	PushMatrix	psyq	LIBGTE.LIB	3d	confirmed	0	1		
+0x80088944	100	func_80088944	capcom		unknown		0	0		
+0x800889A8	60	PopMatrix	psyq	LIBGTE.LIB	3d	confirmed	0	1		
+0x800889E4	104	func_800889E4	capcom		unknown		0	0		
+0x80088A54	72	ReadLightMatrix	psyq	LIBGTE.LIB	3d	confirmed	1	0		
+0x80088AA4	312	ApplyRotMatrixLV	psyq	LIBGTE.LIB	3d	confirmed	10	0		
+0x80088BE4	268	MulMatrix	psyq	LIBGTE.LIB	3d	confirmed	4	0		
+0x80088CF4	268	MulMatrix2	psyq	LIBGTE.LIB	3d	confirmed	9	0		
+0x80088E04	80	ApplyMatrix	psyq	LIBGTE.LIB	3d	confirmed	7	0		
+0x80088E54	92	ApplyMatrixSV	psyq	LIBGTE.LIB	3d	confirmed	23	0		
+0x80088EB4	36	TransMatrix	psyq	LIBGTE.LIB	3d	confirmed	0	0		
+0x80088EE4	312	ScaleMatrix	psyq	LIBGTE.LIB	3d	confirmed	4	0		
+0x80089024	48	SetRotMatrix	psyq	LIBGTE.LIB	3d	confirmed	13	0		
+0x80089054	48	SetLightMatrix	psyq	LIBGTE.LIB	3d	confirmed	3	0		
+0x80089084	48	SetColorMatrix	psyq	LIBGTE.LIB	3d	confirmed	4	0		
+0x800890B4	32	SetTransMatrix	psyq	LIBGTE.LIB	3d	confirmed	8	0		
+0x800890D4	32	SetBackColor	psyq	LIBGTE.LIB	3d	confirmed	2	0		
+0x800890F4	24	SetGeomOffset	psyq	LIBGTE.LIB	3d	confirmed	3	0		
+0x80089114	12	SetGeomScreen	psyq	LIBGTE.LIB	3d	confirmed	2	0		
+0x80089124	40	LightColor	psyq	LIBGTE.LIB	3d	confirmed	0	0		
+0x8008914C	40	DpqColorLight	psyq	LIBGTE.LIB	3d	confirmed	0	0		
+0x80089174	60	DpqColor3	psyq	LIBGTE.LIB	3d	confirmed	0	0		
+0x800891B0	36	Intpl	psyq	LIBGTE.LIB	3d	confirmed	0	0		
+0x800891D4	40	Square12	psyq	LIBGTE.LIB	3d	confirmed	0	0		
+0x800891FC	40	Square0	psyq	LIBGTE.LIB	3d	confirmed	0	0		
+0x80089224	32	AverageZ3	psyq	LIBGTE.LIB	3d	confirmed	0	0		
+0x80089244	36	AverageZ4	psyq	LIBGTE.LIB	3d	confirmed	0	0		
+0x80089268	88	OuterProduct12	psyq	LIBGTE.LIB	3d	confirmed	6	0		
+0x800892C0	88	OuterProduct0	psyq	LIBGTE.LIB	3d	confirmed	0	0		
+0x80089318	24	Lzc	psyq	LIBGTE.LIB	3d	confirmed	0	0		
+0x80089334	44	RotTransPers	psyq	LIBGTE.LIB	3d	confirmed	1	0		
+0x80089364	84	RotTransPers3	psyq	LIBGTE.LIB	3d	confirmed	0	0		
+0x800893C4	40	RotTrans	psyq	LIBGTE.LIB	3d	confirmed	0	0		
+0x800893F4	176	RotAverageNclip4	psyq	LIBGTE.LIB	3d	confirmed	1	0		
+0x800894A4	64	TransposeMatrix	psyq	LIBGTE.LIB	3d	confirmed	8	0		
+0x800894E4	652	RotMatrix	psyq	LIBGTE.LIB	3d	confirmed	34	0		
+0x80089774	652	RotMatrixZYX	psyq	LIBGTE.LIB	3d	confirmed	0	0		
+0x80089A04	408	RotMatrixX	psyq	LIBGTE.LIB	3d	confirmed	0	0		
+0x80089BA4	408	RotMatrixY	psyq	LIBGTE.LIB	3d	confirmed	9	0		
+0x80089D44	408	RotMatrixZ	psyq	LIBGTE.LIB	3d	confirmed	0	0		
+0x80089EE4	508	RotMatrixZYX_gte	psyq	LIBGTE.LIB	3d	confirmed	2	0		
+0x8008A0E4	528	RotMatrix_gte	psyq	LIBGTE.LIB	3d	confirmed	30	0		
+0x8008A2F4	480	DivideGT3	psyq	LIBGTE.LIB	3d	confirmed	1	3		
+0x8008A4D4	20	ReadSZfifo3	psyq	LIBGTE.LIB	3d	confirmed	1	0		
+0x8008A4F4	136	RotAverageNclip3	psyq	LIBGTE.LIB	3d	confirmed	1	0		
+0x8008A584	8	RCpolyGT3	psyq	LIBGTE.LIB	3d	confirmed	0	0		
+0x8008A58C	72	RCpolyGT3A	psyq	LIBGTE.LIB	3d	confirmed	5	0		
+0x8008A5D4	80	func_8008A5D4	capcom		unknown		0	0		
+0x8008A624	44	func_8008A624	capcom		utility	low	0	0		small leaf function
+0x8008A650	64	func_8008A650	capcom		utility	low	0	0		small leaf function
+0x8008A690	44	func_8008A690	capcom		utility	low	0	0		small leaf function
+0x8008A6BC	724	func_8008A6BC	capcom		3d	high	0	8		
+0x8008A990	148	func_8008A990	capcom		unknown		4	0		
+0x8008AA24	372	ratan2	psyq	LIBGTE.LIB	3d	confirmed	3	0		
+0x8008ABA4	172	_patch_gte	psyq	LIBGTE.LIB	3d	confirmed	1	3		
+0x8008AC84	372	ResetGraph	psyq	LIBGPU.LIB	graphics	confirmed	1	8	ResetGraph:jtb=%08x,env=%08x  | ResetGraph(%d)... 	
+0x8008ADF8	92	SetGraphDebug	psyq	LIBGPU.LIB	graphics	confirmed	1	1		
+0x8008AE54	164	SetGraphQueue	psyq	LIBGPU.LIB	graphics	confirmed	0	2	SetGrapQue(%d)... 	
+0x8008AEF8	16	GetGraphDebug	psyq	LIBGPU.LIB	graphics	confirmed	24	0		
+0x8008AF08	96	DrawSyncCallback	psyq	LIBGPU.LIB	graphics	confirmed	0	1	DrawSyncCallback(%08x)... 	
+0x8008AF68	152	SetDispMask	psyq	LIBGPU.LIB	graphics	confirmed	3	2	SetDispMask(%d)... 	
+0x8008B000	104	DrawSync	psyq	LIBGPU.LIB	graphics	confirmed	38	1	DrawSync(%d)... 	
+0x8008B068	284	func_8008B068	capcom		utility	medium	8	2	%s:bad RECT | (%d,%d)-(%d,%d) 	
+0x8008B184	144	ClearImage	psyq	LIBGPU.LIB	graphics	confirmed	3	1	ClearImage	
+0x8008B214	152	ClearImage2	psyq	LIBGPU.LIB	graphics	confirmed	0	1	ClearImage2	
+0x8008B2AC	96	LoadImage	psyq	LIBGPU.LIB	graphics	confirmed	26	1	LoadImage	
+0x8008B30C	96	StoreImage	psyq	LIBGPU.LIB	graphics	confirmed	12	1	StoreImage	
+0x8008B36C	184	MoveImage	psyq	LIBGPU.LIB	graphics	confirmed	4	1	MoveImage	
+0x8008B424	200	ClearOTag	psyq	LIBGPU.LIB	graphics	confirmed	0	1	ClearOTag(%08x,%d)... 	
+0x8008B4EC	172	ClearOTagR	psyq	LIBGPU.LIB	graphics	confirmed	5	1	ClearOTagR(%08x,%d)... 	
+0x8008B598	92	DrawPrim	psyq	LIBGPU.LIB	graphics	confirmed	0	0		
+0x8008B5F4	112	DrawOTag	psyq	LIBGPU.LIB	graphics	confirmed	5	1	DrawOTag(%08x)... 	
+0x8008B664	192	PutDrawEnv	psyq	LIBGPU.LIB	graphics	confirmed	2	3	PutDrawEnv(%08x)... 	
+0x8008B724	216	DrawOTagEnv	psyq	LIBGPU.LIB	graphics	confirmed	0	3	DrawOTagEnv(%08x,&08x)... 	
+0x8008B7FC	52	GetDrawEnv	psyq	LIBGPU.LIB	graphics	confirmed	0	1		
+0x8008B830	1272	PutDispEnv	psyq	LIBGPU.LIB	graphics	confirmed	3	4	PutDispEnv(%08x)... 	
+0x8008BD28	52	GetDispEnv	psyq	LIBGPU.LIB	graphics	confirmed	0	1		
+0x8008BD5C	48	GetODE	psyq	LIBGPU.LIB	graphics	confirmed	0	0		
+0x8008BD8C	128	SetDrawArea	psyq	LIBGPU.LIB	graphics	confirmed	0	2		
+0x8008BE0C	64	SetDrawOffset	psyq	LIBGPU.LIB	graphics	confirmed	0	1		
+0x8008BE4C	504	SetDrawEnv	psyq	LIBGPU.LIB	graphics	confirmed	0	5		
+0x8008C044	624	func_8008C044	capcom		unknown		2	5		
+0x8008C2B4	32	func_8008C2B4	capcom		utility	low	2	0		small leaf function
+0x8008C2D4	152	func_8008C2D4	capcom		unknown		3	0		
+0x8008C36C	152	func_8008C36C	capcom		unknown		3	0		
+0x8008C404	28	func_8008C404	capcom		utility	low	3	0		small leaf function
+0x8008C420	128	func_8008C420	capcom		unknown		2	0		
+0x8008C4A0	24	func_8008C4A0	capcom		utility	low	0	0		small leaf function
+0x8008C4B8	224	func_8008C4B8	capcom		system	low	0	2		inferred from callees
+0x8008C598	560	func_8008C598	capcom		unknown		0	4		
+0x8008C7C8	572	func_8008C7C8	capcom		system	low	0	2		inferred from callees
+0x8008CA04	640	func_8008CA04	capcom		system	low	0	3		inferred from callees
+0x8008CC84	36	func_8008CC84	capcom		utility	low	0	0		small leaf function
+0x8008CCA8	20	func_8008CCA8	capcom		utility	low	0	0		small leaf function
+0x8008CCBC	64	func_8008CCBC	capcom		utility	low	0	0		small leaf function
+0x8008CCFC	72	func_8008CCFC	capcom		unknown		1	0		
+0x8008CD44	48	func_8008CD44	capcom		utility	low	3	0		small leaf function
+0x8008CD74	36	func_8008CD74	capcom		system	low	0	1		inferred from callees
+0x8008CD98	688	func_8008CD98	capcom		system	high	1	8		
+0x8008D048	608	func_8008D048	capcom		system	high	4	3		
+0x8008D2A8	336	func_8008D2A8	capcom		system	medium	1	5		
+0x8008D3F8	316	func_8008D3F8	capcom		system	low	0	5		inferred from callees
+0x8008D534	52	func_8008D534	capcom		system	medium	5	1		
+0x8008D568	324	func_8008D568	capcom		system	medium	11	4	GPU timeout:que=%d,stat=%08x,chcr=%08x,madr=%08x 	also: graphics, utility
+0x8008D6AC	160	func_8008D6AC	capcom		unknown		1	0		
+0x8008D74C	236	LoadImage2	psyq	LIBGPU.LIB	graphics	confirmed	0	4	LoadImage2	
+0x8008D838	236	StoreImage2	psyq	LIBGPU.LIB	graphics	confirmed	0	4	StoreImage	
+0x8008D924	324	MoveImage2	psyq	LIBGPU.LIB	graphics	confirmed	0	4	MoveImage	
+0x8008DA68	252	DrawOTag2	psyq	LIBGPU.LIB	graphics	confirmed	0	4	DrawOTag(%08x)... 	
+0x8008DB64	40	_GPU_ResetCallback	psyq	LIBGPU.LIB	graphics	confirmed	0	1		
+0x8008DB8C	36	func_8008DB8C	capcom		utility	low	6	0		small leaf function
+0x8008DBB4	20	SetVideoMode	psyq	LIBETC.LIB	system	confirmed	0	0		
+0x8008DBC8	16	GetVideoMode	psyq	LIBETC.LIB	system	confirmed	3	0		
+0x8008DBE4	16	OpenTIM	psyq	LIBGPU.LIB	graphics	confirmed	4	0		
+0x8008DBF4	100	ReadTIM	psyq	LIBGPU.LIB	graphics	confirmed	4	1		
+0x8008DC58	64	OpenTMD	psyq	LIBGPU.LIB	graphics	confirmed	0	1		
+0x8008DC98	680	ReadTMD	psyq	LIBGPU.LIB	graphics	confirmed	0	1		
+0x8008DF40	280	func_8008DF40	capcom		graphics	medium	1	6	id  =%08x  | timaddr=%08x 	also: utility
+0x8008E058	372	func_8008E058	capcom		graphics	medium	1	10		also: utility
+0x8008E1CC	4760	func_8008E1CC	capcom		utility	medium	1	34	unsupported type (%08x) 	also: graphics
+0x8008F464	180	SetDefDrawEnv	psyq	LIBGPU.LIB	graphics	confirmed	6	1		
+0x8008F524	60	SetDefDispEnv	psyq	LIBGPU.LIB	graphics	confirmed	5	0		
+0x8008F564	60	GetTPage	psyq	LIBGPU.LIB	graphics	confirmed	7	0		
+0x8008F5A4	24	GetClut	psyq	LIBGPU.LIB	graphics	confirmed	25	0		
+0x8008F5C4	60	AddPrim	psyq	LIBGPU.LIB	graphics	confirmed	51	0		
+0x8008F604	40	SetSemiTrans	psyq	LIBGPU.LIB	graphics	confirmed	4	0		
+0x8008F634	20	SetPolyF4	psyq	LIBGPU.LIB	graphics	confirmed	0	0		
+0x8008F654	20	SetPolyFT4	psyq	LIBGPU.LIB	graphics	confirmed	3	0		
+0x8008F674	20	SetPolyG4	psyq	LIBGPU.LIB	graphics	confirmed	0	0		
+0x8008F694	20	SetPolyGT4	psyq	LIBGPU.LIB	graphics	confirmed	0	0		
+0x8008F6B4	20	SetSprt	psyq	LIBGPU.LIB	graphics	confirmed	0	0		
+0x8008F6D4	20	SetTile	psyq	LIBGPU.LIB	graphics	confirmed	4	0		
+0x8008F6F4	20	SetLineF2	psyq	LIBGPU.LIB	graphics	confirmed	0	0		
+0x8008F714	32	SetLineF3	psyq	LIBGPU.LIB	graphics	confirmed	4	0		
+0x8008F734	44	SetDrawTPage	psyq	LIBGPU.LIB	graphics	confirmed	34	0		
+0x8008F764	96	SetDrawMove	psyq	LIBGPU.LIB	graphics	confirmed	2	0		
+0x8008F7C4	56	MargePrim	psyq	LIBGPU.LIB	graphics	confirmed	0	0		
+0x8008F804	148	SetDrawMode	psyq	LIBGPU.LIB	graphics	confirmed	0	0		
+0x8008F8A4	52	DecDCTReset	psyq	LIBPRESS.LIB	fmv	confirmed	2	2		
+0x8008F8D8	140	DecDCTGetEnv	psyq	LIBPRESS.LIB	fmv	confirmed	0	0		
+0x8008F964	152	DecDCTPutEnv	psyq	LIBPRESS.LIB	fmv	confirmed	0	2		
+0x8008F9FC	124	DecDCTin	psyq	LIBPRESS.LIB	fmv	confirmed	2	1		
+0x8008FA78	32	DecDCTout	psyq	LIBPRESS.LIB	fmv	confirmed	4	1		
+0x8008FA98	60	DecDCTinSync	psyq	LIBPRESS.LIB	fmv	confirmed	1	2		
+0x8008FAD4	60	DecDCToutSync	psyq	LIBPRESS.LIB	fmv	confirmed	2	2		
+0x8008FB10	36	DecDCTinCallback	psyq	LIBPRESS.LIB	fmv	confirmed	0	1		
+0x8008FB34	36	DecDCToutCallback	psyq	LIBPRESS.LIB	fmv	confirmed	3	1		
+0x8008FB58	240	func_8008FB58	capcom		utility	medium	1	3		
+0x8008FC48	144	func_8008FC48	capcom		unknown		5	1		
+0x8008FCD8	140	func_8008FCD8	capcom		unknown		1	1		
+0x8008FD64	148	func_8008FD64	capcom		utility	low	2	1		inferred from callees
+0x8008FDF8	148	func_8008FDF8	capcom		utility	low	2	1		inferred from callees
+0x8008FE8C	24	func_8008FE8C	capcom		utility	low	2	0		small leaf function
+0x8008FEA4	124	func_8008FEA4	capcom		utility	medium	2	1	%s timeout: 	
+0x8008FF24	32	DecDCTvlcSize	psyq	LIBPRESS.LIB	fmv	confirmed	0	0		
+0x8008FF44	16	func_8008FF44	capcom		utility	low	0	0		small leaf function
+0x8008FF54	796	DecDCTvlc	psyq	LIBPRESS.LIB	fmv	confirmed	3	0		
+0x80090270	52	func_80090270	capcom		utility	low	0	0		small leaf function
+0x800902A4	12	InitHeap	psyq	LIBAPI.LIB	system	confirmed	0	0		
+0x800902B4	16	FlushCache	psyq	LIBAPI.LIB	system	confirmed	4	0		
+0x800902C4	16	GPU_cw	psyq	LIBAPI.LIB	system	confirmed	1	0		
+0x800902D4	24	_bu_init	psyq	LIBAPI.LIB	system	confirmed	1	0		
+0x800902EC	24	_96_remove	psyq	LIBAPI.LIB	system	confirmed	1	0		
+0x80090304	16	DeliverEvent	psyq	LIBAPI.LIB	system	confirmed	1	0		
+0x80090314	16	OpenEvent	psyq	LIBAPI.LIB	system	confirmed	9	0		
+0x80090324	16	WaitEvent	psyq	LIBAPI.LIB	system	confirmed	1	0		
+0x80090334	16	TestEvent	psyq	LIBAPI.LIB	system	confirmed	2	0		
+0x80090344	16	EnableEvent	psyq	LIBAPI.LIB	system	confirmed	9	0		
+0x80090354	16	OpenTh	psyq	LIBAPI.LIB	system	confirmed	1	0		
+0x80090364	16	CloseTh	psyq	LIBAPI.LIB	system	confirmed	3	0		
+0x80090374	16	ChangeTh	psyq	LIBAPI.LIB	system	confirmed	4	0		
+0x80090384	16	ReturnFromException	psyq	LIBAPI.LIB	system	confirmed	2	0		
+0x80090394	16	ResetEntryInt	psyq	LIBAPI.LIB	system	confirmed	1	0		
+0x800903A4	16	HookEntryInt	psyq	LIBAPI.LIB	system	confirmed	2	0		
+0x800903B4	16	EnterCriticalSection	psyq	LIBAPI.LIB	system	confirmed	17	0		
+0x800903C4	16	ExitCriticalSection	psyq	LIBAPI.LIB	system	confirmed	16	0		
+0x800903D4	12	open	psyq	LIBAPI.LIB	system	confirmed	0	0		
+0x800903E4	12	lseek	psyq	LIBAPI.LIB	system	confirmed	0	0		
+0x800903F4	12	read	psyq	LIBAPI.LIB	system	confirmed	0	0		
+0x80090404	12	write	psyq	LIBAPI.LIB	system	confirmed	0	0		
+0x80090414	12	close	psyq	LIBAPI.LIB	system	confirmed	0	0		
+0x80090424	12	format	psyq	LIBAPI.LIB	system	confirmed	0	0		
+0x80090434	12	nextfile	psyq	LIBAPI.LIB	system	confirmed	0	0		
+0x80090444	12	Krom2RawAdd	psyq	LIBAPI.LIB	system	confirmed	0	0		
+0x80090454	16	ChangeClearPAD	psyq	LIBAPI.LIB	system	confirmed	4	0		
+0x80090464	8	GetGp	psyq	LIBAPI.LIB	system	confirmed	1	0		
+0x80090474	16	ChangeClearRCnt	psyq	LIBAPI.LIB	system	confirmed	7	0		
+0x80090484	156	SetRCnt	psyq	LIBAPI.LIB	system	confirmed	1	0		
+0x80090520	56	GetRCnt	psyq	LIBAPI.LIB	system	confirmed	0	0		
+0x80090558	48	StartRCnt	psyq	LIBAPI.LIB	system	confirmed	1	0		
+0x80090588	52	StopRCnt	psyq	LIBAPI.LIB	system	confirmed	1	0		
+0x800905BC	52	ResetRCnt	psyq	LIBAPI.LIB	system	confirmed	0	0		
+0x800905F4	412	firstfile	psyq	LIBAPI.LIB	system	confirmed	0	3		
+0x80090790	256	func_80090790	capcom		utility	medium	0	1		
+0x80090894	16	firstfile2	psyq	LIBAPI.LIB	system	confirmed	1	0		
+0x800908A4	12	exit	psyq	LIBC.LIB	utility	confirmed	0	0		
+0x800908BC	24	puts	psyq	LIBC.LIB	utility	confirmed	7	0		
+0x800908D4	12	strtol	psyq	LIBC.LIB	utility	confirmed	0	0		
+0x800908E4	16	setjmp	psyq	LIBC.LIB	utility	confirmed	1	0		
+0x800908F4	12	strcat	psyq	LIBC.LIB	utility	confirmed	0	0		
+0x80090904	16	strcmp	psyq	LIBC.LIB	utility	confirmed	3	0		
+0x80090914	12	strncmp	psyq	LIBC.LIB	utility	confirmed	0	0		
+0x80090924	12	strcpy	psyq	LIBC.LIB	utility	confirmed	0	0		
+0x80090934	16	strlen	psyq	LIBC.LIB	utility	confirmed	1	0		
+0x80090944	12	strchr	psyq	LIBC.LIB	utility	confirmed	0	0		
+0x80090954	12	strstr	psyq	LIBC.LIB	utility	confirmed	0	0		
+0x80090964	16	memcpy	psyq	LIBC.LIB	utility	confirmed	5	0		
+0x80090974	16	memset	psyq	LIBC.LIB	utility	confirmed	3	0		
+0x80090984	28	printf	psyq	LIBC.LIB	utility	confirmed	71	0		
+0x800909A0	2168	func_800909A0	capcom		utility	high	0	3	0123456789ABCDEF | 0123456789abcdef	also: cd
+0x80091224	16	memchr	psyq	LIBC.LIB	utility	confirmed	1	0		
+0x80091234	108	memmove	psyq	LIBC.LIB	utility	confirmed	1	0		
+0x800912A4	32	PadChkVsync	psyq	LIBPAD.LIB	controller	confirmed	0	1		
+0x800912C4	32	PadStartCom	psyq	LIBPAD.LIB	controller	confirmed	1	1		
+0x800912E4	32	PadStopCom	psyq	LIBPAD.LIB	controller	confirmed	0	1		
+0x80091304	76	PadChkMtap	psyq	LIBPAD.LIB	controller	confirmed	0	0		
+0x80091350	204	PadGetState	psyq	LIBPAD.LIB	controller	confirmed	3	0		
+0x8009141C	248	PadInfoMode	psyq	LIBPAD.LIB	controller	confirmed	2	0		
+0x80091514	212	PadInfoAct	psyq	LIBPAD.LIB	controller	confirmed	0	0		
+0x800915E8	168	PadInfoComb	psyq	LIBPAD.LIB	controller	confirmed	0	0		
+0x80091690	56	PadSetActAlign	psyq	LIBPAD.LIB	controller	confirmed	1	1		
+0x800916C8	72	PadSetMainMode	psyq	LIBPAD.LIB	controller	confirmed	1	1		
+0x80091710	72	PadSetAct	psyq	LIBPAD.LIB	controller	confirmed	1	1		
+0x80091764	280	PadEnableCom	psyq	LIBPAD.LIB	controller	confirmed	0	0		
+0x8009187C	44	_padSetVsyncParam	psyq	LIBPAD.LIB	controller	confirmed	1	0		
+0x800918A8	104	func_800918A8	capcom		unknown		0	0		
+0x80091910	400	func_80091910	capcom		controller	medium	0	2		
+0x80091AA0	20	_padChkVsync	psyq	LIBPAD.LIB	controller	confirmed	1	0		
+0x80091AB4	204	_padStartCom	psyq	LIBPAD.LIB	controller	confirmed	1	5		
+0x80091B80	68	_padStopCom	psyq	LIBPAD.LIB	controller	confirmed	1	4		
+0x80091BC4	820	_padInitSioMode	psyq	LIBPAD.LIB	controller	confirmed	2	15		
+0x80091EF8	240	func_80091EF8	capcom		controller	medium	1	2		
+0x80091FE8	528	_padSioRW	psyq	LIBPAD.LIB	controller	confirmed	3	2		
+0x800921F8	632	_padSioRW2	psyq	LIBPAD.LIB	controller	confirmed	4	3		
+0x80092470	144	_padClrIntSio0	psyq	LIBPAD.LIB	controller	confirmed	7	1		
+0x80092500	40	_padWaitRXready	psyq	LIBPAD.LIB	controller	confirmed	4	0		
+0x80092534	16	SysEnqIntRP	psyq	LIBAPI.LIB	system	confirmed	1	0		
+0x80092544	16	SysDeqIntRP	psyq	LIBAPI.LIB	system	confirmed	2	0		
+0x80092554	12	_padSetAct	psyq	LIBPAD.LIB	controller	confirmed	1	0		
+0x80092560	16	_padSetCmd	psyq	LIBPAD.LIB	controller	confirmed	0	0		
+0x80092570	132	_padSendAtLoadInfo	psyq	LIBPAD.LIB	controller	confirmed	1	3		
+0x800925F4	624	_padRecvAtLoadInfo	psyq	LIBPAD.LIB	controller	confirmed	1	2		
+0x80092864	56	_padGetActSize	psyq	LIBPAD.LIB	controller	confirmed	1	0		
+0x8009289C	212	_padLoadActInfo	psyq	LIBPAD.LIB	controller	confirmed	1	0		
+0x80092970	168	func_80092970	capcom		unknown		0	4		
+0x80092A18	1016	func_80092A18	capcom		unknown		0	0		
+0x80092E10	104	_padSetActAlign	psyq	LIBPAD.LIB	controller	confirmed	1	0		
+0x80092E78	28	func_80092E78	capcom		utility	low	0	0		small leaf function
+0x80092E94	200	func_80092E94	capcom		unknown		0	0		
+0x80092F5C	152	_padSetMainMode	psyq	LIBPAD.LIB	controller	confirmed	1	0		
+0x80092FF4	84	func_80092FF4	capcom		unknown		0	0		
+0x80093048	96	func_80093048	capcom		unknown		0	0		
+0x800930A8	32	_padCmdParaMode	psyq	LIBPAD.LIB	controller	confirmed	2	0		
+0x800930C8	20	func_800930C8	capcom		utility	low	1	0		small leaf function
+0x800930DC	32	func_800930DC	capcom		utility	low	2	0		small leaf function
+0x800930FC	32	func_800930FC	capcom		utility	low	1	0		small leaf function
+0x8009311C	32	func_8009311C	capcom		utility	low	2	0		small leaf function
+0x8009313C	20	func_8009313C	capcom		utility	low	1	0		small leaf function
+0x80093154	72	func_80093154	capcom		controller	medium	0	1		
+0x8009319C	216	func_8009319C	capcom		controller	medium	0	1		
+0x80093274	84	func_80093274	capcom		unknown		0	0		
+0x800932C8	88	func_800932C8	capcom		controller	medium	0	1		
+0x80093320	196	func_80093320	capcom		controller	medium	0	1		
+0x800933E4	916	func_800933E4	capcom		controller	high	0	10		
+0x80093784	352	PadInitDirect	psyq	LIBPAD.LIB	controller	confirmed	1	3		
+0x800938E4	104	func_800938E4	capcom		unknown		0	0		
+0x8009394C	244	func_8009394C	capcom		controller	medium	0	3		
+0x80093A40	16	func_80093A40	capcom		utility	low	1	0		small leaf function
+0x80093A50	188	func_80093A50	capcom		unknown		0	0		
+0x80093B0C	636	func_80093B0C	capcom		utility	medium	0	1		
+0x80093D88	56	func_80093D88	capcom		utility	low	0	0		small leaf function
+0x80093DC0	32	func_80093DC0	capcom		utility	low	0	0		small leaf function
+0x80093DE4	16	bzero	psyq	LIBC.LIB	utility	confirmed	2	0		
+0x80093DF4	52	_padInitDirSeq	psyq	LIBPAD.LIB	controller	confirmed	1	0		
+0x80093E28	272	func_80093E28	capcom		controller	high	0	3		
+0x80093F38	612	func_80093F38	capcom		controller	medium	0	1		
+0x8009419C	224	_dirFailAuto	psyq	LIBPAD.LIB	controller	confirmed	1	0		
+0x8009427C	44	func_8009427C	capcom		utility	low	0	0		small leaf function
+0x800942B4	32	setRC2wait	psyq	LIBPAD.LIB	controller	confirmed	12	0		
+0x800942D4	160	chkRC2wait	psyq	LIBPAD.LIB	controller	confirmed	7	0		
+0x80094374	84	func_80094374	capcom		system	medium	1	6		also: memcard
+0x800943C8	56	func_800943C8	capcom		system	high	1	4		also: memcard
+0x80094400	48	SsInitHot	psyq	LIBSND.LIB	audio	confirmed	0	3		
+0x80094430	16	InitCARD2	psyq	LIBCARD.LIB	memcard	confirmed	1	0		
+0x80094440	16	StartCARD2	psyq	LIBCARD.LIB	memcard	confirmed	1	0		
+0x80094450	16	StopCARD2	psyq	LIBCARD.LIB	memcard	confirmed	1	0		
+0x80094460	104	_ExitCard	psyq	LIBCARD.LIB	memcard	confirmed	1	3		
+0x800944E0	88	func_800944E0	capcom		unknown		0	0		
+0x80094538	136	_patch_card	psyq	LIBCARD.LIB	memcard	confirmed	1	2		
+0x800945C0	48	func_800945C0	capcom		unknown		1	1		
+0x800945F0	108	_patch_card2	psyq	LIBCARD.LIB	memcard	confirmed	2	2		
+0x8009465C	24	func_8009465C	capcom		utility	low	0	0		small leaf function
+0x800A812C	104	func_800A812C	capcom		unknown		0	0		
+0x800B9680	892	func_800B9680	capcom		unknown		0	0		
+0x800C0034	6104	func_800C0034	capcom		unknown		0	0		
+0x800C180C	6144	func_800C180C	capcom		unknown		0	0		
+0x800C300C	2044	func_800C300C	capcom		unknown		0	0		
+0x800C3808	103736	func_800C3808	capcom		unknown		0	0		
+0x800DCD40	27328	func_800DCD40	capcom		unknown		0	0		
