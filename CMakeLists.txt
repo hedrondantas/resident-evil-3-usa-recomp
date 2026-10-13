@@ -42,6 +42,14 @@ psxrecomp_add_game_runtime(psx-runtime
                           "${CMAKE_CURRENT_SOURCE_DIR}/src/re3usa_hud.c"
 )
 
+# Default keyboard layout = the Resident Evil 3 PC release (src/re3usa_keybinds.h).
+# Only the two keybind modules see the header, so changing it rebuilds two files.
+set_property(SOURCE
+        "${PSXRECOMP_ROOT}/runtime/src/psx_keybinds.c"
+        "${CMAKE_CURRENT_SOURCE_DIR}/recomp-ui/src/consoles/psx/psx_binds.c"
+    APPEND PROPERTY COMPILE_DEFINITIONS
+        "PSX_TITLE_KEYBINDS_HEADER=\"${CMAKE_CURRENT_SOURCE_DIR}/src/re3usa_keybinds.h\"")
+
 # Stage runtime configs next to the exe for direct build/ launches. Only copy
 # files that exist — never fail POST_BUILD when game_options.toml is absent.
 foreach(_PSX_RUNTIME_CONFIG game.toml game_options.toml)

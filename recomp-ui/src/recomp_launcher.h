@@ -39,6 +39,10 @@ extern "C" {
 #define RECOMP_LAUNCHER_HAS_MULTITAP_ENABLED 1
 /* Host may #ifdef this when reading multitap_analog (DualShock-on-tap hack). */
 #define RECOMP_LAUNCHER_HAS_MULTITAP_ANALOG 1
+/* Host may #ifdef this when reading Settings.p1_port. */
+#define RECOMP_LAUNCHER_HAS_P1_PORT 1
+/* Host may #ifdef this when reading Settings.launch_state_slot. */
+#define RECOMP_LAUNCHER_HAS_LAUNCH_STATE_SLOT 1
 /* Host may #ifdef this when reading Settings.rewind_depth. */
 #define RECOMP_LAUNCHER_HAS_REWIND_DEPTH 1
 /* Host may #ifdef this when reading Settings.rewind_interval. */
@@ -777,6 +781,16 @@ struct RecompLauncherCSettings {
      * session. 0 = unset: the launcher seeds it by matching initial_rom
      * against the roster, falling back to disc 1. Appended additively. */
     int  disc_index;
+
+    /* Console port that controller 1 drives (GameInfo.has_controller_port_route
+     * titles): 1 = Port 1, 2 = Port 2, 0 = unset (treated as Port 1). The
+     * runtime menu changes the same route live. Appended additively. */
+    int  p1_port;
+
+    /* One-shot: boot straight into this save-state slot (1-based) instead of
+     * the title screen. 0 = normal boot. Set by the dashboard's Load State
+     * picker; hosts must not persist it. Appended additively. */
+    int  launch_state_slot;
 };
 
 /* Values for RecompLauncherCSettings.vsync (1-based; 0 = unset). */
@@ -1355,6 +1369,24 @@ typedef struct RecompLauncherCGameInfo {
      * Return 0 on success, like persist_setup. Uses persist_setup_ctx. */
     int (*persist_setup_discs)(void* ctx, const char* const* disc_paths,
                                int disc_count, const char* bios_path);
+
+    /* Draw the "Controller 1 port" row (Settings.p1_port) on the INPUT card.
+     * The row hides itself while multitap seats are in use, because the
+     * route only exists with two native ports. 0 => no row. Appended. */
+    int  has_controller_port_route;
+
+    /* Dashboard "Load State": boot straight into a save-state slot. Drawn
+     * when savestate_slot_count > 0 and savestate_slot_info is set.
+     * savestate_slot_info returns 1 when `slot` (0-based) holds a state, sets
+     * *mtime_unix, and fills thumb_argb (savestate_thumb_w x savestate_thumb_h
+     * pixels, 0xAARRGGBB) when it sets *has_thumb. The pick comes back as
+     * Settings.launch_state_slot. Appended additively. */
+    int   savestate_slot_count;
+    int   savestate_thumb_w;
+    int   savestate_thumb_h;
+    int (*savestate_slot_info)(void* ctx, int slot, long long* mtime_unix,
+                               unsigned int* thumb_argb, int* has_thumb);
+    void* savestate_slot_ctx;
 } RecompLauncherCGameInfo;
 
 /* recomp_launcher_run_window return codes */

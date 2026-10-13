@@ -24,6 +24,29 @@ No SBI file is needed (the USA release has no LibCrypt protection).
 Tools: Python 3, CMake, Ninja and a C/C++ compiler. On Windows,
 `psxrecomp_cli.py ensure-toolchain` downloads a portable CMake + Clang pack.
 
+## Setup and recompilation
+
+The easiest way to build the game is the recompiler window. Double-click `Launcher.pyw`
+in the project root, or run `python Launcher.pyw`. It needs Python 3.11 or newer with
+tkinter, which the python.org and Microsoft Store installers include.
+
+1. Choose the disc and the BIOS. The disc can be a `.cue` with its `.bin` (recommended),
+   a `.bin` or an `.iso`. Both files are checked against the expected dumps.
+2. When both files are valid, the recompilation starts by itself. It prepares the
+   toolchain, generates the C code, compiles the executable and installs the BIOS next to
+   it, with a progress bar and a log. **Recompile** runs it again at any time.
+3. **Play** starts the game, which opens its own launcher first.
+
+This window only sets up and recompiles. It runs the same commands as the manual build
+below, and its interface follows the system language (English or Portuguese). An `.iso`
+has no known checksum, so it is converted to BIN without verification.
+
+Settings, controls and mods live in the game's own launcher, and in the F1 menu during
+play. The launcher's **Input** card sets the console port for controller 1, the same
+route F1 changes live. **Load State**, next to PLAY, starts the game straight from one
+of the 12 save-state slots, each shown with its thumbnail and date. Save states are made
+during play with Select + R1 or F7.
+
 ## Build
 
 ```sh
@@ -47,8 +70,15 @@ mod packages from `mods/packages/` next to the executable.
 
 ## In-game settings (F1)
 
-Press **F1** while playing to pause and open **Runtime settings**. Changes apply
-immediately and are saved to `settings.toml`; no restart is needed.
+Press **F1**, or **Select + Start** on the controller, while playing to pause and open
+**Runtime settings**. Changes apply immediately and are saved to `settings.toml`; no
+restart is needed.
+
+The controller shortcut can be rebound under Host shortcuts on the launcher's Controller
+page, or with `[hotkeys] runtime_menu_pad` in `settings.toml`. People rarely press both
+buttons in the same frame, so while part of the chord is down its buttons are kept from
+the game for 120 ms. The game never sees a completed chord. A Select or Start pressed on
+its own still reaches the game, just that much later.
 
 | Category | Settings |
 |---|---|
@@ -71,6 +101,34 @@ This comes from this project's changes to the framework in `psxrecomp/` (see Cre
 The ceiling is 8x, lowered automatically if the graphics driver cannot allocate the
 surface (8x uses about 400 MB of video memory). Pre-rendered backgrounds and FMVs keep
 their original resolution; the scale sharpens the 3D models.
+
+## Keyboard
+
+The default keyboard layout matches the original PC release (Windows, 2000), as listed
+in its ReadMe. It is defined in `src/re3usa_keybinds.h`.
+
+| Action | Keys | PlayStation button |
+|---|---|---|
+| Move, turn | Arrow keys or Num 8 / 2 / 4 / 6 | D-pad |
+| Select, action, attack | Space or Enter | Cross |
+| Run, cancel | V or Esc | Square and Triangle |
+| Aim at enemies, dodge | S | R1 |
+| Aim at any target | X | R2 |
+| Change target | B | L1 |
+| Status screen | Z or F4 | Circle |
+| Map | M | L2 |
+| Options, skip cutscene | F5 | Select |
+| Pause | P | Start |
+
+Quick turn is Down + V. Each button holds two keys at most, so the PC's third action key
+(C) is not bound. F6 stays the runtime's controller-port swap rather than a second map
+key. Other runtime keys: F1 settings menu (Select + Start on a controller), F7 save
+states, Tab fast-forward, Alt+Enter fullscreen.
+
+Rebind keys in `build-release/keybinds.ini` (two keys per button, comma-separated) or
+in the built-in launcher's Controls page. A `keybinds.ini` written before this layout
+keeps its old keys: delete it, or use Reset in the Controls page, to get the new
+defaults.
 
 ## Mods
 
@@ -115,11 +173,16 @@ The framework and launcher are included in this repository as ordinary folders
 
 - `psxrecomp/`: [PSXRecomp](https://github.com/mstan/psxrecomp), from the
   [Alexbeav/psxrecomp](https://github.com/Alexbeav/psxrecomp) fork at `6c7fdaa`, plus the
-  F1 runtime menu and the 8x internal resolution. Includes its `lib/recomp-net` and
+  F1 runtime menu, the 8x internal resolution, the saved controller 1 route
+  (`[controller] p1_port` in `settings.toml`), live build progress in
+  `psxrecomp_cli.py`, and a hook for a title's own default keyboard layout
+  (`PSX_TITLE_KEYBINDS_HEADER`). Includes its `lib/recomp-net` and
   `lib/retcomm-rbengine` dependencies.
 - `recomp-ui/`: [recomp-ui](https://github.com/mstan/recomp-ui), from
   [Alexbeav/recomp-ui](https://github.com/Alexbeav/recomp-ui) at `be8ac1d`, plus the 8x
-  resolution ceiling in the launcher.
+  resolution ceiling in the launcher, the controller 1 port row on its Input card, the
+  Load State picker on the dashboard, a Settings-menu host shortcut, and the same title
+  keyboard-layout hook.
 - Project layout and configuration derived from
   [resident-evil-3-recomp](https://github.com/alexbeavs-ps1-ports/resident-evil-3-recomp).
 

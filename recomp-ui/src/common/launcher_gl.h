@@ -31,6 +31,9 @@ LauncherTexture launcher_texture_load(const char* path);
 LauncherTexture launcher_texture_load_colorkey(const char* path, int tolerance);
 
 void launcher_texture_free(LauncherTexture* t);
+// Upload w*h pixels given as 0xAARRGGBB words (alpha ignored: opaque). For
+// images the host hands over in memory, such as save-state thumbnails.
+LauncherTexture launcher_texture_from_argb(const unsigned int* argb, int w, int h);
 
 // Decode an image file to a tightly-packed RGBA8 buffer, WITHOUT touching GL.
 // For the one consumer that needs pixels rather than a texture: the window /

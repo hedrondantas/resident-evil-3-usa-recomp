@@ -48,6 +48,51 @@ static const SDL_Scancode kPsxDefaults[LNG_PSX_PAD_BUTTON_COUNT] = {
     /* RS Left */ SDL_SCANCODE_UNKNOWN, /* RS Right */ SDL_SCANCODE_UNKNOWN,
 };
 
+/* A title map (PSX_TITLE_KEYBINDS_HEADER, see psx_keybinds.c) replaces the
+ * table above, by ini key name, so both writers stay in step. */
+#if defined(PSX_TITLE_KEYBINDS_HEADER)
+#include PSX_TITLE_KEYBINDS_HEADER
+#endif
+
+static SDL_Scancode s_psx_defaults[LNG_PSX_PAD_BUTTON_COUNT];
+static SDL_Scancode s_psx_defaults_alt[LNG_PSX_PAD_BUTTON_COUNT];
+
+#if defined(PSX_TITLE_KEYBINDS)
+static void psx_kb_title_default(const char* name, SDL_Scancode primary,
+                                 SDL_Scancode alt) {
+    for (int b = 0; b < LNG_PSX_PAD_BUTTON_COUNT; ++b) {
+        if (!strcmp(kPsxKbKeyName[b], name)) {
+            s_psx_defaults[b] = primary;
+            s_psx_defaults_alt[b] = alt;
+            return;
+        }
+    }
+}
+#endif
+
+/* Fill s_psx_defaults / s_psx_defaults_alt once: the framework map, or the
+ * title map when one is compiled in (inputs it leaves out stay unbound). */
+static void psx_kb_load_defaults(void) {
+    static int ready = 0;
+    if (ready) return;
+    ready = 1;
+#if defined(PSX_TITLE_KEYBINDS)
+    (void)kPsxDefaults;  /* the framework map is replaced, not merged */
+    for (int b = 0; b < LNG_PSX_PAD_BUTTON_COUNT; ++b) {
+        s_psx_defaults[b] = SDL_SCANCODE_UNKNOWN;
+        s_psx_defaults_alt[b] = SDL_SCANCODE_UNKNOWN;
+    }
+#define PSX_KB_TITLE_ENTRY(name, primary, alt) \
+    psx_kb_title_default(#name, (primary), (alt));
+    PSX_TITLE_KEYBINDS(PSX_KB_TITLE_ENTRY)
+#undef PSX_KB_TITLE_ENTRY
+#else
+    memcpy(s_psx_defaults, kPsxDefaults, sizeof(kPsxDefaults));
+    for (int b = 0; b < LNG_PSX_PAD_BUTTON_COUNT; ++b)
+        s_psx_defaults_alt[b] = SDL_SCANCODE_UNKNOWN;
+#endif
+}
+
 static SDL_Scancode s_psx_binds[PSX_BINDS_MAX_PLAYERS][LNG_PSX_PAD_BUTTON_COUNT];
 /* Alternate (secondary) bind per input. Either slot asserts the input.
  * Persisted in keybinds.ini as a comma-separated second value
@@ -217,10 +262,10 @@ static int psx_kb_load_ini(const char* path) {
 }
 
 static void psx_kb_seed_defaults(void) {
+    psx_kb_load_defaults();
     for (int p = 0; p < PSX_BINDS_MAX_PLAYERS; ++p) {
-        memcpy(s_psx_binds[p], kPsxDefaults, sizeof(kPsxDefaults));
-        for (int b = 0; b < LNG_PSX_PAD_BUTTON_COUNT; ++b)
-            s_psx_binds_alt[p][b] = SDL_SCANCODE_UNKNOWN;   /* no alt by default */
+        memcpy(s_psx_binds[p], s_psx_defaults, sizeof(s_psx_defaults));
+        memcpy(s_psx_binds_alt[p], s_psx_defaults_alt, sizeof(s_psx_defaults_alt));
     }
 }
 
@@ -233,9 +278,12 @@ static int psx_kb_player_all_unbound(int player) {
 /* Older keybinds.ini left P2+ fully unbound — promote empty slots to the
  * shared default map so Reset / keyboard routing works on every player. */
 static void psx_kb_promote_empty_players(void) {
+    psx_kb_load_defaults();
     for (int p = 0; p < PSX_BINDS_MAX_PLAYERS; ++p) {
-        if (psx_kb_player_all_unbound(p))
-            memcpy(s_psx_binds[p], kPsxDefaults, sizeof(kPsxDefaults));
+        if (psx_kb_player_all_unbound(p)) {
+            memcpy(s_psx_binds[p], s_psx_defaults, sizeof(s_psx_defaults));
+            memcpy(s_psx_binds_alt[p], s_psx_defaults_alt, sizeof(s_psx_defaults_alt));
+        }
     }
 }
 
@@ -292,8 +340,8 @@ void rui_psx_binds_set_slot(const char* path, int player, int b, int slot, int s
 void rui_psx_binds_reset(const char* path, int player) {
     if (player < 0 || player >= PSX_BINDS_MAX_PLAYERS) return;
     if (!s_psx_binds_init) rui_psx_binds_init(path);
-    memcpy(s_psx_binds[player], kPsxDefaults, sizeof(kPsxDefaults));
-    for (int b = 0; b < LNG_PSX_PAD_BUTTON_COUNT; ++b)
-        s_psx_binds_alt[player][b] = SDL_SCANCODE_UNKNOWN;
+    psx_kb_load_defaults();
+    memcpy(s_psx_binds[player], s_psx_defaults, sizeof(s_psx_defaults));
+    memcpy(s_psx_binds_alt[player], s_psx_defaults_alt, sizeof(s_psx_defaults_alt));
     psx_kb_write_ini(path);
 }

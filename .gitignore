@@ -16,3 +16,7 @@ probe.json
 *.psxmod
 psx_game_version.txt
 TODO.md
+assets/
+toolchain/
+launcher/state.json
+launcher/*.tmp

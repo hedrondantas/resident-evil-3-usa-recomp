@@ -72,6 +72,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <ctime>
 #include <filesystem>
 #include <string>
 #include <unordered_map>
@@ -2947,10 +2948,34 @@ void panel_audio_draw(LauncherModel* m, const LauncherTheme* th) {
 // for PSX; shown when the title can use multitap seats or the analog hack.
 int avail_input(const LauncherModel* m) {
     return launcher_model_multitap_available(m) ||
-           launcher_model_multitap_analog_available(m);
+           launcher_model_multitap_analog_available(m) ||
+           launcher_model_port_route_available(m);
 }
 void draw_input_controls(LauncherModel* m, const LauncherTheme& th) {
     eyebrow("INPUT");
+    if (launcher_model_port_route_available(m)) {
+        ImGui::AlignTextToFramePadding();
+        ImGui::TextUnformatted(ui_text("Controller 1 port"));
+        ImGui::SameLine();
+        ImGui::PushID("p1_port");
+        if (ImGui::Button(launcher_model_p1_port(m) == 2 ? ui_text("Port 2")
+                                                         : ui_text("Port 1"),
+                          ImVec2(px(100), px(30))))
+            launcher_model_cycle_p1_port(m);
+        ImGui::PopID();
+        if (ImGui::IsItemHovered(ImGuiHoveredFlags_DelayNormal)) {
+            ImGui::BeginTooltip();
+            ImGui::PushTextWrapPos(px(320));
+            ImGui::TextUnformatted(ui_text(
+                "Which console port controller 1 is plugged into. "
+                "F1 changes the same route during play."));
+            ImGui::PopTextWrapPos();
+            ImGui::EndTooltip();
+        }
+        if (launcher_model_multitap_available(m) ||
+            launcher_model_multitap_analog_available(m))
+            ImGui::Dummy(ImVec2(0, px(th.spacing_sm)));
+    }
     if (launcher_model_multitap_available(m)) {
         bool on = launcher_model_multitap_enabled(m) != 0;
         if (ImGui::Checkbox("Multitap", &on) &&
@@ -3552,7 +3577,7 @@ void draw_controller_assist_shortcuts(LauncherModel* m,
     if (ImGui::BeginTable("controller_assist_binds", 2,
                           ImGuiTableFlags_SizingStretchSame)) {
         for (int action = 0;
-             action < m->assist_binding_count && action < 2; ++action) {
+             action < m->assist_binding_count && action < 3; ++action) {
             ImGui::TableNextColumn();
             ImGui::PushID(action);
             ImGui::AlignTextToFramePadding();
@@ -7522,6 +7547,121 @@ const LauncherPanel kPanelRegistry[] = {
 // running cursor) so it is pixel-identical on every view and the CTA's glow
 // always has clearance below the divider — Settings has less body content, and
 // a cursor-relative footer let the glow ride up into the rule.
+// ---- Load State: boot straight into a save-state slot -------------------
+// The host lists its slots through GameInfo.savestate_slot_info; the picked
+// slot travels back as Settings.launch_state_slot with an ordinary LAUNCH.
+struct LoadStateSlot {
+    bool            exists = false;
+    long long       mtime = 0;
+    LauncherTexture tex = {0, 0, 0};
+};
+static LoadStateSlot g_load_slots[32];
+static int  g_load_slot_count = 0;
+static bool g_load_slots_scanned = false;
+
+static void load_state_refresh(LauncherModel* m) {
+    for (int i = 0; i < g_load_slot_count; ++i) {
+        if (g_load_slots[i].tex.id) launcher_texture_free(&g_load_slots[i].tex);
+        g_load_slots[i] = LoadStateSlot{};
+    }
+    g_load_slot_count = 0;
+    g_load_slots_scanned = true;
+    if (!m->savestate_slot_info || m->savestate_slot_count <= 0) return;
+    const int n = std::min(m->savestate_slot_count, 32);
+    const int tw = m->savestate_thumb_w, tht = m->savestate_thumb_h;
+    std::vector<unsigned int> thumb(tw > 0 && tht > 0 ? (size_t)tw * tht : 0);
+    for (int i = 0; i < n; ++i) {
+        LoadStateSlot& s = g_load_slots[i];
+        int has_thumb = 0;
+        s.exists = m->savestate_slot_info(m->savestate_slot_ctx, i, &s.mtime,
+                                          thumb.empty() ? nullptr : thumb.data(),
+                                          &has_thumb) != 0;
+        if (s.exists && has_thumb && !thumb.empty())
+            s.tex = launcher_texture_from_argb(thumb.data(), tw, tht);
+    }
+    g_load_slot_count = n;
+}
+
+static bool load_state_any(void) {
+    for (int i = 0; i < g_load_slot_count; ++i)
+        if (g_load_slots[i].exists) return true;
+    return false;
+}
+
+// Same gates as PLAY, then launch with the slot attached.
+static void load_state_launch(LauncherModel* m, int slot) {
+    if (launcher_model_bios_blocks_play(m)) {
+        launcher_model_bios_play_prompt(m);
+        return;
+    }
+    if (!launcher_model_prepare_rom_patch(m)) {
+        if (m->rom_patch_supported && m->s.rom_patch_enabled)
+            launcher_model_set_view(m, LNG_VIEW_MODS);
+        return;
+    }
+    if (mod_commit_launch(m)) {
+        m->s.launch_state_slot = slot + 1;
+        m->action = LNG_ACTION_LAUNCH;
+    }
+}
+
+void draw_load_state_modal(LauncherModel* m, const LauncherTheme& th) {
+    if (m->load_state_open) {
+        m->load_state_open = false;
+        load_state_refresh(m);
+        ImGui::OpenPopup("Load save state");
+    }
+    ImGui::SetNextWindowPos(ImGui::GetMainViewport()->GetCenter(),
+                            ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+    if (!ImGui::BeginPopupModal("Load save state", nullptr,
+                                ImGuiWindowFlags_AlwaysAutoResize))
+        return;
+    ImGui::TextColored(col(th.text_muted), "%s",
+                       ui_text("Start the game from a save state."));
+    ImGui::Dummy(ImVec2(0, px(6)));
+    const float img_w = px(152.0f);
+    const float img_h = img_w * 3.0f / 4.0f;
+    const ImVec2 pad = ImGui::GetStyle().FramePadding;
+    const int cols = 4;
+    int chosen = -1;
+    for (int i = 0; i < g_load_slot_count; ++i) {
+        const LoadStateSlot& s = g_load_slots[i];
+        if (i % cols) ImGui::SameLine(0, px(12));
+        ImGui::BeginGroup();
+        ImGui::PushID(i);
+        if (!s.exists) ImGui::BeginDisabled();
+        bool clicked;
+        if (s.tex.id)
+            clicked = ImGui::ImageButton("##thumb", tid(s.tex), ImVec2(img_w, img_h));
+        else
+            clicked = ImGui::Button(s.exists ? ui_text("No preview") : ui_text("Empty"),
+                                    ImVec2(img_w + pad.x * 2, img_h + pad.y * 2));
+        if (!s.exists) ImGui::EndDisabled();
+        if (clicked && s.exists) chosen = i;
+        ImGui::Text("%s %d", ui_text("Slot"), i + 1);
+        char when[48] = "-";
+        if (s.exists && s.mtime > 0) {
+            const std::time_t t = (std::time_t)s.mtime;
+            if (const std::tm* lt = std::localtime(&t))
+                std::strftime(when, sizeof when, "%Y-%m-%d %H:%M", lt);
+        }
+        ImGui::TextColored(col(th.text_muted), "%s", when);
+        ImGui::PopID();
+        ImGui::EndGroup();
+    }
+    ImGui::Dummy(ImVec2(0, px(8)));
+    const bool cancel = ImGui::Button(ui_text("Cancel"), ImVec2(px(120), px(32))) ||
+                        ImGui::IsKeyPressed(ImGuiKey_Escape, false) ||
+                        ImGui::IsKeyPressed(ImGuiKey_GamepadFaceRight, false);
+    if (chosen >= 0) {
+        ImGui::CloseCurrentPopup();
+        load_state_launch(m, chosen);
+    } else if (cancel) {
+        ImGui::CloseCurrentPopup();
+    }
+    ImGui::EndPopup();
+}
+
 void draw_footer(LauncherModel* m, const LauncherTheme& th, float footer_h) {
     const ImVec2 origin = ImGui::GetCursorScreenPos();
     const float  fullw  = ImGui::GetContentRegionAvail().x;
@@ -7653,10 +7793,12 @@ void draw_footer(LauncherModel* m, const LauncherTheme& th, float footer_h) {
         ImGui::IsKeyPressed(ImGuiKey_Backspace, false))
         ImGui::SetKeyboardFocusHere();
     float play_x = origin.x + fullw - play_w;
+    float next_left_x = play_x;   // right edge for the next button left of PLAY
     if (m->netplay_supported &&
         (m->view == LNG_VIEW_DASHBOARD || m->view == LNG_VIEW_SETTINGS ||
          m->view == LNG_VIEW_CONTROLLER)) {
         const float net_w = px(170.0f);
+        next_left_x = play_x - net_w - px(12.0f);
         ImGui::SetCursorScreenPos(ImVec2(play_x - net_w - px(12.0f), cta_y));
         if (ImGui::Button(ui_text("NETPLAY"), ImVec2(net_w, play_h))) {
             /* Open the page immediately; connect/list runs on first draw
@@ -7667,10 +7809,26 @@ void draw_footer(LauncherModel* m, const LauncherTheme& th, float footer_h) {
             launcher_model_set_view(m, LNG_VIEW_NETPLAY);
         }
     }
-    ImGui::SetCursorScreenPos(ImVec2(play_x, cta_y));
     const bool can_play = launcher_model_can_launch(m);
     const bool bios_block = launcher_model_bios_blocks_play(m);
     const bool play_enabled = can_play || bios_block;
+    if (m->savestate_slot_count > 0 && m->savestate_slot_info &&
+        m->view == LNG_VIEW_DASHBOARD) {
+        if (!g_load_slots_scanned) load_state_refresh(m);
+        const float ls_w = px(190.0f);
+        const bool ls_enabled = can_play && load_state_any();
+        ImGui::SetCursorScreenPos(ImVec2(next_left_x - ls_w - px(12.0f), cta_y));
+        if (!ls_enabled) ImGui::BeginDisabled();
+        if (ImGui::Button(ui_text("LOAD STATE"), ImVec2(ls_w, play_h)))
+            m->load_state_open = true;
+        if (!ls_enabled) ImGui::EndDisabled();
+        if (!ls_enabled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+            ImGui::SetTooltip("%s", load_state_any()
+                ? ui_text("Select a valid disc and BIOS first")
+                : ui_text("No save states yet. Save one during play with "
+                          "Select + R1 or F7."));
+    }
+    ImGui::SetCursorScreenPos(ImVec2(play_x, cta_y));
     if (neon_cta("##play", ui_text("PLAY"), ImVec2(play_w, play_h), play_enabled)) {
         /* Prefer mismatch prompt over launch even if can_play races true. */
         if (bios_block)
@@ -8940,6 +9098,7 @@ void draw_ui(LauncherModel* m, const LauncherTheme& th, int logical_w, int logic
     draw_bios_play_modal(m, th);
     draw_pgo_confirm_modal(m, th);
     draw_fmv_timing_confirm_modal(m, th);
+    draw_load_state_modal(m, th);
     draw_standalone_builtin_rom_picker(m, th);
     draw_skip_modal(m);
     draw_netplay_player_modal(m);

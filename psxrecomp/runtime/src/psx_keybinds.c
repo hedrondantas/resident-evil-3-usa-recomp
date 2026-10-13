@@ -54,6 +54,25 @@
  *   Right analog stick: unbound
  * Simultaneous multi-keyboard play still requires distinct binds per slot.
  */
+/*
+ * A title can replace this map with its own (for example the layout of a PC
+ * release) by compiling this file with
+ *   PSX_TITLE_KEYBINDS_HEADER="path/to/header.h"
+ * where the header defines PSX_TITLE_KEYBINDS(X) as a list of
+ *   X(ini key, primary scancode, alternate scancode)
+ * entries. Inputs the list leaves out stay unbound. recomp-ui's psx_binds.c
+ * reads the same header so both writers produce the same keybinds.ini.
+ */
+#if defined(PSX_TITLE_KEYBINDS_HEADER)
+#include PSX_TITLE_KEYBINDS_HEADER
+#endif
+
+#if defined(PSX_TITLE_KEYBINDS)
+#define PSXKB_TITLE_PRIMARY(name, primary, alt) .name = (primary),
+#define PSXKB_TITLE_ALT(name, primary, alt)     .name = (alt),
+#define PSXKB_PLAYER_DEFAULTS     { PSX_TITLE_KEYBINDS(PSXKB_TITLE_PRIMARY) }
+#define PSXKB_PLAYER_ALT_DEFAULTS { PSX_TITLE_KEYBINDS(PSXKB_TITLE_ALT) }
+#else
 #define PSXKB_PLAYER_DEFAULTS { \
     .up = SDL_SCANCODE_UP, .down = SDL_SCANCODE_DOWN, \
     .left = SDL_SCANCODE_LEFT, .right = SDL_SCANCODE_RIGHT, \
@@ -68,6 +87,9 @@
     .rs_up = SDL_SCANCODE_UNKNOWN, .rs_down = SDL_SCANCODE_UNKNOWN, \
     .rs_left = SDL_SCANCODE_UNKNOWN, .rs_right = SDL_SCANCODE_UNKNOWN, \
 }
+/* The framework map has no alternate keys. */
+#define PSXKB_PLAYER_ALT_DEFAULTS { .up = SDL_SCANCODE_UNKNOWN }
+#endif
 
 #define PSXKB_DEFAULTS { \
     .player = { \
@@ -79,12 +101,23 @@
     }, \
 }
 
+#define PSXKB_ALT_DEFAULTS { \
+    .player = { \
+        PSXKB_PLAYER_ALT_DEFAULTS, \
+        PSXKB_PLAYER_ALT_DEFAULTS, \
+        PSXKB_PLAYER_ALT_DEFAULTS, \
+        PSXKB_PLAYER_ALT_DEFAULTS, \
+        PSXKB_PLAYER_ALT_DEFAULTS, \
+    }, \
+}
+
 static PsxKeyBinds       s_binds         = PSXKB_DEFAULTS;
 static const PsxKeyBinds s_default_binds = PSXKB_DEFAULTS;
-/* Alternate bindings: zero-initialised = SDL_SCANCODE_UNKNOWN = no alt bound.
- * Primary OR alt asserts the input; both persist to keybinds.ini as
- * "primary, alt" on one line. */
-static PsxKeyBinds       s_alt_binds;
+/* Alternate bindings: SDL_SCANCODE_UNKNOWN = no alt bound (the framework map
+ * has none; a title map may). Primary OR alt asserts the input; both persist
+ * to keybinds.ini as "primary, alt" on one line. */
+static PsxKeyBinds       s_alt_binds         = PSXKB_ALT_DEFAULTS;
+static const PsxKeyBinds s_default_alt_binds = PSXKB_ALT_DEFAULTS;
 
 typedef struct {
     const char *name;   /* ini key */
@@ -274,8 +307,10 @@ static int player_all_unbound(const PsxPlayerBinds *pb) {
  * default map so every player can Reset / use keyboard with the P1 layout. */
 static void promote_empty_players(void) {
     for (int p = 0; p < PSXKB_MAX_PLAYERS; ++p) {
-        if (player_all_unbound(&s_binds.player[p]))
+        if (player_all_unbound(&s_binds.player[p])) {
             s_binds.player[p] = s_default_binds.player[0];
+            s_alt_binds.player[p] = s_default_alt_binds.player[0];
+        }
     }
 }
 
@@ -445,7 +480,7 @@ void psx_keybinds_set_button_alt(int player, int button, SDL_Scancode sc) {
 void psx_keybinds_reset_player(int player) {
     if (player < 1 || player > PSXKB_MAX_PLAYERS) return;
     *player_binds(player) = s_default_binds.player[0];
-    memset(player_alt_binds(player), 0, sizeof(PsxPlayerBinds)); /* alts: unbound */
+    *player_alt_binds(player) = s_default_alt_binds.player[0];
 }
 
 void psx_keybinds_save(void) {

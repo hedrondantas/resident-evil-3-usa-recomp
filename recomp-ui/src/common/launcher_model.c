@@ -279,6 +279,13 @@ void launcher_model_init(LauncherModel* m,
         m->has_skip_fmv         = game->has_skip_fmv != 0;
         m->has_turbo_loads      = game->has_turbo_loads != 0;
         m->has_geometry_precision = game->has_geometry_precision != 0;
+        m->has_controller_port_route = game->has_controller_port_route != 0;
+        m->savestate_slot_count = game->savestate_slot_info
+            ? clampi(game->savestate_slot_count, 0, 32) : 0;
+        m->savestate_thumb_w = game->savestate_thumb_w;
+        m->savestate_thumb_h = game->savestate_thumb_h;
+        m->savestate_slot_info = game->savestate_slot_info;
+        m->savestate_slot_ctx = game->savestate_slot_ctx;
         // game->has_fullscreen_toggle is deliberately NOT read: the Fullscreen
         // row is universal (drawn for every console) — see recomp_launcher.h.
         m->has_bios             = game->has_bios != 0;
@@ -2802,6 +2809,23 @@ void launcher_model_toggle_multitap(LauncherModel* m) {
         const int vis = launcher_model_visible_player_count(m);
         if (m->cfg_player >= vis) m->cfg_player = vis > 0 ? vis - 1 : 0;
     }
+}
+
+/* The route swaps the two native ports, so it needs both of them: no
+ * multitap seats in use (the runtime applies the same rule). */
+int launcher_model_port_route_available(const LauncherModel* m) {
+    if (!m || !m->has_controller_port_route) return 0;
+    if (launcher_model_multitap_enabled(m)) return 0;
+    return launcher_model_visible_player_count(m) <= 2;
+}
+
+int launcher_model_p1_port(const LauncherModel* m) {
+    return (m && m->s.p1_port == 2) ? 2 : 1;
+}
+
+void launcher_model_cycle_p1_port(LauncherModel* m) {
+    if (!launcher_model_port_route_available(m)) return;
+    m->s.p1_port = launcher_model_p1_port(m) == 2 ? 1 : 2;
 }
 
 int launcher_model_visible_player_count(const LauncherModel* m) {

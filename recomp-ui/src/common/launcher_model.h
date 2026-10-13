@@ -379,6 +379,14 @@ typedef struct {
     // One flag gates both rows (two halves of one enhancement); the settings
     // stay independent. false => both rows hidden.
     bool     has_geometry_precision;
+    bool     has_controller_port_route;
+    // Dashboard Load State (GameInfo.savestate_*).
+    int      savestate_slot_count;
+    int      savestate_thumb_w, savestate_thumb_h;
+    int    (*savestate_slot_info)(void* ctx, int slot, long long* mtime_unix,
+                                  unsigned int* thumb_argb, int* has_thumb);
+    void*    savestate_slot_ctx;
+    bool     load_state_open;   // the picker was requested this frame
     // (no has_fullscreen_toggle: the Fullscreen row is universal — every
     // console draws it; the ABI flag of that name is deprecated/ignored.)
     bool     has_bios;
@@ -799,6 +807,10 @@ void launcher_model_toggle_multitap(LauncherModel* m);
 int  launcher_model_visible_player_count(const LauncherModel* m);
 /* DualShock-on-tap hack UI (PSX, player_count >= 3). */
 int  launcher_model_multitap_analog_available(const LauncherModel* m);
+// Controller 1 port route (Settings.p1_port), gated on has_controller_port_route.
+int  launcher_model_port_route_available(const LauncherModel* m);
+int  launcher_model_p1_port(const LauncherModel* m);          /* 1 or 2 */
+void launcher_model_cycle_p1_port(LauncherModel* m);
 int  launcher_model_multitap_analog_enabled(const LauncherModel* m);
 void launcher_model_toggle_multitap_analog(LauncherModel* m);
 

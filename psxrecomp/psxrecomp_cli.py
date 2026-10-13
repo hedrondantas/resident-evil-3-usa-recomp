@@ -729,15 +729,10 @@ def _build_recompiler_targets(
     for target in targets:
         build_cmd += ["--target", target]
     progress.log(" ".join(build_cmd))
-    proc = subprocess.run(build_cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
-    for stream in (proc.stdout, proc.stderr):
-        if stream:
-            for line in stream.splitlines():
-                if line.strip():
-                    progress.log(line)
-    if proc.returncode != 0:
+    returncode, _ = _run_streaming(build_cmd, progress=progress)
+    if returncode != 0:
         raise RuntimeError(
-            f"recompiler cmake build failed (exit {proc.returncode}) for "
+            f"recompiler cmake build failed (exit {returncode}) for "
             + ", ".join(targets)
         )
     if stamp:
@@ -1214,36 +1209,31 @@ def cmd_generate(args: argparse.Namespace, progress: ProgressReporter) -> int:
         "",
         "0",
     )
-    proc = subprocess.run(
-        cmd,
-        cwd=str(project_root),
-        capture_output=True,
-        text=True, encoding="utf-8", errors="replace",
-    )
     ri_warn = 0
-    for stream in (proc.stdout, proc.stderr):
-        if not stream:
-            continue
-        for line in stream.splitlines():
-            if not line.strip():
-                continue
-            if (
-                not verbose_ri
-                and "WARNING: reserved opcode" in line
-                and "emitting guest RI" in line
-            ):
-                ri_warn += 1
-                continue
-            progress.log(line)
+
+    def _keep_emit_line(line: str) -> bool:
+        nonlocal ri_warn
+        if (
+            not verbose_ri
+            and "WARNING: reserved opcode" in line
+            and "emitting guest RI" in line
+        ):
+            ri_warn += 1
+            return False
+        return True
+
+    returncode, _ = _run_streaming(
+        cmd, cwd=project_root, progress=progress, on_line=_keep_emit_line
+    )
     if ri_warn:
         progress.log(
             f"Note: suppressed {ri_warn} reserved-opcode WARNING line(s) "
             "(data-as-code sites; RI raises still emitted). "
             "Set PSXRECOMP_VERBOSE_RI_WARNINGS=1 for full detail."
         )
-    if proc.returncode != 0:
+    if returncode != 0:
         progress.error(
-            f"psxrecomp-game failed (exit {proc.returncode})", code=EXIT_ERROR
+            f"psxrecomp-game failed (exit {returncode})", code=EXIT_ERROR
         )
         return EXIT_ERROR
 
@@ -1480,10 +1470,52 @@ def _resolve_runtime_exe(build_dir: Path, target: str, exe_basename: str):
     )
 
 
+_NINJA_STEP = re.compile(r"^\[(\d+)/(\d+)\]")
+
+
+def _run_streaming(
+    cmd: list[str],
+    *,
+    progress: ProgressReporter,
+    cwd: Optional[Path] = None,
+    on_line=None,
+) -> tuple[int, str]:
+    """Run cmd and forward each output line to progress.log as it arrives.
+
+    stdout and stderr are merged so lines keep the order a terminal shows.
+    on_line(line) may return False to keep a line out of the log. Returns
+    the exit code and the full combined output.
+    """
+    proc = subprocess.Popen(
+        cmd,
+        cwd=str(cwd) if cwd is not None else None,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+    )
+    lines: list[str] = []
+    assert proc.stdout is not None
+    for raw in proc.stdout:
+        line = raw.rstrip("\r\n")
+        lines.append(line)
+        if not line.strip():
+            continue
+        if on_line is not None and on_line(line) is False:
+            continue
+        progress.log(line)
+    return proc.wait(), "\n".join(lines)
+
+
 def _cmake_build(
     build_dir: Path,
     target: str,
     progress: ProgressReporter,
+    *,
+    phase: str = "",
+    pct_lo: float = 0.0,
+    pct_hi: float = 1.0,
 ) -> None:
     jobs = os.environ.get("CMAKE_BUILD_PARALLEL_LEVEL") or str(
         os.cpu_count() or 4
@@ -1498,17 +1530,37 @@ def _cmake_build(
         target,
     ]
     progress.log(" ".join(cmd))
-    proc = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace")
-    for stream in (proc.stdout, proc.stderr):
-        if stream:
-            for line in stream.splitlines():
-                if line.strip():
-                    progress.log(line)
-    if proc.returncode != 0:
-        err = f"cmake --build failed (exit {proc.returncode})"
-        combined = "\n".join(
-            s for s in (proc.stdout or "", proc.stderr or "") if s
-        )
+    last_pct = -1
+
+    def _report_step(line: str) -> bool:
+        # Ninja prints "[done/total] ..." per edge. Turn it into phase events
+        # so a launcher can draw a moving bar instead of a frozen one.
+        nonlocal last_pct
+        if not (phase and progress.json_progress):
+            return True
+        m = _NINJA_STEP.match(line)
+        if not m:
+            return True
+        done, total = int(m.group(1)), int(m.group(2))
+        if total <= 0:
+            return True
+        pct = int(100 * done / total)
+        if pct != last_pct:
+            last_pct = pct
+            progress.phase(
+                phase,
+                pct=round(pct_lo + (pct_hi - pct_lo) * done / total, 4),
+                message=f"Compiling {done}/{total}",
+                step=done,
+                steps=total,
+            )
+        return True
+
+    returncode, combined = _run_streaming(
+        cmd, progress=progress, on_line=_report_step
+    )
+    if returncode != 0:
+        err = f"cmake --build failed (exit {returncode})"
         if "still dirty after" in combined:
             err += (
                 " — Ninja reconfigure loop (often release-zip mtimes ahead of "
@@ -1791,7 +1843,9 @@ def cmd_rebuild(args: argparse.Namespace, progress: ProgressReporter) -> int:
             _cmake_configure(
                 project_root, build_dir, pgo="", extra=cmake_extra, progress=progress
             )
-            _cmake_build(build_dir, target, progress)
+            _cmake_build(
+                build_dir, target, progress, phase="build", pct_lo=0.2, pct_hi=0.95
+            )
         else:
             # Framework defaults (60×2); game.toml / CLI may lengthen for hard titles.
             train_secs = int(getattr(args, "train_secs", 0) or 0)

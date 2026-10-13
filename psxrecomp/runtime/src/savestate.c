@@ -539,23 +539,29 @@ void savestate_get_integrity(uint32_t* bios_checksum, uint32_t* entry_pc) {
     if (entry_pc) *entry_pc = s_entry_pc;
 }
 
+/* <dir>/state_<entry_pc><disc_token>_slotNN.<ext>: the one slot file layout,
+ * shared by the configured paths and savestate_preview_slot(). */
+static void build_state_path(char* out, size_t cap, const char* dir,
+                             uint32_t entry_pc, const char* disc_token,
+                             int slot, const char* ext) {
+    snprintf(out, cap, "%s%sstate_%08X%s_slot%02d.%s",
+             dir, (dir[0] ? "/" : ""), (unsigned)entry_pc, disc_token, slot,
+             ext);
+}
+
 int savestate_slot_path(int slot, char* out, size_t cap) {
     if (!s_configured || !out || cap == 0) return 0;
     if (slot < 0 || slot >= SAVESTATE_SLOTS) return 0;
     /* Keyed by entry_pc so slots from different games in a shared dir never
      * collide; boot_state_load also rejects a mismatched entry_pc internally. */
-    snprintf(out, cap, "%s%sstate_%08X%s_slot%02d.pst",
-             s_dir, (s_dir[0] ? "/" : ""), (unsigned)s_entry_pc,
-             s_disc_token, slot);
+    build_state_path(out, cap, s_dir, s_entry_pc, s_disc_token, slot, "pst");
     return 1;
 }
 
 static int savestate_thumb_path(int slot, char* out, size_t cap) {
     if (!s_configured || !out || cap == 0) return 0;
     if (slot < 0 || slot >= SAVESTATE_SLOTS) return 0;
-    snprintf(out, cap, "%s%sstate_%08X%s_slot%02d.thumb",
-             s_dir, (s_dir[0] ? "/" : ""), (unsigned)s_entry_pc,
-             s_disc_token, slot);
+    build_state_path(out, cap, s_dir, s_entry_pc, s_disc_token, slot, "thumb");
     return 1;
 }
 
@@ -572,25 +578,24 @@ int savestate_slot_exists(int slot) {
     return sz > 0;
 }
 
+/* 1 when path is a non-empty file; *out_time gets its modified time. */
+static int state_file_mtime(const char* path, int64_t* out_time) {
+#ifdef _WIN32
+    struct _stat64 st;
+    if (_stat64(path, &st) != 0 || st.st_size <= 0) return 0;
+#else
+    struct stat st;
+    if (stat(path, &st) != 0 || st.st_size <= 0) return 0;
+#endif
+    if (out_time) *out_time = (int64_t)st.st_mtime;
+    return 1;
+}
+
 int savestate_slot_mtime(int slot, int64_t* out_time) {
     char path[600];
     if (out_time) *out_time = 0;
     if (!savestate_slot_path(slot, path, sizeof(path))) return 0;
-#ifdef _WIN32
-    {
-        struct _stat64 st;
-        if (_stat64(path, &st) != 0 || st.st_size <= 0) return 0;
-        if (out_time) *out_time = (int64_t)st.st_mtime;
-        return 1;
-    }
-#else
-    {
-        struct stat st;
-        if (stat(path, &st) != 0 || st.st_size <= 0) return 0;
-        if (out_time) *out_time = (int64_t)st.st_mtime;
-        return 1;
-    }
-#endif
+    return state_file_mtime(path, out_time);
 }
 
 int savestate_capture_thumb(int slot) {
@@ -632,15 +637,11 @@ int savestate_capture_thumb(int slot) {
     return fclose(f) == 0;
 }
 
-int savestate_read_thumb(int slot, uint32_t* out_argb, int out_w, int out_h) {
-    char path[600];
+/* Read a .thumb file (SAVESTATE_THUMB_W x SAVESTATE_THUMB_H ARGB pixels). */
+static int read_thumb_file(const char* path, uint32_t* out_argb) {
     FILE* f;
     SavestateThumbHeader hdr;
     size_t pixels;
-    if (!out_argb || out_w != SAVESTATE_THUMB_W ||
-        out_h != SAVESTATE_THUMB_H)
-        return 0;
-    if (!savestate_thumb_path(slot, path, sizeof(path))) return 0;
     f = fopen(path, "rb");
     if (!f) return 0;
     if (fread(&hdr, 1, sizeof(hdr), f) != sizeof(hdr) ||
@@ -655,6 +656,48 @@ int savestate_read_thumb(int slot, uint32_t* out_argb, int out_w, int out_h) {
         return 0;
     }
     fclose(f);
+    return 1;
+}
+
+int savestate_read_thumb(int slot, uint32_t* out_argb, int out_w, int out_h) {
+    char path[600];
+    if (!out_argb || out_w != SAVESTATE_THUMB_W ||
+        out_h != SAVESTATE_THUMB_H)
+        return 0;
+    if (!savestate_thumb_path(slot, path, sizeof(path))) return 0;
+    return read_thumb_file(path, out_argb);
+}
+
+int savestate_preview_slot(const char* root, const char* bios_token,
+                           uint32_t entry_pc, int disc_number, int slot,
+                           int64_t* out_time, uint32_t* thumb_argb,
+                           int* has_thumb) {
+    char dir[512];
+    char disc_token[16];
+    char path[600];
+    size_t n;
+    if (out_time) *out_time = 0;
+    if (has_thumb) *has_thumb = 0;
+    if (!root || !root[0] || slot < 0 || slot >= SAVESTATE_SLOTS) return 0;
+    /* The layout savestate_configure() + savestate_set_disc_scope() build. */
+    snprintf(dir, sizeof(dir), "%s", root);
+    n = strlen(dir);
+    while (n > 1 && (dir[n - 1] == '/' || dir[n - 1] == '\\'))
+        dir[--n] = '\0';
+    if (bios_token && bios_token[0] &&
+        snprintf(dir + n, sizeof(dir) - n, "/%s", bios_token) >=
+            (int)(sizeof(dir) - n))
+        return 0;
+    disc_token[0] = '\0';
+    if (disc_number > 0)
+        snprintf(disc_token, sizeof(disc_token), "_disc%d", disc_number);
+    build_state_path(path, sizeof(path), dir, entry_pc, disc_token, slot, "pst");
+    if (!state_file_mtime(path, out_time)) return 0;
+    if (thumb_argb) {
+        build_state_path(path, sizeof(path), dir, entry_pc, disc_token, slot,
+                         "thumb");
+        if (read_thumb_file(path, thumb_argb) && has_thumb) *has_thumb = 1;
+    }
     return 1;
 }
 

@@ -83,6 +83,16 @@ int savestate_slot_exists(int slot);
 
 /* Slot file modified time, seconds since the Unix epoch. */
 int savestate_slot_mtime(int slot, int64_t* out_time);
+/* Look a slot up BEFORE savestate_configure(), from the same inputs it takes:
+ * save root, BIOS token, entry PC and 1-based disc number (0 for single-disc
+ * titles). The launcher lists slots this way before the machine exists.
+ * Returns 1 when the slot holds a state and sets *out_time. When thumb_argb
+ * is non-NULL it receives the SAVESTATE_THUMB_W x SAVESTATE_THUMB_H image and
+ * *has_thumb says whether one was found. */
+int savestate_preview_slot(const char* root, const char* bios_token,
+                           uint32_t entry_pc, int disc_number, int slot,
+                           int64_t* out_time, uint32_t* thumb_argb,
+                           int* has_thumb);
 
 /* Per-slot screenshot thumbnails captured after a successful save. */
 int savestate_capture_thumb(int slot);

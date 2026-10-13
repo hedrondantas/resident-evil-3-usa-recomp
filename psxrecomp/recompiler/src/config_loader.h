@@ -1254,6 +1254,8 @@ struct UserSettings {
     // RECOMP_LAUNCHER_PAD_* encoding (0 = unbound, 1+button, 100+axis).
     bool has_hotkey_pad_rewind = false; int hotkey_pad_rewind = 1272; /* select+r3 */
     bool has_hotkey_pad_save_state_menu = false; int hotkey_pad_save_state_menu = 2040; /* select+r1 */
+    // Opens the runtime menu (F1) from a controller. 0 = unbound.
+    bool has_hotkey_pad_runtime_menu = false; int hotkey_pad_runtime_menu = 1080; /* select+start */
     // [audio]
     bool has_volume         = false; int  volume         = 100; // host mixer, 0..100
     bool has_spu_hq         = false; bool spu_hq         = false;
@@ -1308,6 +1310,11 @@ struct UserSettings {
     // DualShock-on-tap hack (settings.toml [controller] multitap_analog).
     // Default on when unset; game.toml / global prefs may override.
     bool has_multitap_analog = false; bool multitap_analog = true;
+    // Console port that host controller 1 drives at startup (settings.toml
+    // [controller] p1_port): 1 = Port 1 (default), 2 = Port 2. The runtime
+    // menu (F1) changes the same route live and saves it here. Ignored when
+    // multitap or 3+ offline seats make the swap unavailable.
+    bool has_p1_port = false; int p1_port = 1;
     // Localization: the launcher's chosen language code (feeds RuntimeConfig
     // .language / g_lang). "off"/"jp"/"" = untranslated native game. Persisted to
     // settings.toml [localization].language.

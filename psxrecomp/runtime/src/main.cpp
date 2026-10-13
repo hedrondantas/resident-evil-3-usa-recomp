@@ -86,6 +86,7 @@ extern "C" void psx_event_step_conservative_env_init(void);
 #include "disc_path.h"
 #include "iso_reader.h"      /* text-image guard: extract the boot EXE from the disc */
 #include "psx_keybinds.h"    /* configurable keyboard->DualShock keybinds (keybinds.ini) */
+#include "pad_chord_guard.h" /* hold back a host-shortcut chord from the game */
 #include "psx_window_icon.h"
 
 #if defined(RECOMP_LAUNCHER)
@@ -1226,6 +1227,15 @@ static int           g_rewind_depth  = 50;  /* local rewind snap count (50/100/1
 static int           g_rewind_interval = 15; /* frames between snaps (1/4/8/12/15) */
 static int           g_hotkey_pad_rewind = 1272;       /* select + r3 */
 static int           g_hotkey_pad_save_state_menu = 2040;/* select + r1 */
+static int           g_hotkey_pad_runtime_menu = 1080; /* select + start */
+/* Save-state slot (0-based) the launcher asked to boot into; -1 = none. */
+static int           g_boot_state_slot = -1;
+/* Controller-1 buttons of the runtime-menu chord that are kept from the game
+ * this frame, and buttons replayed after a short tap; see
+ * runtime_menu_poll_toggle_buttons(). Bit n = SDL controller button n. */
+static SDL_GameController *g_chord_hold_handle = nullptr;
+static uint32_t      g_chord_hold_buttons = 0;
+static uint32_t      g_chord_replay_buttons = 0;
 static uint32_t      g_savestate_input_guard_min_until = 0;
 static uint32_t      g_savestate_input_guard_max_until = 0;
 static int           g_headless       = 0;   /* debug/CI frontend: no SDL window/audio */
@@ -4559,6 +4569,18 @@ static bool source_is_stick_axis(const ControllerSource& s) {
  * left/right analog-stick axes do NOT contribute button bits — see
  * source_is_stick_axis above. Digital mode passes false, so ls_* stick
  * directions still fold onto the D-pad via fold_bit. */
+/* -1: a held chord button the game must not see yet; 1: a short tap being
+ * replayed; 0: read the device as usual. */
+static int controller_source_chord_state(SDL_GameController* h,
+                                         const ControllerSource& source) {
+    if (h != g_chord_hold_handle || source.kind != ControllerSource::Kind::Button ||
+        source.id < 0 || source.id >= 32)
+        return 0;
+    const uint32_t bit = 1u << source.id;
+    if (g_chord_replay_buttons & bit) return 1;
+    if (g_chord_hold_buttons & bit) return -1;
+    return 0;
+}
 static uint16_t controller_pad_buttons(const ControllerMap& map,
                                        SDL_GameController* h,
                                        bool suppress_stick_axes,
@@ -4568,7 +4590,10 @@ static uint16_t controller_pad_buttons(const ControllerMap& map,
     for (const auto& entry : map) {
         for (const auto& source : entry.sources) {
             if (suppress_stick_axes && source_is_stick_axis(source)) continue;
-            if (!controller_source_pressed_h(h, source, deadzone_raw)) continue;
+            const int chord = controller_source_chord_state(h, source);
+            if (chord < 0) continue;
+            if (chord == 0 && !controller_source_pressed_h(h, source, deadzone_raw))
+                continue;
             if (entry.bit)
                 buttons &= (uint16_t)~entry.bit;
             if (entry.fold_bit && !suppress_stick_axes)
@@ -6048,6 +6073,7 @@ static void depth24_stage_scanout(const GpuDisplayInfo *di, uint32_t *buf,
 enum {
     PSX_ASSIST_BIND_REWIND = 0,
     PSX_ASSIST_BIND_SAVE_STATE_MENU,
+    PSX_ASSIST_BIND_RUNTIME_MENU,
     PSX_ASSIST_BIND_COUNT
 };
 
@@ -6066,6 +6092,9 @@ enum {
 #define PSX_HOTKEY_PAD_SELECT_R1 \
     PSX_HOTKEY_PAD_BUTTON_COMBO(((uint32_t)1u << SDL_CONTROLLER_BUTTON_BACK) | \
                                 ((uint32_t)1u << SDL_CONTROLLER_BUTTON_RIGHTSHOULDER))
+#define PSX_HOTKEY_PAD_SELECT_START \
+    PSX_HOTKEY_PAD_BUTTON_COMBO(((uint32_t)1u << SDL_CONTROLLER_BUTTON_BACK) | \
+                                ((uint32_t)1u << SDL_CONTROLLER_BUTTON_START))
 
 static int normalize_hotkey_pad_binding(int binding, int fallback) {
     if (PSX_HOTKEY_PAD_IS_BUTTON(binding)) {
@@ -6129,6 +6158,9 @@ static int savestate_menu_slot = 0;
 static int savestate_menu_ignore_toggle_release = 0;
 static SDL_Keycode savestate_menu_open_key = 0;
 static int runtime_settings_menu_open = 0;
+/* Set when the menu opens: buttons already held (the chord that opened it)
+ * are ignored until released, so SELECT does not close it at once. */
+static int runtime_settings_menu_nav_resync = 0;
 static SDL_Keycode runtime_settings_menu_open_key = 0;
 
 static void runtime_settings_menu_sync_overlay(void);
@@ -6274,6 +6306,8 @@ static void runtime_ui_save(void*) {
     settings.has_geometry_correction = true;
     settings.perspective_texturing = g_video_perspective_texturing != 0;
     settings.has_perspective_texturing = true;
+    settings.p1_port = g_controller_ports_swapped ? 2 : 1;
+    settings.has_p1_port = true;
     if (!PSXRecompV4::save_user_settings(g_runtime_settings_path, settings))
         host_osd_push("Settings changed live but could not be saved", 2200);
 }
@@ -6470,6 +6504,7 @@ static void runtime_settings_menu_toggle(SDL_Keycode opened_by_key) {
         runtime_settings_menu_close();
         return;
     }
+    runtime_settings_menu_nav_resync = 1;
 #if defined(RECOMP_LAUNCHER)
     runtime_settings_ui_ensure_created();
     if (g_runtime_settings_ui) {
@@ -6567,6 +6602,11 @@ static void runtime_settings_menu_poll_nav(void) {
                 SDL_GameControllerGetButton(h, SDL_CONTROLLER_BUTTON_BACK))
                 current |= 1u << 5;
         }
+        if (runtime_settings_menu_nav_resync) {
+            runtime_settings_menu_nav_resync = 0;
+            previous = current;
+            return;
+        }
         const uint32_t pressed = current & ~previous;
         if (pressed & (1u << 0)) recomp_runtime_ui_handle_input(
             g_runtime_settings_ui, RECOMP_RUNTIME_UI_INPUT_UP, 1, 0);
@@ -6597,6 +6637,12 @@ static void runtime_settings_menu_poll_nav(void) {
                                              SDL_CONTROLLER_BUTTON_DPAD_RIGHT);
         cancel = SDL_GameControllerGetButton(h, SDL_CONTROLLER_BUTTON_B) ||
                  SDL_GameControllerGetButton(h, SDL_CONTROLLER_BUTTON_BACK);
+    }
+    if (runtime_settings_menu_nav_resync) {
+        runtime_settings_menu_nav_resync = 0;
+        prev_toggle = toggle;
+        prev_cancel = cancel;
+        return;
     }
     if (toggle && !prev_toggle)
         controller_port_route_toggle();
@@ -6778,6 +6824,36 @@ static void savestate_menu_poll_toggle_buttons(void) {
     int down = hotkey_pad_binding_down(g_hotkey_pad_save_state_menu);
     if (down && !was_down && !psx_rewind_is_open())
         savestate_menu_toggle(0);
+    was_down = down;
+}
+
+/* SELECT+START (default) opens the runtime menu from controller 1. The chord's
+ * buttons are kept from the game while it is being pressed; see
+ * pad_chord_guard.h for why and how. */
+static void runtime_menu_poll_toggle_buttons(void) {
+    static int was_down;
+    static PadChordGuard guard;
+    SDL_GameController *h = g_players[0].handle;
+    const int binding = g_hotkey_pad_runtime_menu;
+    const int down = hotkey_pad_binding_down(binding);
+    const uint32_t now = (uint32_t)SDL_GetTicks() | 1u;  /* never 0 */
+    uint32_t mask = 0, held = 0;
+
+    if (h && PSX_HOTKEY_PAD_IS_BUTTON_COMBO(binding)) {
+        mask = (uint32_t)PSX_HOTKEY_PAD_BUTTON_COMBO_MASK(binding);
+        for (int code = 0; code < SDL_CONTROLLER_BUTTON_MAX && code < 32; ++code) {
+            if ((mask & (1u << code)) &&
+                SDL_GameControllerGetButton(h, (SDL_GameControllerButton)code))
+                held |= 1u << code;
+        }
+    }
+    g_chord_hold_handle = h;
+    g_chord_hold_buttons = pad_chord_guard_update(&guard, mask, held, down, now,
+                                                  &g_chord_replay_buttons);
+
+    if (down && !was_down && !runtime_settings_menu_open &&
+        !savestate_menu_open && !psx_rewind_is_open())
+        runtime_settings_menu_toggle(0);
     was_down = down;
 }
 
@@ -7278,6 +7354,7 @@ static NetplayVblankEpilogue sdl_vblank_present_body(void) {
         }
         savestate_menu_poll_toggle_buttons();
         rewind_poll_toggle_buttons();
+        runtime_menu_poll_toggle_buttons();
         psx_rewind_note_frame();
         psx_rewind_present_tick((uint32_t)SDL_GetTicks());
         if (savestate_menu_open)
@@ -11495,12 +11572,34 @@ namespace {
     static const char* const kPsxHostShortcutLabels[] = {
         "Rewind",
         "Save states",
+        "Settings menu",
     };
 
     void ae_rui_set_sidecar_paths(const char* argv0) {
         const auto exe = exe_dir_from_argv(argv0 ? argv0 : "");
         g_rui_keybinds_path = (exe / "keybinds.ini").string();
         g_rui_config_ini_path = (exe / "config.ini").string();
+    }
+
+    /* Load State preview: slots are read straight from disk, because
+     * savestate_configure() only runs once the machine exists. main() fills
+     * these with the inputs that configure call will get. */
+    std::string g_lnch_save_root;
+    std::string g_lnch_save_bios_token;
+    uint32_t    g_lnch_save_entry_pc = 0;
+    int         g_lnch_save_disc = 0;
+
+    int ae_savestate_slot_info(void*, int slot, long long* mtime_unix,
+                               unsigned int* thumb_argb, int* has_thumb) {
+        static_assert(sizeof(unsigned int) == sizeof(uint32_t),
+                      "thumbnail pixels are 32-bit");
+        int64_t t = 0;
+        const int ok = savestate_preview_slot(
+            g_lnch_save_root.c_str(), g_lnch_save_bios_token.c_str(),
+            g_lnch_save_entry_pc, g_lnch_save_disc, slot, &t,
+            reinterpret_cast<uint32_t*>(thumb_argb), has_thumb);
+        if (mtime_unix) *mtime_unix = (long long)t;
+        return ok;
     }
 
     void ae_fill_psx_launcher_game_info(
@@ -11552,6 +11651,19 @@ namespace {
         gi->has_turbo_loads = turbo_loads_offered_b ? 1 : 0;
         gi->has_geometry_precision = 1;
         gi->has_rewind_depth = 1;
+#if defined(RECOMP_LAUNCHER_HAS_P1_PORT)
+        gi->has_controller_port_route = 1;
+#endif
+#if defined(RECOMP_LAUNCHER_HAS_LAUNCH_STATE_SLOT)
+        /* Not for a netplay rematch: both seats must boot the same state. */
+        if (!resume_netplay_room && g_lnch_save_entry_pc != 0 &&
+            !g_lnch_save_root.empty()) {
+            gi->savestate_slot_count = SAVESTATE_SLOTS;
+            gi->savestate_thumb_w = SAVESTATE_THUMB_W;
+            gi->savestate_thumb_h = SAVESTATE_THUMB_H;
+            gi->savestate_slot_info = ae_savestate_slot_info;
+        }
+#endif
         if (language_labels && num_languages > 0) {
             gi->language_labels = language_labels;
             gi->num_languages = num_languages;
@@ -12425,6 +12537,10 @@ int main(int argc, char** argv) {
             g_hotkey_pad_save_state_menu = normalize_hotkey_pad_binding(
                 us.hotkey_pad_save_state_menu,
                 PSX_HOTKEY_PAD_SELECT_R1);
+        if (us.has_hotkey_pad_runtime_menu)
+            g_hotkey_pad_runtime_menu = normalize_hotkey_pad_binding(
+                us.hotkey_pad_runtime_menu,
+                PSX_HOTKEY_PAD_SELECT_START);
         if (us.has_bios_path && !bios_from_cli && !us.bios_path.empty()) {
             settings_bios_storage = us.bios_path.string();
             bios_path = settings_bios_storage.c_str();
@@ -12489,6 +12605,9 @@ int main(int argc, char** argv) {
             if (us.has_deadzone) resolved_deadzone = us.deadzone;
         }
         apply_offline_pad_count(game_players, multitap_enabled);
+        /* Route saved by the runtime menu (F1) or an external launcher.
+         * Checked against the final seat count before the devices open. */
+        if (us.has_p1_port) g_controller_ports_swapped = us.p1_port == 2;
         if (us.has_low_latency_input) g_low_latency_input = us.low_latency_input ? 1 : 0;
         if (us.has_vsync)             g_video_vsync       = us.vsync;
         if (us.has_frame_interpolation)
@@ -12910,6 +13029,8 @@ int main(int argc, char** argv) {
             seed.has_hotkey_pad_rewind = true;
             seed.hotkey_pad_save_state_menu = g_hotkey_pad_save_state_menu;
             seed.has_hotkey_pad_save_state_menu = true;
+            seed.hotkey_pad_runtime_menu = g_hotkey_pad_runtime_menu;
+            seed.has_hotkey_pad_runtime_menu = true;
             seed.skip_launcher = skip_launcher_setting;   seed.has_skip_launcher = true;
             if (has_netplay_player_name) {
                 seed.netplay_player_name = netplay_player_name;
@@ -12970,6 +13091,7 @@ int main(int argc, char** argv) {
             seed.memcard1_enabled = memcard1_enabled; seed.has_memcard1_enabled = true;
             seed.memcard2_enabled = memcard2_enabled; seed.has_memcard2_enabled = true;
             seed.multitap_enabled = multitap_enabled; seed.has_multitap_enabled = true;
+            seed.p1_port = g_controller_ports_swapped ? 2 : 1; seed.has_p1_port = true;
             seed.multitap_analog = multitap_analog; seed.has_multitap_analog = true;
             if (!memcard1_path.empty()) { seed.memcard1_path = memcard1_path; seed.has_memcard1_path = true; }
             if (!memcard2_path.empty()) { seed.memcard2_path = memcard2_path; seed.has_memcard2_path = true; }
@@ -13085,6 +13207,9 @@ int main(int argc, char** argv) {
             ls.assist_pad_bind[PSX_ASSIST_BIND_SAVE_STATE_MENU] =
                 normalize_hotkey_pad_binding(seed.hotkey_pad_save_state_menu,
                     PSX_HOTKEY_PAD_SELECT_R1);
+            ls.assist_pad_bind[PSX_ASSIST_BIND_RUNTIME_MENU] =
+                normalize_hotkey_pad_binding(seed.hotkey_pad_runtime_menu,
+                    PSX_HOTKEY_PAD_SELECT_START);
             ls.auto_skip_fmv      = seed.auto_skip_fmv ? 1 : 0;
             ls.turbo_loads        = seed.turbo_loads ? 1 : 0;
             /* Localization: index of resolved_language within lang_menu_options
@@ -13121,6 +13246,9 @@ int main(int argc, char** argv) {
             ls.disc_index = selected_disc_index;
 #if defined(RECOMP_LAUNCHER_HAS_MULTITAP_ENABLED)
             ls.multitap_enabled = seed.multitap_enabled ? 1 : 0;
+#endif
+#if defined(RECOMP_LAUNCHER_HAS_P1_PORT)
+            ls.p1_port = seed.p1_port == 2 ? 2 : 1;
 #endif
 #if defined(RECOMP_LAUNCHER_HAS_MULTITAP_ANALOG)
             ls.multitap_analog = seed.multitap_analog ? 1 : 0;
@@ -13170,6 +13298,15 @@ int main(int argc, char** argv) {
                         (int)i + 1, nullptr, rui_disc_paths[i].c_str()});
             }
 
+            /* Same root / BIOS token / entry / disc the savestate_configure()
+             * call after the launcher uses, so Load State lists those slots. */
+            g_lnch_save_root = memcard_dir.string();
+            g_lnch_save_bios_token =
+                (s_openbios_allowed && settings_bios_storage.empty() &&
+                 !bios_from_cli) ? "openbios" : "scph1001";
+            g_lnch_save_entry_pc = game_entry_pc;
+            g_lnch_save_disc =
+                game_discs.size() > 1 ? selected_disc_index : 0;
             RecompLauncherCGameInfo gi{};
             ae_fill_psx_launcher_game_info(
                 &gi,
@@ -13368,6 +13505,10 @@ int main(int argc, char** argv) {
                     ls.assist_pad_bind[PSX_ASSIST_BIND_SAVE_STATE_MENU],
                     PSX_HOTKEY_PAD_SELECT_R1);
                 seed.has_hotkey_pad_save_state_menu = true;
+                seed.hotkey_pad_runtime_menu = normalize_hotkey_pad_binding(
+                    ls.assist_pad_bind[PSX_ASSIST_BIND_RUNTIME_MENU],
+                    PSX_HOTKEY_PAD_SELECT_START);
+                seed.has_hotkey_pad_runtime_menu = true;
                 seed.auto_skip_fmv = ls.auto_skip_fmv != 0;
                 seed.has_auto_skip_fmv = skip_fmv_offered;
                 seed.turbo_loads = ls.turbo_loads != 0;
@@ -13402,6 +13543,19 @@ int main(int argc, char** argv) {
                 seed.has_multitap_enabled = true;
                 multitap_enabled = seed.multitap_enabled;
                 apply_offline_pad_count(game_players, multitap_enabled);
+#endif
+#if defined(RECOMP_LAUNCHER_HAS_P1_PORT)
+                /* Checked against multitap/seats before the devices open. */
+                seed.p1_port = ls.p1_port == 2 ? 2 : 1;
+                seed.has_p1_port = true;
+                g_controller_ports_swapped = seed.p1_port == 2;
+#endif
+#if defined(RECOMP_LAUNCHER_HAS_LAUNCH_STATE_SLOT)
+                /* One-shot, never persisted: applied once the slots exist. */
+                g_boot_state_slot =
+                    (ls.launch_state_slot > 0 &&
+                     ls.launch_state_slot <= SAVESTATE_SLOTS)
+                        ? ls.launch_state_slot - 1 : -1;
 #endif
 #if defined(RECOMP_LAUNCHER_HAS_MULTITAP_ANALOG)
                 seed.multitap_analog = (!g_force_digital_pads && ls.multitap_analog != 0);
@@ -13580,6 +13734,9 @@ int main(int argc, char** argv) {
                 g_hotkey_pad_save_state_menu = seed.has_hotkey_pad_save_state_menu
                     ? seed.hotkey_pad_save_state_menu
                     : PSX_HOTKEY_PAD_SELECT_R1;
+                g_hotkey_pad_runtime_menu = seed.has_hotkey_pad_runtime_menu
+                    ? seed.hotkey_pad_runtime_menu
+                    : PSX_HOTKEY_PAD_SELECT_START;
                 skip_launcher_setting = seed.skip_launcher;
                 if (seed.has_bios_path) {
                     settings_bios_storage = seed.bios_path.string();
@@ -14200,6 +14357,10 @@ session_reboot:
             g_players[s].deadzone = controller_deadzone;
     }
     controller_deadzone = g_players[0].deadzone;
+    /* A saved Port 2 route needs the same conditions as the live toggle:
+     * no multitap and at most two offline seats. */
+    if (g_controller_ports_swapped && !controller_port_swap_available())
+        g_controller_ports_swapped = false;
     refresh_player_devices();  /* open SDL handles to match the player config */
 #ifndef PSX_SDL_NO_AUDIO
     audio_trace_init();
@@ -14699,6 +14860,15 @@ session_reboot:
                 }
             }
         }
+        /* Launcher Load State: same staging as PSX_LOAD_SLOT. The outcome
+         * shows on screen through psx_frontend_on_savestate_notify; only a
+         * refusal at request time needs its own message. */
+        if (g_boot_state_slot >= 0) {
+            const int slot = g_boot_state_slot;
+            g_boot_state_slot = -1;
+            if (!psx_netplay_active() && !savestate_request_load(slot))
+                host_osd_push(savestate_last_status_detail(), 3000);
+        }
     }
     /* Netplay: refresh RB bios/entry after savestate_configure (start() ran
      * earlier with zeros); guest also sandboxes .pst/.mcd under saves/netplay/. */
@@ -15045,6 +15215,10 @@ soft_return_lobby:
             normalize_hotkey_pad_binding(
                 g_hotkey_pad_save_state_menu,
                 PSX_HOTKEY_PAD_SELECT_R1);
+        ls.assist_pad_bind[PSX_ASSIST_BIND_RUNTIME_MENU] =
+            normalize_hotkey_pad_binding(
+                g_hotkey_pad_runtime_menu,
+                PSX_HOTKEY_PAD_SELECT_START);
         ls.aspect_index = (g_video_aspect_num * 9 == g_video_aspect_den * 21) ? 2
             : (g_video_aspect_num == 16 && g_video_aspect_den == 9) ? 1 : 0;
         ls.language_index = 0;
@@ -15330,6 +15504,10 @@ soft_return_lobby:
                     ls.assist_pad_bind[PSX_ASSIST_BIND_SAVE_STATE_MENU],
                     PSX_HOTKEY_PAD_SELECT_R1);
                 us.has_hotkey_pad_save_state_menu = true;
+                us.hotkey_pad_runtime_menu = normalize_hotkey_pad_binding(
+                    ls.assist_pad_bind[PSX_ASSIST_BIND_RUNTIME_MENU],
+                    PSX_HOTKEY_PAD_SELECT_START);
+                us.has_hotkey_pad_runtime_menu = true;
                 us.auto_skip_fmv = ls.auto_skip_fmv != 0;
                 us.has_auto_skip_fmv = skip_fmv_offered;
                 us.turbo_loads = ls.turbo_loads != 0;
@@ -15405,6 +15583,9 @@ soft_return_lobby:
             g_hotkey_pad_save_state_menu = normalize_hotkey_pad_binding(
                 ls.assist_pad_bind[PSX_ASSIST_BIND_SAVE_STATE_MENU],
                 PSX_HOTKEY_PAD_SELECT_R1);
+            g_hotkey_pad_runtime_menu = normalize_hotkey_pad_binding(
+                ls.assist_pad_bind[PSX_ASSIST_BIND_RUNTIME_MENU],
+                PSX_HOTKEY_PAD_SELECT_START);
             switch (ls.aspect_index) {
                 case 2:  g_video_aspect_num = 21; g_video_aspect_den = 9; break;
                 case 1:  g_video_aspect_num = 16; g_video_aspect_den = 9; break;

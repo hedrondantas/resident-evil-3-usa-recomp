@@ -2419,6 +2419,13 @@ UserSettings load_user_settings(const fs::path& path) {
                 s.has_hotkey_pad_save_state_menu = true;
             }
         });
+        if (h.contains("runtime_menu_pad")) try_get([&]{
+            const auto n = toml::find<int64_t>(h, "runtime_menu_pad");
+            if (pad_bind_value_ok(n)) {
+                s.hotkey_pad_runtime_menu = (int)n;
+                s.has_hotkey_pad_runtime_menu = true;
+            }
+        });
     }
     if (doc.contains("launcher")) {
         const toml::value& l = toml::find(doc, "launcher");
@@ -2561,6 +2568,13 @@ UserSettings load_user_settings(const fs::path& path) {
             s.multitap_analog = toml::find<bool>(ct, "multitap_analog");
             s.has_multitap_analog = true;
         });
+        if (ct.contains("p1_port")) try_get([&]{
+            const auto n = toml::find<int64_t>(ct, "p1_port");
+            if (n == 1 || n == 2) {
+                s.p1_port = (int)n;
+                s.has_p1_port = true;
+            }
+        });
         if (ct.contains("deadzone")) try_get([&]{
             const auto n = toml::find<int64_t>(ct, "deadzone");
             if (n >= 0 && n <= 32767) {
@@ -2660,13 +2674,17 @@ bool save_user_settings(const fs::path& path, const UserSettings& s) {
         f << "frequency = " << s.audio_freq << "\n";
     if (s.has_spu_hq)
         f << "spu_hq = " << (s.spu_hq ? "true" : "false") << "\n";
-    if (s.has_hotkey_pad_rewind || s.has_hotkey_pad_save_state_menu) {
+    if (s.has_hotkey_pad_rewind || s.has_hotkey_pad_save_state_menu ||
+        s.has_hotkey_pad_runtime_menu) {
         f << "\n[hotkeys]\n";
         if (s.has_hotkey_pad_rewind)
             f << "rewind_pad = " << s.hotkey_pad_rewind << "\n";
         if (s.has_hotkey_pad_save_state_menu)
             f << "save_state_menu_pad = "
               << s.hotkey_pad_save_state_menu << "\n";
+        if (s.has_hotkey_pad_runtime_menu)
+            f << "runtime_menu_pad = "
+              << s.hotkey_pad_runtime_menu << "\n";
     }
     if (s.has_skip_launcher)
         f << "\n[launcher]\nskip_launcher = " << (s.skip_launcher ? "true" : "false") << "\n";
@@ -2706,7 +2724,7 @@ bool save_user_settings(const fs::path& path, const UserSettings& s) {
 
     {
         bool any_ctrl = s.has_deadzone || s.has_multitap_enabled ||
-                        s.has_multitap_analog;
+                        s.has_multitap_analog || s.has_p1_port;
         for (int i = 0; i < UserSettings::kMaxControllerPlayers; ++i) {
             if (s.has_p_device[i] || s.has_p_mode[i] || s.has_p_deadzone[i])
                 any_ctrl = true;
@@ -2735,6 +2753,8 @@ bool save_user_settings(const fs::path& path, const UserSettings& s) {
             if (s.has_multitap_analog)
                 f << "multitap_analog = "
                   << (s.multitap_analog ? "true" : "false") << "\n";
+            if (s.has_p1_port)
+                f << "p1_port   = " << s.p1_port << "\n";
             /* Keep a global deadzone= for older readers (mirrors P1). */
             if (s.has_deadzone || s.has_p_deadzone[0])
                 f << "deadzone  = "

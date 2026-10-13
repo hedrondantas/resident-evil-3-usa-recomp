@@ -2,6 +2,8 @@
 
 #include "launcher_gl.h"
 
+#include <stdlib.h>
+
 #include "launcher_sdlcompat.h"   // GL header for the active SDL version
 
 #ifndef GL_CLAMP_TO_EDGE
@@ -68,6 +70,36 @@ static LauncherTexture load_impl(const char* path, int colorkey_tol) {
 
     t.id = (unsigned int)tex;
     t.w = w; t.h = h;
+    return t;
+}
+
+LauncherTexture launcher_texture_from_argb(const unsigned int* argb, int w, int h) {
+    LauncherTexture t = {0, 0, 0};
+    if (!argb || w <= 0 || h <= 0) return t;
+    const size_t count = (size_t)w * (size_t)h;
+    unsigned char* px = (unsigned char*)malloc(count * 4);
+    if (!px) return t;
+    for (size_t i = 0; i < count; ++i) {
+        const unsigned int c = argb[i];
+        px[i * 4 + 0] = (unsigned char)(c >> 16);
+        px[i * 4 + 1] = (unsigned char)(c >> 8);
+        px[i * 4 + 2] = (unsigned char)c;
+        px[i * 4 + 3] = 255;
+    }
+    GLuint tex = 0;
+    glGenTextures(1, &tex);
+    glBindTexture(GL_TEXTURE_2D, tex);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, w, h, 0, GL_RGBA, GL_UNSIGNED_BYTE, px);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    free(px);
+    t.id = (unsigned int)tex;
+    t.w = w;
+    t.h = h;
     return t;
 }
 
