@@ -4475,6 +4475,8 @@ static void gp0_exec_cpu_to_vram(void) {
                 a0_history[slot].stack[si] = psx_read_word(sp + si * 4);
         }
         a0_capture_slot = slot;
+    } else {
+        a0_capture_slot = -1;   /* history full: record nothing more */
     }
 
     vram_write_col = 0;
@@ -5325,9 +5327,12 @@ static void gpu_write_gp0_body(uint32_t val) {
     if (gp0_state == GP0_VRAM_WRITE) {
         /* Capture first few data words for debug */
         if (a0_capture_slot >= 0 && a0_capture_slot < A0_HISTORY_CAP) {
-            int wc = a0_history[a0_capture_slot].word_count++;
-            if (wc < 4)
-                a0_history[a0_capture_slot].first_words[wc] = val;
+            A0HistEntry *e = &a0_history[a0_capture_slot];
+            const int wc = e->word_count;
+            if (wc >= 0 && wc < 4)
+                e->first_words[wc] = val;
+            if (wc < 0x7FFFFFFF)   /* saturate: never wrap negative */
+                e->word_count = wc + 1;
         }
         /* Each word contains two 16-bit pixels (low halfword first) */
         for (int i = 0; i < 2; i++) {
