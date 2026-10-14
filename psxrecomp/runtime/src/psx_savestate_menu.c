@@ -60,6 +60,7 @@ static const uint8_t FONT8[59][8] = {
 
 static int s_open;
 static int s_selected;
+static int s_quit_mode;
 static int s_runtime_open;
 static int s_route_swapped;
 static int s_route_available;
@@ -239,10 +240,17 @@ static void rasterize_panel(void)
 
     fill_rect(s_panel, 0, 0, SSM_W, 46, 0xFF171B25u);
     draw_text(s_panel, 24, 14, "SAVE STATES", 0xFFFFD24Du, 2);
-    host_keymap_label(HOST_KEYMAP_SAVE_STATE_MENU, key, sizeof(key));
-    snprintf(buf, sizeof(buf), "%s MENU",
-             key[0] ? key : "F7");
-    draw_text(s_panel, 432, 18, buf, 0xFFB8BDC8u, 1);
+    if (s_quit_mode) {
+        /* Opened by F1 "Save state, then quit": a save closes the game. */
+        static const char kQuit[] = "SAVE TO QUIT - ESC CANCELS";
+        draw_text(s_panel, SSM_W - 24 - (int)(sizeof(kQuit) - 1) * 8, 18,
+                  kQuit, 0xFFFF8A80u, 1);
+    } else {
+        host_keymap_label(HOST_KEYMAP_SAVE_STATE_MENU, key, sizeof(key));
+        snprintf(buf, sizeof(buf), "%s MENU",
+                 key[0] ? key : "F7");
+        draw_text(s_panel, 432, 18, buf, 0xFFB8BDC8u, 1);
+    }
 
     refresh_thumbs();
     first = s_selected - 1;
@@ -357,6 +365,13 @@ void psx_savestate_menu_set_state(int open, int selected_slot)
         s_dirty = 1;
     s_open = open ? 1 : 0;
     s_selected = selected_slot;
+}
+
+void psx_savestate_menu_set_quit_mode(int on)
+{
+    if (s_quit_mode != (on ? 1 : 0))
+        s_dirty = 1;
+    s_quit_mode = on ? 1 : 0;
 }
 
 void psx_savestate_menu_note_slots_changed(void)

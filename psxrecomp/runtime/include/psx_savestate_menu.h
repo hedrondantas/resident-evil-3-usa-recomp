@@ -11,6 +11,8 @@ typedef struct RecompRuntimeUi RecompRuntimeUi;
 
 void psx_savestate_menu_set_state(int open, int selected_slot);
 void psx_savestate_menu_note_slots_changed(void);
+/* Header shows "save to quit" instead of the hotkey hint (F1 quit flow). */
+void psx_savestate_menu_set_quit_mode(int on);
 /* The renderer historically owns the full-screen save-state bitmap through
  * this module. Reuse that single overlay plane for the paused runtime menu so
  * GL/Vulkan/software all present identical host UI. Only one panel opens at a

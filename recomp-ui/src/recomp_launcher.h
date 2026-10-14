@@ -791,7 +791,16 @@ struct RecompLauncherCSettings {
      * the title screen. 0 = normal boot. Set by the dashboard's Load State
      * picker; hosts must not persist it. Appended additively. */
     int  launch_state_slot;
+
+    /* Post effects (GameInfo.has_postfx hosts). smaa: 0 off, 1 on.
+     * cas_sharpness: AMD CAS strength, 0 = off .. 100. Zero is the host
+     * default for both, so a host predating the fields reads as "off".
+     * Appended additively. */
+    int  smaa;
+    int  cas_sharpness;
 };
+/* Hosts can #ifdef on this to stay source-compatible with older recomp-ui. */
+#define RECOMP_LAUNCHER_HAS_POSTFX 1
 
 /* Values for RecompLauncherCSettings.vsync (1-based; 0 = unset). */
 #define RECOMP_LAUNCHER_VSYNC_ON       1
@@ -1387,6 +1396,11 @@ typedef struct RecompLauncherCGameInfo {
     int (*savestate_slot_info)(void* ctx, int slot, long long* mtime_unix,
                                unsigned int* thumb_argb, int* has_thumb);
     void* savestate_slot_ctx;
+
+    /* Draw the "SMAA" and "Sharpening (CAS)" rows (Settings.smaa /
+     * Settings.cas_sharpness): window-resolution post effects the host runs
+     * on its final image. 0 => no rows. Appended additively. */
+    int   has_postfx;
 } RecompLauncherCGameInfo;
 
 /* recomp_launcher_run_window return codes */

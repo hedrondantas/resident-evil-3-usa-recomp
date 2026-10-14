@@ -368,6 +368,7 @@ typedef struct {
     bool     has_antialiasing;
     bool     has_texture_filter;
     bool     has_fmv_filter;
+    bool     has_postfx;
     bool     has_screen_kind;
     bool     has_frame_interp;
     bool     has_spu_hq;
@@ -730,6 +731,10 @@ const char* launcher_model_texture_filter_label(const LauncherModel* m);
 // FMV reconstruction: Nearest/Bilinear/Sharp/Bicubic (wraps).
 void launcher_model_cycle_fmv_filter(LauncherModel* m);
 const char* launcher_model_fmv_filter_label(const LauncherModel* m);
+// Post effects (gated on has_postfx): SMAA on/off, CAS Off/25/50/75/100% (wraps).
+void launcher_model_toggle_smaa(LauncherModel* m);
+void launcher_model_cycle_cas(LauncherModel* m);
+const char* launcher_model_cas_label(const LauncherModel* m);
 void launcher_model_set_shader_path(LauncherModel* m, const char* path);
 void launcher_model_clear_shader_path(LauncherModel* m);
 // PSX geometry precision (gated on has_geometry_precision).

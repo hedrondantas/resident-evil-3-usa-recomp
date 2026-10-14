@@ -106,6 +106,11 @@ void gl_renderer_set_cpu_auth_dual(int on);
 void gl_renderer_set_fmv_filter(int cfg_value);
 int  gl_renderer_cpu_auth_dual(void);
 
+/* Window-resolution post effects on the game image, settings.toml [video]
+ * smaa / cas_sharpness. smaa: 0/1 (SMAA 1x, high preset). cas_sharpness:
+ * 0 = off, 1..100 = AMD CAS sharpness. Live: the next present picks it up. */
+void gl_renderer_set_postfx(int smaa, int cas_sharpness);
+
 /* Post-savestate freeze probe: skip/swap/dirty-mark counters (GL present path).
  * take() returns deltas since the previous take/reset. Safe no-ops when GL is
  * inactive. rect_dirty tests the current present-tile dirty bits. */

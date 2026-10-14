@@ -765,7 +765,8 @@ static void letterbox_rect_aspect(int ww, int wh, int num, int den,
 static void letterbox_rect(int ww, int wh, int *x, int *y, int *w, int *h);
 static void present_target_quad(GLuint tex, int tex_w, int tex_h,
                                 int x, int y, int w, int h, int linear,
-                                int lx, int ly, int lw, int lh, int v_flip);
+                                int lx, int ly, int lw, int lh, int v_flip,
+                                int postfx);
 
 static void coh_record(int kind, int x0, int y0, int x1, int y1) {
     GlCohEvent *e = &s_coh_ring[s_coh_seq % GL_COH_RING_CAP];
@@ -2649,6 +2650,308 @@ static int make_fbo(GLuint *out_fbo, GLuint color_tex, GLuint stencil_rb) {
     return 1;
 }
 
+/* ---- post-process: SMAA 1x + AMD CAS ------------------------------------
+ * Optional window-resolution passes over the final game image ([video] smaa,
+ * cas_sharpness). A present quad that opts in draws into an offscreen scene
+ * texture the size of the letterbox rect instead of the default framebuffer;
+ * postfx_end() then runs SMAA (luma edges -> blend weights -> neighbourhood
+ * blend) and/or CAS and writes the result into the letterbox. They run at the
+ * output size, after the SSAA downscale, because that is where the remaining
+ * stair-steps live: the prerendered 2D backgrounds stay 320x240 however high
+ * the internal resolution goes. Bezel and OSD are drawn outside the chain.
+ * Programs and lookup textures are built on first use; a build failure turns
+ * the chain off for the session and the plain present carries on. */
+#include "../third_party/smaa/AreaTex.h"
+#include "../third_party/smaa/SearchTex.h"
+#include "../third_party/smaa/smaa_glsl.inc"
+
+#define PSXGL_RED  0x1903
+#define PSXGL_RG   0x8227
+#define PSXGL_R8   0x8229
+#define PSXGL_RG8  0x822B
+
+static int s_pfx_smaa = 0;     /* [video] smaa */
+static int s_pfx_cas = 0;      /* [video] cas_sharpness: 0 off, 1..100 */
+static int s_pfx_state = 0;    /* 0 not built, 1 ready, -1 failed (off) */
+static GLuint s_pfx_edge_prog, s_pfx_weight_prog, s_pfx_blend_prog, s_pfx_cas_prog;
+static GLint  s_pfx_edge_uRt = -1, s_pfx_weight_uRt = -1, s_pfx_blend_uRt = -1;
+static GLint  s_pfx_cas_uPeak = -1, s_pfx_cas_uOrigin = -1;
+static GLuint s_pfx_area_tex, s_pfx_search_tex;
+/* Letterbox-sized targets: scene colour, SMAA edges, SMAA weights, and the
+ * SMAA output that CAS reads when both are on. */
+enum { PFX_SCENE, PFX_EDGES, PFX_WEIGHTS, PFX_RESOLVE, PFX_COUNT };
+static GLuint s_pfx_tex[PFX_COUNT], s_pfx_fbo[PFX_COUNT];
+static int    s_pfx_w = 0, s_pfx_h = 0;
+
+static const char PFX_SMAA_HEAD[] =
+    "#version 330\n"
+    "#define SMAA_GLSL_3\n"
+    "#define SMAA_PRESET_HIGH\n"
+    "uniform vec4 u_rt;\n"
+    "#define SMAA_RT_METRICS u_rt\n";
+static const char PFX_SMAA_VS_ONLY[] =
+    "#define SMAA_INCLUDE_VS 1\n#define SMAA_INCLUDE_PS 0\n";
+static const char PFX_SMAA_FS_ONLY[] =
+    "#define SMAA_INCLUDE_VS 0\n#define SMAA_INCLUDE_PS 1\n";
+/* Each pass is a fullscreen triangle with texcoord [0,1] over its target. */
+static const char PFX_SMAA_EDGE_VS[] =
+    "out vec2 v_uv; out vec4 v_off[3];\n"
+    "void main(){ vec2 p = vec2((gl_VertexID<<1)&2, gl_VertexID&2);\n"
+    "  v_uv = p; SMAAEdgeDetectionVS(p, v_off);\n"
+    "  gl_Position = vec4(p*2.0-1.0, 0.0, 1.0); }\n";
+static const char PFX_SMAA_EDGE_FS[] =
+    "in vec2 v_uv; in vec4 v_off[3]; uniform sampler2D u_color; out vec4 frag;\n"
+    "void main(){ frag = vec4(SMAALumaEdgeDetectionPS(v_uv, v_off, u_color), 0.0, 0.0); }\n";
+static const char PFX_SMAA_WEIGHT_VS[] =
+    "out vec2 v_uv; out vec2 v_pix; out vec4 v_off[3];\n"
+    "void main(){ vec2 p = vec2((gl_VertexID<<1)&2, gl_VertexID&2);\n"
+    "  v_uv = p; SMAABlendingWeightCalculationVS(p, v_pix, v_off);\n"
+    "  gl_Position = vec4(p*2.0-1.0, 0.0, 1.0); }\n";
+static const char PFX_SMAA_WEIGHT_FS[] =
+    "in vec2 v_uv; in vec2 v_pix; in vec4 v_off[3]; out vec4 frag;\n"
+    "uniform sampler2D u_edges; uniform sampler2D u_area; uniform sampler2D u_search;\n"
+    "void main(){ frag = SMAABlendingWeightCalculationPS(v_uv, v_pix, v_off,\n"
+    "  u_edges, u_area, u_search, vec4(0.0)); }\n";
+static const char PFX_SMAA_BLEND_VS[] =
+    "out vec2 v_uv; out vec4 v_off;\n"
+    "void main(){ vec2 p = vec2((gl_VertexID<<1)&2, gl_VertexID&2);\n"
+    "  v_uv = p; SMAANeighborhoodBlendingVS(p, v_off);\n"
+    "  gl_Position = vec4(p*2.0-1.0, 0.0, 1.0); }\n";
+static const char PFX_SMAA_BLEND_FS[] =
+    "in vec2 v_uv; in vec4 v_off; out vec4 frag;\n"
+    "uniform sampler2D u_color; uniform sampler2D u_blend;\n"
+    "void main(){ frag = vec4(SMAANeighborhoodBlendingPS(v_uv, v_off, u_color, u_blend).rgb, 1.0); }\n";
+
+/* AMD FidelityFX CAS (MIT), the sharpen-only 1:1 path of CasFilter() in GLSL.
+ * A soft min/max over the 3x3 neighbourhood sets a per-pixel amount, so flat
+ * areas sharpen more than edges that already have contrast and nothing is
+ * pushed past the local signal range (no halos). Green drives the weight, as
+ * in the reference, so all channels share one kernel and no colour fringe
+ * appears. u_peak = -1 / mix(8, 5, sharpness); u_origin is the letterbox
+ * origin, since this pass writes the default framebuffer in place. */
+static const char PFX_CAS_FS[] =
+    "#version 330\n"
+    "uniform sampler2D u_tex; uniform float u_peak; uniform ivec2 u_origin;\n"
+    "out vec4 frag;\n"
+    "vec3 at(ivec2 p, ivec2 hi){ return texelFetch(u_tex, clamp(p, ivec2(0), hi), 0).rgb; }\n"
+    "void main(){\n"
+    "  ivec2 hi = textureSize(u_tex, 0) - 1;\n"
+    "  ivec2 p = ivec2(gl_FragCoord.xy) - u_origin;\n"
+    "  vec3 a = at(p + ivec2(-1,-1), hi), b = at(p + ivec2(0,-1), hi), c = at(p + ivec2(1,-1), hi);\n"
+    "  vec3 d = at(p + ivec2(-1, 0), hi), e = at(p, hi),               f = at(p + ivec2(1, 0), hi);\n"
+    "  vec3 g = at(p + ivec2(-1, 1), hi), h = at(p + ivec2(0, 1), hi), i = at(p + ivec2(1, 1), hi);\n"
+    "  float mn = min(min(min(d.g, e.g), min(f.g, b.g)), h.g);\n"
+    "  float mx = max(max(max(d.g, e.g), max(f.g, b.g)), h.g);\n"
+    "  mn += min(mn, min(min(a.g, c.g), min(g.g, i.g)));\n"
+    "  mx += max(mx, max(max(a.g, c.g), max(g.g, i.g)));\n"
+    "  float amp = sqrt(clamp(min(mn, 2.0 - mx) / max(mx, 1e-5), 0.0, 1.0));\n"
+    "  float w = amp * u_peak;\n"
+    "  vec3 o = ((b + d + f + h) * w + e) / (1.0 + 4.0 * w);\n"
+    "  frag = vec4(clamp(o, 0.0, 1.0), 1.0);\n"
+    "}\n";
+
+static char *pfx_concat(const char *a, const char *b, const char *c, const char *d) {
+    size_t la = strlen(a), lb = strlen(b), lc = strlen(c), ld = strlen(d);
+    char *s = (char *)malloc(la + lb + lc + ld + 1);
+    if (!s) return NULL;
+    memcpy(s, a, la); memcpy(s + la, b, lb);
+    memcpy(s + la + lb, c, lc); memcpy(s + la + lb + lc, d, ld + 1);
+    return s;
+}
+
+static GLuint pfx_build_smaa(const char *vs_main, const char *fs_main) {
+    char *vs = pfx_concat(PFX_SMAA_HEAD, PFX_SMAA_VS_ONLY, SMAA_GLSL_SRC, vs_main);
+    char *fs = pfx_concat(PFX_SMAA_HEAD, PFX_SMAA_FS_ONLY, SMAA_GLSL_SRC, fs_main);
+    GLuint p = (vs && fs) ? build_program(vs, fs) : 0;
+    free(vs); free(fs);
+    return p;
+}
+
+static GLuint pfx_lut_tex(GLenum internal, int w, int h, GLenum fmt,
+                          const void *px, GLint filter) {
+    GLuint t = 0;
+    glGenTextures(1, &t);
+    glBindTexture(GL_TEXTURE_2D, t);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, filter);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glPixelStorei(PSXGL_UNPACK_ROW_LENGTH, 0);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glTexImage2D(GL_TEXTURE_2D, 0, (GLint)internal, w, h, 0, fmt, GL_UNSIGNED_BYTE, px);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
+    return t;
+}
+
+static void pfx_set_samplers(GLuint prog, const char *const *names, int n) {
+    p_glUseProgram(prog);
+    for (int i = 0; i < n; i++)
+        p_glUniform1i(p_glGetUniformLocation(prog, names[i]), i);
+}
+
+static int pfx_build(void) {
+    static const char *const edge_s[] = { "u_color" };
+    static const char *const weight_s[] = { "u_edges", "u_area", "u_search" };
+    static const char *const blend_s[] = { "u_color", "u_blend" };
+    static const char *const cas_s[] = { "u_tex" };
+    s_pfx_edge_prog = pfx_build_smaa(PFX_SMAA_EDGE_VS, PFX_SMAA_EDGE_FS);
+    s_pfx_weight_prog = pfx_build_smaa(PFX_SMAA_WEIGHT_VS, PFX_SMAA_WEIGHT_FS);
+    s_pfx_blend_prog = pfx_build_smaa(PFX_SMAA_BLEND_VS, PFX_SMAA_BLEND_FS);
+    s_pfx_cas_prog = build_program(PRESENT_VS, PFX_CAS_FS);
+    if (!s_pfx_edge_prog || !s_pfx_weight_prog || !s_pfx_blend_prog ||
+        !s_pfx_cas_prog) {
+        fprintf(stdout, "psxrecomp: SMAA/CAS shaders failed to build; "
+                        "post-processing off for this session\n");
+        fflush(stdout);
+        s_pfx_state = -1;
+        return 0;
+    }
+    s_pfx_edge_uRt = p_glGetUniformLocation(s_pfx_edge_prog, "u_rt");
+    s_pfx_weight_uRt = p_glGetUniformLocation(s_pfx_weight_prog, "u_rt");
+    s_pfx_blend_uRt = p_glGetUniformLocation(s_pfx_blend_prog, "u_rt");
+    s_pfx_cas_uPeak = p_glGetUniformLocation(s_pfx_cas_prog, "u_peak");
+    s_pfx_cas_uOrigin = p_glGetUniformLocation(s_pfx_cas_prog, "u_origin");
+    pfx_set_samplers(s_pfx_edge_prog, edge_s, 1);
+    pfx_set_samplers(s_pfx_weight_prog, weight_s, 3);
+    pfx_set_samplers(s_pfx_blend_prog, blend_s, 2);
+    pfx_set_samplers(s_pfx_cas_prog, cas_s, 1);
+    p_glUseProgram(0);
+    /* The area texture is read bilinearly by design; the search texture is
+     * addressed at texel centres, where point sampling is exact. */
+    p_glActiveTexture(PSXGL_TEXTURE0);
+    s_pfx_area_tex = pfx_lut_tex(PSXGL_RG8, AREATEX_WIDTH, AREATEX_HEIGHT,
+                                 PSXGL_RG, areaTexBytes, GL_LINEAR);
+    s_pfx_search_tex = pfx_lut_tex(PSXGL_R8, SEARCHTEX_WIDTH, SEARCHTEX_HEIGHT,
+                                   PSXGL_RED, searchTexBytes, GL_NEAREST);
+    s_pfx_state = 1;
+    fprintf(stdout, "psxrecomp: post-processing ready (SMAA 1x high, AMD CAS)\n");
+    fflush(stdout);
+    return 1;
+}
+
+static void pfx_free_targets(void) {
+    for (int i = 0; i < PFX_COUNT; i++) {
+        if (s_pfx_fbo[i]) p_glDeleteFramebuffers(1, &s_pfx_fbo[i]);
+        if (s_pfx_tex[i]) glDeleteTextures(1, &s_pfx_tex[i]);
+        s_pfx_fbo[i] = 0; s_pfx_tex[i] = 0;
+    }
+    s_pfx_w = s_pfx_h = 0;
+}
+
+static int pfx_ensure_targets(int w, int h) {
+    static const GLenum fmt[PFX_COUNT] = { GL_RGBA8, PSXGL_RG8, GL_RGBA8, GL_RGBA8 };
+    if (w == s_pfx_w && h == s_pfx_h && s_pfx_fbo[PFX_SCENE]) return 1;
+    pfx_free_targets();
+    p_glActiveTexture(PSXGL_TEXTURE0);
+    for (int i = 0; i < PFX_COUNT; i++) {
+        /* Every SMAA input is read with bilinear taps on purpose. */
+        s_pfx_tex[i] = make_tex(fmt[i], w, h,
+                                fmt[i] == PSXGL_RG8 ? PSXGL_RG : GL_RGBA,
+                                GL_UNSIGNED_BYTE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        if (!make_fbo(&s_pfx_fbo[i], s_pfx_tex[i], 0)) {
+            pfx_free_targets();
+            return 0;
+        }
+    }
+    s_pfx_w = w; s_pfx_h = h;
+    return 1;
+}
+
+/* The context owning every handle is gone (shutdown / renderer restart). */
+static void pfx_forget(void) {
+    for (int i = 0; i < PFX_COUNT; i++) { s_pfx_fbo[i] = 0; s_pfx_tex[i] = 0; }
+    s_pfx_w = s_pfx_h = 0;
+    s_pfx_edge_prog = s_pfx_weight_prog = s_pfx_blend_prog = s_pfx_cas_prog = 0;
+    s_pfx_area_tex = s_pfx_search_tex = 0;
+    if (s_pfx_state > 0) s_pfx_state = 0;
+}
+
+void gl_renderer_set_postfx(int smaa, int cas_sharpness) {
+    s_pfx_smaa = smaa ? 1 : 0;
+    s_pfx_cas = cas_sharpness < 0 ? 0 : cas_sharpness > 100 ? 100 : cas_sharpness;
+    /* Re-present the next frame even if the guest image did not change. */
+    if (s_force_present_remaining < 2) s_force_present_remaining = 2;
+}
+
+/* Redirect a present quad of size lw x lh into the scene target. Returns 0
+ * (caller draws straight to the window) when no effect is on or unavailable. */
+static int postfx_begin(int lw, int lh) {
+    if ((!s_pfx_smaa && s_pfx_cas <= 0) || s_pfx_state < 0 || lw < 1 || lh < 1)
+        return 0;
+    if (s_pfx_state == 0 && !pfx_build()) return 0;
+    if (!pfx_ensure_targets(lw, lh)) return 0;
+    p_glBindFramebuffer(PSXGL_FRAMEBUFFER, s_pfx_fbo[PFX_SCENE]);
+    glViewport(0, 0, lw, lh);
+    return 1;
+}
+
+static void pfx_bind(int unit, GLuint tex) {
+    p_glActiveTexture(PSXGL_TEXTURE0 + unit);
+    glBindTexture(GL_TEXTURE_2D, tex);
+}
+
+static void pfx_draw(void) {
+    p_glBindVertexArray(s_present_vao);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+    p_glBindVertexArray(0);
+}
+
+/* Run the enabled passes over the scene target into the window letterbox. */
+static void postfx_end(int lx, int ly, int lw, int lh) {
+    const float rw = 1.0f / (float)lw, rh = 1.0f / (float)lh;
+    const int cas = s_pfx_cas > 0;
+    GLuint src = s_pfx_tex[PFX_SCENE];
+    glDisable(GL_BLEND);
+    glDisable(GL_STENCIL_TEST);
+    glDisable(GL_SCISSOR_TEST);
+    if (s_pfx_smaa) {
+        glClearColor(0.f, 0.f, 0.f, 0.f);
+        p_glBindFramebuffer(PSXGL_FRAMEBUFFER, s_pfx_fbo[PFX_EDGES]);
+        glViewport(0, 0, lw, lh);
+        glClear(GL_COLOR_BUFFER_BIT);   /* the edge pass discards edgeless pixels */
+        p_glUseProgram(s_pfx_edge_prog);
+        p_glUniform4f(s_pfx_edge_uRt, rw, rh, (float)lw, (float)lh);
+        pfx_bind(0, src);
+        pfx_draw();
+
+        p_glBindFramebuffer(PSXGL_FRAMEBUFFER, s_pfx_fbo[PFX_WEIGHTS]);
+        glClear(GL_COLOR_BUFFER_BIT);
+        p_glUseProgram(s_pfx_weight_prog);
+        p_glUniform4f(s_pfx_weight_uRt, rw, rh, (float)lw, (float)lh);
+        pfx_bind(0, s_pfx_tex[PFX_EDGES]);
+        pfx_bind(1, s_pfx_area_tex);
+        pfx_bind(2, s_pfx_search_tex);
+        pfx_draw();
+
+        if (cas) {
+            p_glBindFramebuffer(PSXGL_FRAMEBUFFER, s_pfx_fbo[PFX_RESOLVE]);
+        } else {
+            p_glBindFramebuffer(PSXGL_FRAMEBUFFER, 0);
+            glViewport(lx, ly, lw, lh);
+        }
+        p_glUseProgram(s_pfx_blend_prog);
+        p_glUniform4f(s_pfx_blend_uRt, rw, rh, (float)lw, (float)lh);
+        pfx_bind(0, src);
+        pfx_bind(1, s_pfx_tex[PFX_WEIGHTS]);
+        pfx_draw();
+        src = s_pfx_tex[PFX_RESOLVE];
+    }
+    if (cas) {
+        const float sharp = (float)s_pfx_cas / 100.0f;
+        p_glBindFramebuffer(PSXGL_FRAMEBUFFER, 0);
+        glViewport(lx, ly, lw, lh);
+        p_glUseProgram(s_pfx_cas_prog);
+        p_glUniform1f(s_pfx_cas_uPeak, -1.0f / (8.0f + (5.0f - 8.0f) * sharp));
+        p_glUniform2i(s_pfx_cas_uOrigin, lx, ly);
+        pfx_bind(0, src);
+        pfx_draw();
+    }
+    p_glUseProgram(0);
+    p_glActiveTexture(PSXGL_TEXTURE0);
+}
+
 static int gl_hw_max_scale(void);
 
 static int init_gpu_raster(void) {
@@ -2930,6 +3233,7 @@ void gl_renderer_shutdown(void) {
     s_hold_fbo = 0;
     s_hold_tw = 0;
     s_hold_th = 0;
+    pfx_forget();
 }
 
 /* CPU-readout present (24-bit FMV frames and the PSX_GL_FORCE_CPU_PRESENT
@@ -2993,7 +3297,8 @@ void gl_renderer_present(const uint32_t *pixels, int src_w, int src_h, int linea
      * costs 10% of it, which reads as blur. Still a taste call, hence the knob. */
     int filt_mode = linear ? fmv_filter_mode()
                            : -1;          /* AA off: nearest, no shader work */
-    glViewport(lx, ly, lw, lh);
+    const int pfx = postfx_begin(lw, lh);
+    if (!pfx) glViewport(lx, ly, lw, lh);
     p_glActiveTexture(PSXGL_TEXTURE0);
     upload_present_tex(pixels, src_w, src_h, filt_mode >= 0 ? 1 : 0);
     p_glUseProgram(s_present_prog); p_glUniform1i(s_present_uTex, 0);
@@ -3016,6 +3321,7 @@ void gl_renderer_present(const uint32_t *pixels, int src_w, int src_h, int linea
     }
     p_glBindVertexArray(s_present_vao); glDrawArrays(GL_TRIANGLES, 0, 3);
     p_glBindVertexArray(0); p_glUseProgram(0);
+    if (pfx) postfx_end(lx, ly, lw, lh);
     pres_record(GL_PRES_CPU, 0, 0, src_w, src_h, lx, ly, lw, lh);
     hold_capture_drawable();
     latency_ring_mark(LAT_SWAP_BEGIN);
@@ -3914,8 +4220,11 @@ static int interp_capture(GLuint fbo, int x, int y, int w, int h,
 
 static void interp_draw_quad(float alpha, int lx, int ly, int lw, int lh) {
     int prev = s_interp_prev, curr = s_interp_cur;
-    p_glBindFramebuffer(PSXGL_FRAMEBUFFER, 0);
-    glViewport(lx, ly, lw, lh);
+    const int pfx = postfx_begin(lw, lh);
+    if (!pfx) {
+        p_glBindFramebuffer(PSXGL_FRAMEBUFFER, 0);
+        glViewport(lx, ly, lw, lh);
+    }
     p_glActiveTexture(PSXGL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, s_interp_tex[prev]);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, s_interp_linear ? GL_LINEAR : GL_NEAREST);
@@ -3935,6 +4244,7 @@ static void interp_draw_quad(float alpha, int lx, int ly, int lw, int lh) {
     p_glBindVertexArray(0);
     p_glUseProgram(0);
     p_glActiveTexture(PSXGL_TEXTURE0);
+    if (pfx) postfx_end(lx, ly, lw, lh);
 }
 
 static int interp_present(float alpha) {
@@ -4154,10 +4464,16 @@ static void gl_swap_with_osd(void) {
 
 static void present_target_quad(GLuint tex, int tex_w, int tex_h,
                                 int x, int y, int w, int h, int linear,
-                                int lx, int ly, int lw, int lh, int v_flip) {
+                                int lx, int ly, int lw, int lh, int v_flip,
+                                int postfx) {
     float u0, v0, u1, v1;
-    p_glBindFramebuffer(PSXGL_FRAMEBUFFER, 0);
-    glViewport(lx, ly, lw, lh);
+    /* postfx: a guest frame, so SMAA/CAS apply. A drawable capture already
+     * carries them and must not be filtered twice. */
+    postfx = postfx && postfx_begin(lw, lh);
+    if (!postfx) {
+        p_glBindFramebuffer(PSXGL_FRAMEBUFFER, 0);
+        glViewport(lx, ly, lw, lh);
+    }
     p_glActiveTexture(PSXGL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, tex);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, linear ? GL_LINEAR : GL_NEAREST);
@@ -4190,6 +4506,7 @@ static void present_target_quad(GLuint tex, int tex_w, int tex_h,
     glDrawArrays(GL_TRIANGLES, 0, 3);
     p_glBindVertexArray(0);
     p_glUseProgram(0);
+    if (postfx) postfx_end(lx, ly, lw, lh);
 }
 
 /* Bezel art: a still image behind the frame, filling whatever the letterbox or
@@ -4288,7 +4605,7 @@ int gl_renderer_present_hold_last(void) {
         }
         /* v_flip=0: drawable capture is already screen-oriented. */
         present_target_quad(s_hold_tex, s_hold_tw, s_hold_th,
-                            0, 0, s_hold_tw, s_hold_th, 0, lx, ly, lw, lh, 0);
+                            0, 0, s_hold_tw, s_hold_th, 0, lx, ly, lw, lh, 0, 0);
     } else {
         if (s_hold_force_4_3)
             letterbox_rect_aspect(ww, wh, 4, 3, &lx, &ly, &lw, &lh);
@@ -4296,7 +4613,7 @@ int gl_renderer_present_hold_last(void) {
             letterbox_rect(ww, wh, &lx, &ly, &lw, &lh);
         present_target_quad(s_hold_tex, s_hold_tw, s_hold_th,
                             0, 0, s_hold_tw, s_hold_th, s_hold_linear,
-                            lx, ly, lw, lh, 1);
+                            lx, ly, lw, lh, 1, 1);
         /* Upgrade to drawable after letterboxing once. Live+interp leaves
          * HOLD_NATIVE (no Swap on main); drawable path is the soak-proven
          * full-window image (GL without interp). */
@@ -4361,7 +4678,7 @@ void gl_renderer_present_vram(int disp_x, int disp_y, int w, int h, int linear,
     }
     present_bezel(ww, wh, lx, ly, lw, lh);
     present_target_quad(s_hr_tex, VRAM_W, VRAM_H,
-                        disp_x, disp_y, w, h, linear, lx, ly, lw, lh, 1);
+                        disp_x, disp_y, w, h, linear, lx, ly, lw, lh, 1, 1);
     pres_record(GL_PRES_VRAM, disp_x, disp_y, w, h, lx, ly, lw, lh);
     hold_capture_drawable();
     latency_ring_mark(LAT_SWAP_BEGIN);
@@ -4465,7 +4782,7 @@ int gl_renderer_present_wide_fbo(int disp_x, int disp_y, int disp_h, int linear)
         return 1;
     }
     present_target_quad(tex, g_wide_w, VRAM_H,
-                        0, disp_y, g_wide_w, disp_h, linear, lx, ly, lw, lh, 1);
+                        0, disp_y, g_wide_w, disp_h, linear, lx, ly, lw, lh, 1, 1);
     pres_record(GL_PRES_WIDE, disp_x, disp_y, g_wide_w, disp_h, lx, ly, lw, lh);
     hold_capture_drawable();
     latency_ring_mark(LAT_SWAP_BEGIN);

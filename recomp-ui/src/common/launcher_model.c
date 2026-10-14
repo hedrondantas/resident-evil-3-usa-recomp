@@ -271,6 +271,7 @@ void launcher_model_init(LauncherModel* m,
         m->has_antialiasing     = game->has_antialiasing != 0;
         m->has_texture_filter   = game->has_texture_filter != 0;
         m->has_fmv_filter       = game->has_fmv_filter != 0;
+        m->has_postfx           = game->has_postfx != 0;
         m->has_screen_kind      = game->has_screen_kind != 0;
         m->has_frame_interp     = game->has_frame_interp != 0;
         m->has_spu_hq           = game->has_spu_hq != 0;
@@ -619,6 +620,10 @@ void launcher_model_init(LauncherModel* m,
     if (m->has_fmv_filter) {
         if (m->s.fmv_filter < 1 || m->s.fmv_filter > RECOMP_LAUNCHER_FMV_FILTER_COUNT)
             m->s.fmv_filter = RECOMP_LAUNCHER_FMV_FILTER_BICUBIC;
+    }
+    if (m->has_postfx) {
+        m->s.smaa = m->s.smaa ? 1 : 0;
+        m->s.cas_sharpness = clampi(m->s.cas_sharpness, 0, 100);
     }
     if (m->has_renderer) {
         if (m->renderer_labels && m->num_renderers > 0) {
@@ -1539,6 +1544,27 @@ const char* launcher_model_fmv_filter_label(const LauncherModel* m) {
         case RECOMP_LAUNCHER_FMV_FILTER_SHARP:    return "Sharp";
         default:                                  return "Bicubic";
     }
+}
+
+void launcher_model_toggle_smaa(LauncherModel* m) {
+    if (!m || !m->has_postfx) return;
+    m->s.smaa = !m->s.smaa;
+}
+
+/* Off -> 25 -> 50 -> 75 -> 100 -> Off. A hand-edited value in between steps
+ * up to the next stop instead of snapping back to Off. */
+void launcher_model_cycle_cas(LauncherModel* m) {
+    if (!m || !m->has_postfx) return;
+    int v = clampi(m->s.cas_sharpness, 0, 100);
+    m->s.cas_sharpness = v >= 100 ? 0 : (v / 25 + 1) * 25;
+}
+
+const char* launcher_model_cas_label(const LauncherModel* m) {
+    static char buf[16];
+    int v = m ? clampi(m->s.cas_sharpness, 0, 100) : 0;
+    if (v == 0) return "Off";
+    snprintf(buf, sizeof(buf), "%d%%", v);
+    return buf;
 }
 
 void launcher_model_set_shader_path(LauncherModel* m, const char* path) {

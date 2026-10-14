@@ -2377,7 +2377,7 @@ static const char* elide_left(const char* s, float max_w, char* out, size_t cap)
 bool any_deep_display(const LauncherModel* m) {
     return m->has_window_size || m->has_renderer || m->has_supersampling ||
            m->has_antialiasing || m->has_texture_filter || m->has_screen_kind ||
-           m->has_fmv_filter ||
+           m->has_fmv_filter || m->has_postfx ||
            m->has_frame_interp || m->has_skip_fmv ||
            m->has_geometry_precision ||
            m->has_rewind_depth || m->has_vsync;
@@ -2662,6 +2662,32 @@ void draw_display_controls(LauncherModel* m, const LauncherTheme& th) {
                                   "with hard pixels.");
         }
         ImGui::PopID();
+    }
+
+    /* Post effects on the final window-size image. They sit after the
+     * rasterizer, so unlike Texture filtering they also reach the prerendered
+     * 2D backgrounds, which stay at native resolution whatever the internal
+     * resolution. OpenGL only; Software presents without them. */
+    if (m->has_postfx) {
+        const bool gl_off = m->has_renderer && m->s.renderer == 0;
+        if (gl_off) ImGui::BeginDisabled();
+        row_label("SMAA", th);
+        bool smaa = m->s.smaa != 0;
+        if (ImGui::Checkbox("##smaa", &smaa)) launcher_model_toggle_smaa(m);
+        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+            ImGui::SetTooltip("Subpixel morphological antialiasing on the final "
+                              "image. Smooths stair-stepped edges, including the "
+                              "pixelated 2D backgrounds.\nOpenGL renderer only.");
+        row_label("Sharpening (CAS)", th);
+        ImGui::PushID("cas");
+        if (ImGui::Button(ui_text(launcher_model_cas_label(m)), ImVec2(px(90), px(30))))
+            launcher_model_cycle_cas(m);
+        if (ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled))
+            ImGui::SetTooltip("AMD FidelityFX Contrast Adaptive Sharpening. "
+                              "Restores detail softened by the downscale and "
+                              "by SMAA, without halos.\nOpenGL renderer only.");
+        ImGui::PopID();
+        if (gl_off) ImGui::EndDisabled();
     }
 
     if (m->has_affine_filter) {
@@ -6550,6 +6576,97 @@ static bool mod_commit_launch(LauncherModel* m) {
     return false;
 }
 
+/* PLAY's mod commit can take seconds: the PSX provider hashes the whole disc
+ * image (SHA-256 over a ~700 MB bin measured at 3.6 s). Run on the UI thread
+ * that froze the launcher with no feedback, so players clicked PLAY again and
+ * Windows could ghost the window as "not responding". The commit now runs on
+ * a worker while the frame loop keeps pumping and draws only a loading screen
+ * (draw_launch_loading), which also keeps every other mod-provider call off
+ * the main thread until the worker is joined. */
+struct LaunchCommitJob {
+    SDL_Thread* thread = nullptr;
+    std::atomic<int> state{0};   // 0 idle, 1 running, 2 succeeded, 3 failed
+    const RecompLauncherCModProvider* mods = nullptr;
+    std::string rom;
+    double started_s = 0.0;
+};
+static LaunchCommitJob g_launch_job;
+
+static int SDLCALL launch_commit_worker(void* data) {
+    auto* job = static_cast<LaunchCommitJob*>(data);
+    const int ok = job->mods->commit(job->mods->ctx, job->rom.c_str());
+    job->state.store(ok ? 2 : 3);
+    return 0;
+}
+
+static bool launch_commit_busy() { return g_launch_job.state.load() != 0; }
+
+/* PLAY accepted: commit off-thread, or launch now when there is nothing to
+ * commit (or no thread could be made, where the old blocking path still works). */
+static void launch_commit_start(LauncherModel* m) {
+    if (launch_commit_busy()) return;
+    if (!m->mods || !m->mods->commit) {
+        m->action = LNG_ACTION_LAUNCH;
+        return;
+    }
+    const char* rom = launcher_model_effective_rom_path(m);
+    g_launch_job.mods = m->mods;
+    g_launch_job.rom = rom ? rom : "";
+    g_launch_job.started_s = ImGui::GetTime();
+    g_launch_job.state.store(1);
+    g_launch_job.thread =
+        SDL_CreateThread(launch_commit_worker, "launch_commit", &g_launch_job);
+    if (!g_launch_job.thread) {
+        g_launch_job.state.store(0);
+        if (mod_commit_launch(m)) m->action = LNG_ACTION_LAUNCH;
+    }
+}
+
+/* Join a finished commit and act on it. wait = block until done (loop exit). */
+static void launch_commit_poll(LauncherModel* m, bool wait) {
+    if (!g_launch_job.thread) return;
+    if (!wait && g_launch_job.state.load() == 1) return;
+    SDL_WaitThread(g_launch_job.thread, nullptr);
+    g_launch_job.thread = nullptr;
+    const int result = g_launch_job.state.exchange(0);
+    if (result == 2) {
+        if (m->action == LNG_ACTION_NONE) m->action = LNG_ACTION_LAUNCH;
+    } else {
+        mod_note_error(m);
+    }
+}
+
+/* Full-window "Loading game..." screen shown while the commit runs. It
+ * replaces the launcher UI rather than covering it, so nothing underneath can
+ * be clicked (a second PLAY included) or call into the mod provider. */
+static void draw_launch_loading(const LauncherTheme& th, int logical_w, int logical_h) {
+    const ImVec2 size((float)logical_w, (float)logical_h);
+    ImGui::SetNextWindowPos(ImVec2(0, 0));
+    ImGui::SetNextWindowSize(size);
+    ImGui::Begin("##launch_loading", nullptr,
+                 ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoMove |
+                 ImGuiWindowFlags_NoSavedSettings | ImGuiWindowFlags_NoNav |
+                 ImGuiWindowFlags_NoBackground);
+    ImDrawList* dl = ImGui::GetWindowDrawList();
+    const ImVec2 c(size.x * 0.5f, size.y * 0.5f - px(24));
+    const float r = px(26);
+    const float t = (float)(ImGui::GetTime() - g_launch_job.started_s);
+    const float a0 = t * 5.0f;
+    dl->AddCircle(c, r, ImGui::GetColorU32(col(th.border)), 48, px(4));
+    dl->PathArcTo(c, r, a0, a0 + 1.9f, 32);
+    dl->PathStroke(ImGui::GetColorU32(col(th.accent)), 0, px(4));
+
+    const char* title = ui_text("Loading game...");
+    const char* sub = ui_text("Preparing the disc image. The game window opens in a moment.");
+    ImVec2 ts = ImGui::CalcTextSize(title);
+    ImGui::SetCursorScreenPos(ImVec2(c.x - ts.x * 0.5f, c.y + r + px(22)));
+    ImGui::TextColored(col(th.text), "%s", title);
+    ImVec2 ss = ImGui::CalcTextSize(sub);
+    ImGui::SetCursorScreenPos(ImVec2(c.x - ss.x * 0.5f, c.y + r + px(22) + ts.y + px(8)));
+    ImGui::TextColored(col(th.text_muted), "%s", sub);
+    ImGui::End();
+}
+
 struct ModIntegerEditState {
     int64_t value = 0;
     std::string provider_value;
@@ -7839,8 +7956,8 @@ void draw_footer(LauncherModel* m, const LauncherTheme& th, float footer_h) {
              * an image the runtime's identity gate would reject. */
             if (m->rom_patch_supported && m->s.rom_patch_enabled)
                 launcher_model_set_view(m, LNG_VIEW_MODS);
-        } else if (mod_commit_launch(m))
-            m->action = LNG_ACTION_LAUNCH;
+        } else
+            launch_commit_start(m);   /* loading screen until the commit is done */
     } else if (!play_enabled && ImGui::IsItemHovered(ImGuiHoveredFlags_AllowWhenDisabled)) {
         const char* noun = m->rom_noun ? m->rom_noun : "ROM";
         if (m->has_bios && !m->setup_bios_ok) {
@@ -9729,7 +9846,11 @@ extern "C" LngAction launcher_backend_run(LauncherPlatform* p,
             io.DisplayFramebufferScale = ImVec2(p->display_scale, p->display_scale);
         }
         ImGui::NewFrame();
-        draw_ui(m, *th, p->logical_w, p->logical_h);
+        launch_commit_poll(m, false);
+        if (launch_commit_busy())
+            draw_launch_loading(*th, p->logical_w, p->logical_h);
+        else
+            draw_ui(m, *th, p->logical_w, p->logical_h);
         ImGui::Render();
 
         glViewport(0, 0, p->pixel_w, p->pixel_h);
@@ -9745,6 +9866,8 @@ extern "C" LngAction launcher_backend_run(LauncherPlatform* p,
         }
     }
 
+    /* Window closed mid-commit: let the worker finish before tearing down. */
+    launch_commit_poll(m, true);
     launcher_input_shutdown();
     launcher_texture_free(&g_boxart);
     launcher_texture_free(&g_pad);

@@ -109,3 +109,22 @@ scaffolding a project and destructive on a live one.
 Keep the pin above accurate when re-syncing. These files are the reason a
 standalone setup-wizard install and a RetComM build produce the same
 multi-disc `game.toml`; if the two drift, so do those two paths.
+
+## SMAA — Enhanced Subpixel Morphological Antialiasing
+
+[SMAA](https://github.com/iryoku/smaa) by Jorge Jimenez, Jose I. Echevarria,
+Belen Masia, Fernando Navarro and Diego Gutierrez, licensed **MIT** (notice:
+`runtime/third_party/smaa/LICENSE.txt`).
+
+Vendored unmodified into `runtime/third_party/smaa/`: `SMAA.hlsl`, and the
+precomputed `AreaTex.h` / `SearchTex.h` lookup tables. `smaa_glsl.inc` is
+generated from `SMAA.hlsl` by `gen_smaa_glsl.py` (comments stripped, embedded
+as a C string) so the OpenGL renderer can compile it with `SMAA_GLSL_3`. The
+wrapper passes in `gpu_gl_renderer.c` are ours.
+
+## AMD FidelityFX CAS — Contrast Adaptive Sharpening
+
+The CAS pass in `runtime/src/gpu_gl_renderer.c` (`PFX_CAS_FS`) is a GLSL
+rendition of the sharpen-only path of `CasFilter()` from AMD's FidelityFX CAS
+(`ffx_cas.h`), Copyright (c) 2020 Advanced Micro Devices, Inc., licensed
+**MIT**. No AMD source file is vendored.

@@ -2297,6 +2297,13 @@ UserSettings load_user_settings(const fs::path& path) {
             else if (m == "composite") { s.screen_kind = 2; s.has_screen_kind = true; }
             else if (m == "trinitron") { s.screen_kind = 3; s.has_screen_kind = true; }
         });
+        if (v.contains("smaa")) try_get([&]{
+            s.smaa = toml::find<bool>(v, "smaa"); s.has_smaa = true;
+        });
+        if (v.contains("cas_sharpness")) try_get([&]{
+            const auto n = toml::find<int64_t>(v, "cas_sharpness");
+            if (n >= 0 && n <= 100) { s.cas_sharpness = (int)n; s.has_cas_sharpness = true; }
+        });
         if (v.contains("auto_skip_fmv")) try_get([&]{
             s.auto_skip_fmv = toml::find<bool>(v, "auto_skip_fmv"); s.has_auto_skip_fmv = true;
         });
@@ -2637,6 +2644,10 @@ bool save_user_settings(const fs::path& path, const UserSettings& s) {
                       : s.screen_kind == 3 ? "trinitron" : "raw";
         f << "crt_filter        = \"" << k << "\"\n";
     }
+    if (s.has_smaa)
+        f << "smaa              = " << (s.smaa ? "true" : "false") << "\n";
+    if (s.has_cas_sharpness)
+        f << "cas_sharpness     = " << s.cas_sharpness << "\n";
     if (s.has_auto_skip_fmv)
         f << "auto_skip_fmv     = " << (s.auto_skip_fmv ? "true" : "false") << "\n";
     /* turbo_loads is deliberately NOT written back: it is deprecated and no

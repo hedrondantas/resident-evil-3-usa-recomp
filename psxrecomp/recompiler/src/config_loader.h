@@ -1199,6 +1199,10 @@ struct UserSettings {
     bool has_geometry_correction   = false; bool geometry_correction   = false;
     bool has_perspective_texturing = false; bool perspective_texturing = false;
     bool has_screen_kind    = false; int  screen_kind    = 0; // 0..3 (ScreenKind)
+    // Window-resolution post effects (OpenGL): SMAA 1x, and AMD CAS sharpening
+    // 0 (off) .. 100. Both default off, so the stock image is unchanged.
+    bool has_smaa           = false; bool smaa           = false;
+    bool has_cas_sharpness  = false; int  cas_sharpness  = 0;
     bool has_auto_skip_fmv  = false; bool auto_skip_fmv  = false; // skip FMVs
     // [video] turbo_loads: DEPRECATED AND IGNORED — the legacy home of the
     // generic Turbo loads switch, back when the launcher drew a row for it.

@@ -83,12 +83,15 @@ its own still reaches the game, just that much later.
 | Category | Settings |
 |---|---|
 | Display | Fullscreen, window scale |
-| Graphics | Linear filter, texture filtering, FMV filtering, **resolution scale (1x–8x)**, geometry correction, perspective texturing |
+| Graphics | Linear filter, texture filtering, FMV filtering, **resolution scale (1x–8x)**, geometry correction, perspective texturing, **SMAA**, **sharpening (CAS)** |
 | Audio | Volume |
+| System | Resume game, **Save states...** (opens the F7 save-state menu) |
 | Input / Disc | Controller port route, change or reinsert disc |
+| Quit game | **Save state, then quit** (pick a slot; the game closes once it is saved) or **Quit without saving**. Esc goes back |
 
 Navigate with the arrow keys or D-pad, change values with Left/Right, go back with
-Esc / Circle. Live resolution scale needs the OpenGL renderer (the default).
+Esc / Circle. The mouse pointer is hidden over the game window while playing (windowed
+or fullscreen) and comes back while this menu is open. Live resolution scale needs the OpenGL renderer (the default).
 This comes from this project's changes to the framework in `psxrecomp/` (see Credits).
 
 | Resolution scale | Internal resolution | Good for |
@@ -101,6 +104,22 @@ This comes from this project's changes to the framework in `psxrecomp/` (see Cre
 The ceiling is 8x, lowered automatically if the graphics driver cannot allocate the
 surface (8x uses about 400 MB of video memory). Pre-rendered backgrounds and FMVs keep
 their original resolution; the scale sharpens the 3D models.
+
+### SMAA and sharpening
+
+Two post effects run on the final window-size image, so unlike the resolution scale they
+also reach the pre-rendered backgrounds. Both are off by default and need the OpenGL
+renderer. Turn them on in the launcher's Display settings or the F1 menu, or in
+`settings.toml`:
+
+```toml
+[video]
+smaa          = true   # SMAA 1x (high preset): smooths stair-stepped edges
+cas_sharpness = 50     # AMD CAS, 0 = off .. 100: restores detail without halos
+```
+
+SMAA softens a little; CAS at 25–50 brings that back. `PSX_SMAA=0|1` and `PSX_CAS=0..100`
+override the file for one run.
 
 ## Keyboard
 
@@ -173,16 +192,22 @@ The framework and launcher are included in this repository as ordinary folders
 
 - `psxrecomp/`: [PSXRecomp](https://github.com/mstan/psxrecomp), from the
   [Alexbeav/psxrecomp](https://github.com/Alexbeav/psxrecomp) fork at `6c7fdaa`, plus the
-  F1 runtime menu, the 8x internal resolution, the saved controller 1 route
+  F1 runtime menu (with a Save states... entry that opens the F7 menu and a Quit game
+  section that offers a save state first), the 8x internal resolution, the saved controller 1 route
   (`[controller] p1_port` in `settings.toml`), live build progress in
-  `psxrecomp_cli.py`, and a hook for a title's own default keyboard layout
-  (`PSX_TITLE_KEYBINDS_HEADER`). Includes its `lib/recomp-net` and
+  `psxrecomp_cli.py`, a hook for a title's own default keyboard layout
+  (`PSX_TITLE_KEYBINDS_HEADER`), and SMAA + AMD CAS post effects in the OpenGL present
+  (`[video] smaa` / `cas_sharpness`; SMAA vendored under
+  `runtime/third_party/smaa/`, see its `THIRD_PARTY_ATTRIBUTION.md`). Includes its `lib/recomp-net` and
   `lib/retcomm-rbengine` dependencies.
 - `recomp-ui/`: [recomp-ui](https://github.com/mstan/recomp-ui), from
   [Alexbeav/recomp-ui](https://github.com/Alexbeav/recomp-ui) at `be8ac1d`, plus the 8x
   resolution ceiling in the launcher, the controller 1 port row on its Input card, the
-  Load State picker on the dashboard, a Settings-menu host shortcut, and the same title
-  keyboard-layout hook.
+  Load State picker on the dashboard, a Settings-menu host shortcut, the same title
+  keyboard-layout hook, SMAA / Sharpening (CAS) rows in Display settings
+  (`GameInfo.has_postfx`, `Settings.smaa` / `cas_sharpness`), and a "Loading game..."
+  screen after PLAY while the mod commit (a SHA-256 of the disc image) runs on a worker
+  thread instead of freezing the window.
 - Project layout and configuration derived from
   [resident-evil-3-recomp](https://github.com/alexbeavs-ps1-ports/resident-evil-3-recomp).
 

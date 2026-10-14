@@ -1007,11 +1007,22 @@ static void post_load_probe_on_vblank(int turbo_active, int present_reached) {
  * longjmp). Clears present latches and forces the next vblank to show the
  * restored VRAM — including a blank if display was disabled in the snapshot. */
 static void savestate_input_guard_arm(void);
+/* F1 "Quit game" flow. quit_after_save: the save-state menu was opened to save
+ * and then quit; the save's notify turns it into quit_requested, which the
+ * vblank body honours right after the host pause loops. */
+static int g_quit_after_save = 0;
+static int g_quit_requested  = 0;
+
 extern "C" void psx_frontend_on_savestate_notify(int is_load, int slot, int ok) {
     char buf[192];
     const int disp = slot + 1;
     if (!is_load && ok)
         psx_savestate_menu_note_slots_changed();
+    if (!is_load && g_quit_after_save) {
+        g_quit_after_save = 0;
+        psx_savestate_menu_set_quit_mode(0);
+        if (ok) g_quit_requested = 1;   /* failed: stay, the toast says why */
+    }
     if (is_load && ok)
         savestate_input_guard_arm();
     if (is_load) {
@@ -1211,6 +1222,10 @@ static std::string   g_bezel_path;      /* mod-owned OpenGL margin artwork */
 static int           g_fullscreen     = 0;  /* tri-state: 0 windowed, 1 borderless (desktop)
                                               * fullscreen, 2 exclusive fullscreen */
 static int           g_video_screen   = 0;  /* 0=raw,1=crt,2=composite,3=trinitron */
+/* Window-resolution post effects (GL): SMAA 1x on/off and AMD CAS sharpness
+ * 0 (off) .. 100. Pushed through gl_renderer_set_postfx. */
+static int           g_video_smaa     = 0;
+static int           g_video_cas      = 0;
 static int           g_video_win_w    = 0;    /* 0 = fit the display; see clamp_window_aspect */
 static bool          g_video_win_w_explicit = false; /* user chose a width */
 /* Resolved settings.toml for the live runtime UI.  The overlay only writes
@@ -6156,6 +6171,9 @@ static int hotkey_pad_binding_down(int binding) {
 static int savestate_menu_open = 0;
 static int savestate_menu_slot = 0;
 static int savestate_menu_ignore_toggle_release = 0;
+/* Set when the menu opens from the F1 menu: the Cross that accepted that row
+ * is still down, and must not land as a slot load. */
+static int savestate_menu_nav_resync = 0;
 static SDL_Keycode savestate_menu_open_key = 0;
 static int runtime_settings_menu_open = 0;
 /* Set when the menu opens: buttons already held (the chord that opened it)
@@ -6165,6 +6183,7 @@ static SDL_Keycode runtime_settings_menu_open_key = 0;
 
 static void runtime_settings_menu_sync_overlay(void);
 static void controller_port_route_toggle(void);
+static void savestate_menu_open_from_runtime_menu(int quit_after_save);
 
 #if defined(RECOMP_LAUNCHER)
 static RecompRuntimeUi *g_runtime_settings_ui;
@@ -6179,6 +6198,11 @@ static const char kRuntimeDiscChange[] = "psx.disc_change";
 static const char kRuntimeDiscReinsert[] = "psx.disc_reinsert";
 static const char kRuntimeGeometryCorrection[] = "psx.geometry_correction";
 static const char kRuntimePerspectiveTexturing[] = "psx.perspective_texturing";
+static const char kRuntimeSaveStates[] = "psx.save_states";
+static const char kRuntimeQuitSave[] = "psx.quit_save";
+static const char kRuntimeQuitNoSave[] = "psx.quit_no_save";
+static const char kRuntimeSmaa[] = "psx.smaa";
+static const char kRuntimeCasSharpness[] = "psx.cas_sharpness";
 static const char *const kControllerRouteChoices[] = { "Port 1", "Port 2" };
 
 /* Internal resolution can be rebuilt live only by the GL pipeline. */
@@ -6209,6 +6233,10 @@ static int runtime_ui_get_value(void*, const RecompRuntimeUiItem *item,
         *value_out = g_video_geometry_correction ? 1 : 0;
     else if (std::strcmp(item->key, kRuntimePerspectiveTexturing) == 0)
         *value_out = g_video_perspective_texturing ? 1 : 0;
+    else if (std::strcmp(item->key, kRuntimeSmaa) == 0)
+        *value_out = g_video_smaa ? 1 : 0;
+    else if (std::strcmp(item->key, kRuntimeCasSharpness) == 0)
+        *value_out = g_video_cas;
     else if (std::strcmp(item->key, kRuntimeControllerRoute) == 0)
         *value_out = g_controller_ports_swapped ? 1 : 0;
     else
@@ -6267,6 +6295,13 @@ static int runtime_ui_set_value(void*, const RecompRuntimeUiItem *item,
     } else if (std::strcmp(item->key, kRuntimePerspectiveTexturing) == 0) {
         g_video_perspective_texturing = value ? 1 : 0;
         gpu_texture_correction_set(g_video_perspective_texturing);
+    } else if (std::strcmp(item->key, kRuntimeSmaa) == 0) {
+        g_video_smaa = value ? 1 : 0;
+        gl_renderer_set_postfx(g_video_smaa, g_video_cas);
+    } else if (std::strcmp(item->key, kRuntimeCasSharpness) == 0) {
+        if (value < 0 || value > 100) return 0;
+        g_video_cas = value;
+        gl_renderer_set_postfx(g_video_smaa, g_video_cas);
     } else if (std::strcmp(item->key, kRuntimeControllerRoute) == 0) {
         if (!controller_port_swap_available()) return 0;
         const int requested = value ? 1 : 0;
@@ -6306,6 +6341,10 @@ static void runtime_ui_save(void*) {
     settings.has_geometry_correction = true;
     settings.perspective_texturing = g_video_perspective_texturing != 0;
     settings.has_perspective_texturing = true;
+    settings.smaa = g_video_smaa != 0;
+    settings.has_smaa = true;
+    settings.cas_sharpness = g_video_cas;
+    settings.has_cas_sharpness = true;
     settings.p1_port = g_controller_ports_swapped ? 2 : 1;
     settings.has_p1_port = true;
     if (!PSXRecompV4::save_user_settings(g_runtime_settings_path, settings))
@@ -6366,6 +6405,19 @@ static int runtime_ui_run_action(void *opaque,
         if (context && context->ui) recomp_runtime_ui_close(context->ui);
         return 1;
     }
+    if (std::strcmp(item->key, kRuntimeSaveStates) == 0 ||
+        std::strcmp(item->key, kRuntimeQuitSave) == 0) {
+        if (psx_netplay_active()) return 0;
+        if (context && context->ui) recomp_runtime_ui_close(context->ui);
+        savestate_menu_open_from_runtime_menu(
+            std::strcmp(item->key, kRuntimeQuitSave) == 0);
+        return 1;
+    }
+    if (std::strcmp(item->key, kRuntimeQuitNoSave) == 0) {
+        if (context && context->ui) recomp_runtime_ui_close(context->ui);
+        g_quit_requested = 1;
+        return 1;
+    }
     if (std::strcmp(item->key, kRuntimeDiscChange) == 0)
         return runtime_ui_change_disc(context);
     if (std::strcmp(item->key, kRuntimeDiscReinsert) == 0) {
@@ -6388,6 +6440,9 @@ static int runtime_ui_is_enabled(void*, const RecompRuntimeUiItem *item) {
         return !psx_netplay_active() && cdrom_has_disc();
     if (std::strcmp(item->key, RECOMP_RUNTIME_UI_KEY_RESOLUTION_SCALE) == 0)
         return runtime_ui_live_scale_available();
+    if (std::strcmp(item->key, kRuntimeSmaa) == 0 ||
+        std::strcmp(item->key, kRuntimeCasSharpness) == 0)
+        return g_gl_active ? 1 : 0;   /* post effects live in the GL present */
     return 1;
 }
 
@@ -6406,15 +6461,32 @@ static void runtime_settings_ui_ensure_created(void) {
         { kRuntimePerspectiveTexturing, "Graphics", "Perspective texturing",
           "Perspective-correct texture mapping on large polygons.",
           RECOMP_RUNTIME_UI_BOOL, 0, 1, 1, nullptr, 0, nullptr },
+        { kRuntimeSmaa, "Graphics", "SMAA",
+          "Smooths jagged edges on the final image, 2D backgrounds included. OpenGL.",
+          RECOMP_RUNTIME_UI_BOOL, 0, 1, 1, nullptr, 0, nullptr },
+        { kRuntimeCasSharpness, "Graphics", "Sharpening (CAS)",
+          "AMD contrast-adaptive sharpening. 0 = off. OpenGL.",
+          RECOMP_RUNTIME_UI_INT, 0, 100, 10, nullptr, 0, nullptr },
         { kRuntimeControllerRoute, "Input", "Controller 1 route",
           "Move host controller 1 between console ports without restarting.",
           RECOMP_RUNTIME_UI_CHOICE, 0, 1, 1, kControllerRouteChoices, 2,
           nullptr },
+        { kRuntimeSaveStates, "System", "Save states...",
+          "Open the save-state slots to save or load (same menu as F7).",
+          RECOMP_RUNTIME_UI_ACTION, 0, 0, 0, nullptr, 0, nullptr },
         { kRuntimeDiscChange, "Disc", "Change disc...",
           "Mount another disc for this session. Startup settings are unchanged.",
           RECOMP_RUNTIME_UI_ACTION, 0, 0, 0, nullptr, 0, nullptr },
         { kRuntimeDiscReinsert, "Disc", "Reinsert current disc",
           "Signal a tray-open/close cycle without changing the mounted image.",
+          RECOMP_RUNTIME_UI_ACTION, 0, 0, 0, nullptr, 0, nullptr },
+        /* Last section on purpose: opening it is the "save first?" question,
+         * and Esc / Circle backs out of it as the cancel. */
+        { kRuntimeQuitSave, "Quit game", "Save state, then quit",
+          "Pick a slot and save. The game closes once the state is written.",
+          RECOMP_RUNTIME_UI_ACTION, 0, 0, 0, nullptr, 0, nullptr },
+        { kRuntimeQuitNoSave, "Quit game", "Quit without saving",
+          "Close the game now. Progress since your last save is lost.",
           RECOMP_RUNTIME_UI_ACTION, 0, 0, 0, nullptr, 0, nullptr },
     };
 
@@ -6450,7 +6522,23 @@ static void runtime_settings_ui_ensure_created(void) {
 }
 #endif
 
+/* Mouse pointer over the game window: hidden while the game runs (windowed or
+ * fullscreen), shown while the F1 menu is open. Queries SDL's real state rather
+ * than caching it, since the ImGui launcher also drives the cursor; the query
+ * is cheap, so the per-frame call from the vblank body costs nothing. */
+static void host_cursor_set_visible(bool visible) {
+    if (g_headless) return;
+#if defined(PSX_SDL3)
+    if (SDL_CursorVisible() == visible) return;
+    if (visible) SDL_ShowCursor(); else SDL_HideCursor();
+#else
+    if ((SDL_ShowCursor(SDL_QUERY) == SDL_ENABLE) == visible) return;
+    SDL_ShowCursor(visible ? SDL_ENABLE : SDL_DISABLE);
+#endif
+}
+
 static void runtime_settings_menu_sync_overlay(void) {
+    host_cursor_set_visible(runtime_settings_menu_open != 0);
 #if defined(RECOMP_LAUNCHER)
     psx_savestate_menu_set_runtime_ui(g_runtime_settings_ui);
 #endif
@@ -6523,10 +6611,17 @@ static void savestate_menu_sync_overlay(void) {
     psx_savestate_menu_set_state(savestate_menu_open, savestate_menu_slot);
 }
 
+static void savestate_menu_set_quit_after_save(int on) {
+    g_quit_after_save = on ? 1 : 0;
+    psx_savestate_menu_set_quit_mode(g_quit_after_save);
+}
+
 static void savestate_menu_close(void) {
+    const int was_quit = g_quit_after_save;
+    savestate_menu_set_quit_after_save(0);
     savestate_menu_open = 0;
     savestate_menu_sync_overlay();
-    host_osd_push("Save states closed", 800);
+    host_osd_push(was_quit ? "Quit cancelled" : "Save states closed", 800);
 }
 
 static void savestate_menu_toggle(SDL_Keycode opened_by_key) {
@@ -6539,6 +6634,20 @@ static void savestate_menu_toggle(SDL_Keycode opened_by_key) {
     savestate_menu_open = 1;
     savestate_menu_ignore_toggle_release = 1;
     savestate_menu_open_key = opened_by_key;
+    savestate_menu_sync_overlay();
+}
+
+/* F1 "Save states..." row. The runtime menu is already closed by the caller;
+ * the main loop enters the save-state pause loop right after the F1 one, so
+ * the guest does not run a frame between the two menus. */
+static void savestate_menu_open_from_runtime_menu(int quit_after_save) {
+    if (savestate_menu_open || psx_rewind_is_open() || runtime_settings_menu_open)
+        return;
+    savestate_menu_set_quit_after_save(quit_after_save);
+    savestate_menu_open = 1;
+    savestate_menu_ignore_toggle_release = 1;
+    savestate_menu_nav_resync = 1;
+    savestate_menu_open_key = 0;
     savestate_menu_sync_overlay();
 }
 
@@ -6698,6 +6807,8 @@ static int savestate_submit_slot(int slot, int save) {
 }
 
 static void savestate_menu_submit(int save) {
+    if (!save)   /* a load in the quit flow abandons the quit */
+        savestate_menu_set_quit_after_save(0);
     if (savestate_submit_slot(savestate_menu_slot, save) && savestate_menu_open) {
         savestate_menu_open = 0;
         savestate_menu_sync_overlay();
@@ -6781,6 +6892,14 @@ static void savestate_menu_poll_nav(uint32_t now_ms) {
         cancel = 1;
     }
     prev_toggle = toggle;
+
+    /* Buttons already held when the menu opened act only after a release. */
+    if (savestate_menu_nav_resync) {
+        prev_load = load;
+        prev_save = save;
+        prev_cancel = cancel;
+        savestate_menu_nav_resync = 0;
+    }
 
     if (load && !prev_load)
         savestate_menu_submit(0);
@@ -7361,6 +7480,14 @@ static NetplayVblankEpilogue sdl_vblank_present_body(void) {
             savestate_menu_host_pause_loop();
         if (runtime_settings_menu_open)
             runtime_settings_menu_host_pause_loop();
+        if (savestate_menu_open)   /* opened from the F1 menu */
+            savestate_menu_host_pause_loop();
+        host_cursor_set_visible(false);   /* game running: no pointer */
+        if (g_quit_requested) {    /* F1 Quit, directly or after its save */
+            psx_crash_trace_set_exit_origin("runtime_menu_quit");
+            shutdown_runtime();
+            std::exit(0);
+        }
         if (psx_rewind_is_open())
             rewind_host_pause_loop();
     }
@@ -11651,6 +11778,9 @@ namespace {
         gi->has_turbo_loads = turbo_loads_offered_b ? 1 : 0;
         gi->has_geometry_precision = 1;
         gi->has_rewind_depth = 1;
+#if defined(RECOMP_LAUNCHER_HAS_POSTFX)
+        gi->has_postfx = 1;
+#endif
 #if defined(RECOMP_LAUNCHER_HAS_P1_PORT)
         gi->has_controller_port_route = 1;
 #endif
@@ -12501,6 +12631,8 @@ int main(int argc, char** argv) {
         if (us.has_perspective_texturing)
             g_video_perspective_texturing = us.perspective_texturing ? 1 : 0;
         if (us.has_screen_kind)    g_video_screen    = us.screen_kind;
+        if (us.has_smaa)           g_video_smaa      = us.smaa ? 1 : 0;
+        if (us.has_cas_sharpness)  g_video_cas       = us.cas_sharpness;
         if (us.has_auto_skip_fmv)  g_auto_skip_fmv   = us.auto_skip_fmv ? 1 : 0;
         /* turbo_loads is deliberately NOT restored from settings.toml. It is a
          * write-only latch: the launcher stopped drawing a Turbo loads row when
@@ -13007,6 +13139,8 @@ int main(int argc, char** argv) {
             seed.perspective_texturing = (g_video_perspective_texturing != 0);
             seed.has_perspective_texturing = true;
             seed.screen_kind = g_video_screen;            seed.has_screen_kind = true;
+            seed.smaa = (g_video_smaa != 0);              seed.has_smaa = true;
+            seed.cas_sharpness = g_video_cas;             seed.has_cas_sharpness = true;
             seed.auto_skip_fmv = (g_auto_skip_fmv != 0);
             seed.has_auto_skip_fmv = skip_fmv_offered;
             seed.turbo_loads = (g_turbo_loads_enabled != 0);
@@ -13195,6 +13329,8 @@ int main(int argc, char** argv) {
             ls.geometry_correction   = seed.geometry_correction ? 1 : 0;
             ls.perspective_texturing = seed.perspective_texturing ? 1 : 0;
             ls.screen_kind        = seed.screen_kind;
+            ls.smaa               = seed.smaa ? 1 : 0;
+            ls.cas_sharpness      = seed.cas_sharpness;
             ls.frame_interp       = seed.frame_interpolation ? 1 : 0;
             ls.frame_interp_fps   = seed.frame_interpolation_fps;
             ls.spu_hq             = seed.spu_hq ? 1 : 0;
@@ -13486,6 +13622,8 @@ int main(int argc, char** argv) {
                 seed.fmv_filter            = launcher_fmv_filter_to_cfg(ls.fmv_filter);
                 seed.has_fmv_filter        = true;
                 seed.screen_kind           = ls.screen_kind;           seed.has_screen_kind           = true;
+                seed.smaa                  = ls.smaa != 0;             seed.has_smaa                  = true;
+                seed.cas_sharpness         = ls.cas_sharpness;         seed.has_cas_sharpness         = true;
                 seed.frame_interpolation   = ls.frame_interp != 0;     seed.has_frame_interpolation   = true;
                 seed.frame_interpolation_fps = ls.frame_interp_fps;    seed.has_frame_interpolation_fps = true;
                 seed.audio_freq            = ls.audio_freq;            seed.has_audio_freq            = true;
@@ -13711,6 +13849,8 @@ int main(int argc, char** argv) {
                 g_video_geometry_correction   = seed.geometry_correction ? 1 : 0;
                 g_video_perspective_texturing = seed.perspective_texturing ? 1 : 0;
                 g_video_screen    = seed.screen_kind;
+                g_video_smaa      = seed.smaa ? 1 : 0;
+                g_video_cas       = seed.cas_sharpness;
                 g_auto_skip_fmv = skip_fmv_offered && seed.auto_skip_fmv ? 1 : 0;
                 g_turbo_loads_enabled =
                     turbo_loads_offered && seed.turbo_loads ? 1 : 0;
@@ -14109,6 +14249,16 @@ session_reboot:
     /* Present-time screen-colour model (verified-enhancement LUT). Default raw
      * is byte-identical; PSX_SCREEN env overrides this at scanout. */
     gpu_set_screen_kind(g_video_screen);
+    /* Window-resolution SMAA / CAS (GL only). Env overrides for headless A/B:
+     * PSX_SMAA=0|1, PSX_CAS=0..100. */
+    if (const char* e = std::getenv("PSX_SMAA"))
+        g_video_smaa = (*e && *e != '0') ? 1 : 0;
+    if (const char* e = std::getenv("PSX_CAS"))
+        g_video_cas = std::max(0, std::min(100, std::atoi(e)));
+    gl_renderer_set_postfx(g_video_smaa, g_video_cas);
+    if (g_video_smaa || g_video_cas)
+        std::fprintf(stdout, "psxrecomp: post-processing SMAA %s, CAS %d%%\n",
+                     g_video_smaa ? "on" : "off", g_video_cas);
     if (g_video_scale > 1 || g_video_texfilter)
         std::fprintf(stdout,
                      "psxrecomp: supersampling %dx (antialiasing %s, texture filter %s)\n",
@@ -15199,6 +15349,8 @@ soft_return_lobby:
         ls.geometry_correction = g_video_geometry_correction ? 1 : 0;
         ls.perspective_texturing = g_video_perspective_texturing ? 1 : 0;
         ls.screen_kind = g_video_screen;
+        ls.smaa = g_video_smaa;
+        ls.cas_sharpness = g_video_cas;
         ls.frame_interp = g_frame_interpolation ? 1 : 0;
         ls.frame_interp_fps = g_frame_interpolation_fps;
         ls.spu_hq = g_audio_spu_hq ? 1 : 0;
@@ -15482,6 +15634,10 @@ soft_return_lobby:
                 us.has_perspective_texturing = true;
                 us.screen_kind = ls.screen_kind;
                 us.has_screen_kind = true;
+                us.smaa = ls.smaa != 0;
+                us.has_smaa = true;
+                us.cas_sharpness = ls.cas_sharpness;
+                us.has_cas_sharpness = true;
                 us.frame_interpolation = ls.frame_interp != 0;
                 us.has_frame_interpolation = true;
                 us.frame_interpolation_fps = ls.frame_interp_fps;
@@ -15543,6 +15699,8 @@ soft_return_lobby:
             g_video_geometry_correction = ls.geometry_correction ? 1 : 0;
             g_video_perspective_texturing = ls.perspective_texturing ? 1 : 0;
             g_video_screen = ls.screen_kind;
+            g_video_smaa = ls.smaa ? 1 : 0;
+            g_video_cas = ls.cas_sharpness;
             /* Load acceleration and FMV skipping are mod-owned on PSX, and the
              * launcher struct these come from was snapshotted BEFORE
              * mod_runtime_activate_plugins() ran. Applying them here would
