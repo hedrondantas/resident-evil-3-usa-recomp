@@ -50,6 +50,11 @@ set_property(SOURCE
     APPEND PROPERTY COMPILE_DEFINITIONS
         "PSX_TITLE_KEYBINDS_HEADER=\"${CMAKE_CURRENT_SOURCE_DIR}/src/re3usa_keybinds.h\"")
 
+# Launcher look: the Resident Evil theme (blood red on glass over a blurred
+# backdrop, see launcher_theme_re3 in recomp-ui/src/common/launcher_theme.h).
+set_property(SOURCE "${PSXRECOMP_ROOT}/runtime/src/main.cpp"
+    APPEND PROPERTY COMPILE_DEFINITIONS "PSX_TITLE_LAUNCHER_THEME=\"re3\"")
+
 # Stage runtime configs next to the exe for direct build/ launches. Only copy
 # files that exist — never fail POST_BUILD when game_options.toml is absent.
 foreach(_PSX_RUNTIME_CONFIG game.toml game_options.toml)

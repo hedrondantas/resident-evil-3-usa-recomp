@@ -11750,6 +11750,11 @@ namespace {
         (void)ws_offered_b;
         (void)ws_ultrawide_offered_b;
         launcher_profile_apply("psx", gi);
+#if defined(PSX_TITLE_LAUNCHER_THEME)
+        /* Title hook (set per-source by the game's CMakeLists): a launcher
+         * theme name from launcher_theme_by_name, e.g. "re3". */
+        gi->theme = PSX_TITLE_LAUNCHER_THEME;
+#endif
         gi->name = game_name_c;
         gi->region = region_c;
         gi->keybinds_path =

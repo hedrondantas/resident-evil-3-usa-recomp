@@ -44,6 +44,9 @@ typedef struct {
     float font_body, font_title, font_small;
     float focus_ring_width;
     int   scanlines;      // 1 = draw the CRT scanline overlay, 0 = flat (e.g. PSX)
+    int   backdrop;       // 1 = blurred image behind translucent ("glass") panels:
+                          // a launcher_background.{png,jpg} next to the exe, else
+                          // the newest save-state thumbnail, else the gradient.
 } LauncherTheme;
 
 static inline LngColor lng_rgba(float r, float g, float b, float a) {
@@ -82,6 +85,7 @@ static inline LauncherTheme launcher_theme_default(void) {
     t.font_body  = 18.0f; t.font_title = 34.0f; t.font_small = 13.0f;
     t.focus_ring_width = 2.5f;
     t.scanlines  = 1;                          // CRT look: scanlines ON
+    t.backdrop   = 0;                          // plain gradient ground
     return t;
 }
 
@@ -106,6 +110,35 @@ static inline LauncherTheme launcher_theme_psx(void) {
     t.text_muted      = lng_rgba(0.494f, 0.541f, 0.639f, 1.0f); // #7E8AA3
     /* good/warn keep their semantic colors; focus stays cyan (reads clearly on blue). */
     t.scanlines       = 0;                       // flat, no CRT scanlines
+    return t;
+}
+
+// "Resident Evil" theme (title hook PSX_TITLE_LAUNCHER_THEME="re3"). Modern and
+// clean over a blurred backdrop: warm near-black ground, translucent glass
+// panels, ONE blood-red accent for brand + primary action, and aged-paper
+// headings like the game's files. Focus is bone rather than cyan so it stays in
+// palette; good/warn read as herb green and lamp amber.
+static inline LauncherTheme launcher_theme_re3(void) {
+    LauncherTheme t = launcher_theme_default();   // inherit spacing/type/dims
+    t.background      = lng_rgba(0.043f, 0.035f, 0.035f, 1.0f);  // #0B0909 ink
+    t.background2     = lng_rgba(0.102f, 0.055f, 0.055f, 1.0f);  // #1A0E0E lifted
+    t.panel           = lng_rgba(0.071f, 0.055f, 0.055f, 0.70f); // glass card
+    t.panel_hovered   = lng_rgba(0.133f, 0.086f, 0.086f, 0.80f);
+    t.control         = lng_rgba(0.122f, 0.094f, 0.094f, 0.78f); // glass button
+    t.control_hovered = lng_rgba(0.212f, 0.118f, 0.118f, 0.88f);
+    t.border          = lng_rgba(1.000f, 0.902f, 0.843f, 0.10f); // warm hairline
+    t.accent          = lng_rgba(0.706f, 0.094f, 0.110f, 1.0f);  // #B4181C blood red
+    t.accent_dim      = lng_rgba(0.420f, 0.047f, 0.063f, 1.0f);  // #6B0C10 dried
+    t.accent_text     = lng_rgba(1.0f, 0.976f, 0.953f, 1.0f);
+    t.accent2         = lng_rgba(0.851f, 0.788f, 0.639f, 1.0f);  // #D9C9A3 aged paper
+    t.text            = lng_rgba(0.929f, 0.902f, 0.863f, 1.0f);  // #EDE6DC
+    t.text_muted      = lng_rgba(0.612f, 0.561f, 0.518f, 1.0f);  // #9C8F84
+    t.good            = lng_rgba(0.459f, 0.749f, 0.392f, 1.0f);  // #75BF64 green herb
+    t.warn            = lng_rgba(0.878f, 0.639f, 0.227f, 1.0f);  // #E0A33A lamp amber
+    t.focus_ring      = lng_rgba(0.902f, 0.835f, 0.675f, 1.0f);  // #E6D5AC bone
+    t.radius_sm  = 8.0f;  t.radius_lg = 16.0f;
+    t.scanlines  = 0;
+    t.backdrop   = 1;
     return t;
 }
 
@@ -284,6 +317,9 @@ static inline LauncherTheme launcher_theme_gbc(void) {
 // anything else -> default CRT). Note the "gb*" order: match "gba" and "gbc"
 // (3rd char) BEFORE the bare "gb" fallback.
 static inline LauncherTheme launcher_theme_by_name(const char* name) {
+    if (name && (name[0] == 'r' || name[0] == 'R') &&
+        (name[1] == 'e' || name[1] == 'E') && name[2] == '3')
+        return launcher_theme_re3();
     if (name && (name[0] == 'p' || name[0] == 'P') &&
         (name[1] == 's' || name[1] == 'S'))
         return launcher_theme_psx();

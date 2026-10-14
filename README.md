@@ -68,6 +68,19 @@ Then copy your BIOS to `build-release/bios/SCPH1001.BIN` and run
 `build-release/Resident_Evil_3_Nemesis_USA_Recompiled`. The build stages the
 mod packages from `mods/packages/` next to the executable.
 
+## Launcher look
+
+The built-in launcher uses a Resident Evil theme: blood-red accents and aged-paper
+headings on translucent panels over a blurred backdrop. The repository ships no game
+art, so the backdrop is, in order of preference:
+
+1. `launcher_background.png` or `.jpg` placed next to the executable (any size; it is
+   scaled down and blurred when the launcher opens),
+2. the thumbnail of your newest save state,
+3. a plain dark gradient.
+
+The theme is selected in `CMakeLists.txt` (`PSX_TITLE_LAUNCHER_THEME`).
+
 ## In-game settings (F1)
 
 Press **F1**, or **Select + Start** on the controller, while playing to pause and open
@@ -196,7 +209,8 @@ The framework and launcher are included in this repository as ordinary folders
   section that offers a save state first), the 8x internal resolution, the saved controller 1 route
   (`[controller] p1_port` in `settings.toml`), live build progress in
   `psxrecomp_cli.py`, a hook for a title's own default keyboard layout
-  (`PSX_TITLE_KEYBINDS_HEADER`), and SMAA + AMD CAS post effects in the OpenGL present
+  (`PSX_TITLE_KEYBINDS_HEADER`) and launcher theme (`PSX_TITLE_LAUNCHER_THEME`), and
+  SMAA + AMD CAS post effects in the OpenGL present
   (`[video] smaa` / `cas_sharpness`; SMAA vendored under
   `runtime/third_party/smaa/`, see its `THIRD_PARTY_ATTRIBUTION.md`). Includes its `lib/recomp-net` and
   `lib/retcomm-rbengine` dependencies.
@@ -205,7 +219,8 @@ The framework and launcher are included in this repository as ordinary folders
   resolution ceiling in the launcher, the controller 1 port row on its Input card, the
   Load State picker on the dashboard, a Settings-menu host shortcut, the same title
   keyboard-layout hook, SMAA / Sharpening (CAS) rows in Display settings
-  (`GameInfo.has_postfx`, `Settings.smaa` / `cas_sharpness`), and a "Loading game..."
+  (`GameInfo.has_postfx`, `Settings.smaa` / `cas_sharpness`), the `re3` theme with a
+  blurred backdrop (`LauncherTheme.backdrop`), and a "Loading game..."
   screen after PLAY while the mod commit (a SHA-256 of the disc image) runs on a worker
   thread instead of freezing the window.
 - Project layout and configuration derived from

@@ -670,6 +670,8 @@ void apply_scale(const LauncherTheme& th, float scale, const char* font_path,
     style.Colors[ImGuiCol_WindowBg]        = col(th.background);
     style.Colors[ImGuiCol_ChildBg]         = col(th.panel);
     style.Colors[ImGuiCol_PopupBg]         = col(th.panel);
+    /* Glass themes: popups float over other cards, so keep them near-opaque. */
+    if (style.Colors[ImGuiCol_PopupBg].w < 0.96f) style.Colors[ImGuiCol_PopupBg].w = 0.96f;
     style.Colors[ImGuiCol_Border]          = col(th.border);
     style.Colors[ImGuiCol_FrameBg]         = col(th.control);
     style.Colors[ImGuiCol_FrameBgHovered]  = col(th.control_hovered);
@@ -706,11 +708,144 @@ ImU32 imcol(const LngColor& c, float a = 1.0f) {
     return ImGui::GetColorU32(ImVec4(c.r, c.g, c.b, c.a * a));
 }
 
+// ---- blurred backdrop (themes with backdrop = 1) ----------------------------
+// The image is reduced to at most kBackdropW wide and blurred on the CPU once at
+// startup; the GPU then only stretches a tiny, already-soft texture, so the
+// "frosted" ground costs nothing per frame.
+LauncherTexture g_backdrop;
+static const int kBackdropW = 320;
+
+/* One box-blur line of radius r over n samples `step` apart (edges clamp). */
+static void box_blur_line(const unsigned int* src, unsigned int* dst, int n,
+                          int step, int r) {
+    const int win = 2 * r + 1;
+    int sr = 0, sg = 0, sb = 0;
+    for (int k = -r; k <= r; ++k) {
+        const unsigned int c = src[std::min(std::max(k, 0), n - 1) * step];
+        sr += (c >> 16) & 255; sg += (c >> 8) & 255; sb += c & 255;
+    }
+    for (int i = 0; i < n; ++i) {
+        dst[i * step] = 0xFF000000u | ((unsigned)(sr / win) << 16) |
+                        ((unsigned)(sg / win) << 8) | (unsigned)(sb / win);
+        const unsigned int in = src[std::min(i + r + 1, n - 1) * step];
+        const unsigned int out = src[std::max(i - r, 0) * step];
+        sr += (int)((in >> 16) & 255) - (int)((out >> 16) & 255);
+        sg += (int)((in >> 8) & 255) - (int)((out >> 8) & 255);
+        sb += (int)(in & 255) - (int)(out & 255);
+    }
+}
+
+/* Three separable box passes ~ a Gaussian of sigma ~ r. */
+static void blur_argb(std::vector<unsigned int>& px, int w, int h, int r) {
+    std::vector<unsigned int> tmp(px.size());
+    for (int pass = 0; pass < 3; ++pass) {
+        for (int y = 0; y < h; ++y)
+            box_blur_line(&px[(size_t)y * w], &tmp[(size_t)y * w], w, 1, r);
+        for (int x = 0; x < w; ++x)
+            box_blur_line(&tmp[x], &px[x], h, w, r);
+    }
+}
+
+/* Area-average an RGBA8 image down to at most kBackdropW wide, as ARGB. */
+static std::vector<unsigned int> downscale_rgba(const unsigned char* rgba, int iw,
+                                                int ih, int* ow, int* oh) {
+    const int tw = std::min(kBackdropW, iw);
+    const int tht = std::max(1, (int)((long long)ih * tw / iw));
+    std::vector<unsigned int> out((size_t)tw * tht);
+    for (int y = 0; y < tht; ++y) {
+        const int y0 = (int)((long long)y * ih / tht);
+        const int y1 = std::max(y0 + 1, (int)((long long)(y + 1) * ih / tht));
+        for (int x = 0; x < tw; ++x) {
+            const int x0 = (int)((long long)x * iw / tw);
+            const int x1 = std::max(x0 + 1, (int)((long long)(x + 1) * iw / tw));
+            unsigned long r = 0, g = 0, b = 0, n = 0;
+            for (int sy = y0; sy < y1; ++sy)
+                for (int sx = x0; sx < x1; ++sx) {
+                    const unsigned char* p = rgba + ((size_t)sy * iw + sx) * 4;
+                    r += p[0]; g += p[1]; b += p[2]; ++n;
+                }
+            out[(size_t)y * tw + x] = 0xFF000000u | ((r / n) << 16) |
+                                      ((g / n) << 8) | (b / n);
+        }
+    }
+    *ow = tw; *oh = tht;
+    return out;
+}
+
+std::string asset(const char* rel);
+
+/* Backdrop source, first hit wins: the player's own launcher_background.{png,
+ * jpg} beside the exe (the repo ships no game art), else the newest save-state
+ * thumbnail (a real frame of their game), else none (gradient only). */
+static LauncherTexture build_backdrop(LauncherModel* m) {
+    std::vector<unsigned int> px;
+    int w = 0, h = 0;
+    static const char* const kFiles[] = {
+        "launcher_background.png", "launcher_background.jpg",
+        "assets/img/launcher_background.png", "assets/img/launcher_background.jpg",
+    };
+    for (const char* f : kFiles) {
+        int iw = 0, ih = 0;
+        unsigned char* rgba = launcher_image_load_rgba(asset(f).c_str(), &iw, &ih);
+        if (!rgba) continue;
+        px = downscale_rgba(rgba, iw, ih, &w, &h);
+        launcher_image_free(rgba);
+        break;
+    }
+    if (px.empty() && m && m->savestate_slot_info && m->savestate_slot_count > 0 &&
+        m->savestate_thumb_w > 0 && m->savestate_thumb_h > 0) {
+        const int tw = m->savestate_thumb_w, tht = m->savestate_thumb_h;
+        std::vector<unsigned int> thumb((size_t)tw * tht);
+        long long newest = -1;
+        for (int i = 0; i < std::min(m->savestate_slot_count, 32); ++i) {
+            long long mtime = 0;
+            int has_thumb = 0;
+            if (m->savestate_slot_info(m->savestate_slot_ctx, i, &mtime,
+                                       thumb.data(), &has_thumb) &&
+                has_thumb && mtime > newest) {
+                newest = mtime;
+                px = thumb;
+                w = tw; h = tht;
+            }
+        }
+    }
+    if (px.empty()) return LauncherTexture{0, 0, 0};
+    blur_argb(px, w, h, std::max(2, w / 48));
+    return launcher_texture_from_argb(px.data(), w, h);
+}
+
+/* Cover-fit the blurred image, then darken it so text on glass stays legible:
+ * a top-to-bottom scrim, a soft accent bloom under the header, and an edge
+ * vignette. */
+static void draw_backdrop(ImDrawList* bg, ImVec2 o, ImVec2 s, const LauncherTheme& th) {
+    const float ia = (float)g_backdrop.w / (float)g_backdrop.h, va = s.x / s.y;
+    ImVec2 uv0(0, 0), uv1(1, 1);
+    if (ia > va) { const float u = va / ia; uv0.x = (1 - u) * 0.5f; uv1.x = (1 + u) * 0.5f; }
+    else         { const float v = ia / va; uv0.y = (1 - v) * 0.5f; uv1.y = (1 + v) * 0.5f; }
+    const ImVec2 e(o.x + s.x, o.y + s.y);
+    bg->AddImage(tid(g_backdrop), o, e, uv0, uv1);
+    bg->AddRectFilledMultiColor(o, e, imcol(th.background, 0.40f), imcol(th.background, 0.40f),
+                                imcol(th.background, 0.80f), imcol(th.background, 0.80f));
+    bg->AddRectFilledMultiColor(o, ImVec2(e.x, o.y + s.y * 0.35f),
+                                imcol(th.accent, 0.16f), imcol(th.accent, 0.06f),
+                                imcol(th.accent, 0.0f), imcol(th.accent, 0.0f));
+    const float vx = s.x * 0.16f, vy = s.y * 0.16f;
+    const ImU32 k = imcol(th.background, 0.65f), z = imcol(th.background, 0.0f);
+    bg->AddRectFilledMultiColor(o, ImVec2(o.x + vx, e.y), k, z, z, k);
+    bg->AddRectFilledMultiColor(ImVec2(e.x - vx, o.y), e, z, k, k, z);
+    bg->AddRectFilledMultiColor(o, ImVec2(e.x, o.y + vy), k, k, z, z);
+    bg->AddRectFilledMultiColor(ImVec2(o.x, e.y - vy), e, z, z, k, k);
+}
+
 // Vertical center-bright gradient (CRT ground) + faint scanlines. Drawn on the
 // background/foreground draw lists so it sits behind/over the whole UI.
 void draw_crt_background(ImVec2 origin, ImVec2 size) {
     const LauncherTheme& th = *g_th;
     ImDrawList* bg = ImGui::GetBackgroundDrawList();
+    if (th.backdrop && g_backdrop.id && g_backdrop.w > 0 && g_backdrop.h > 0) {
+        draw_backdrop(bg, origin, size, th);
+        return;
+    }
     ImU32 ink = imcol(th.background), lift = imcol(th.background2);
     float midY = origin.y + size.y * 0.42f;
     // top: ink -> lift, bottom: lift -> ink  (soft horizontal glow band)
@@ -6641,6 +6776,7 @@ static void launch_commit_poll(LauncherModel* m, bool wait) {
  * be clicked (a second PLAY included) or call into the mod provider. */
 static void draw_launch_loading(const LauncherTheme& th, int logical_w, int logical_h) {
     const ImVec2 size((float)logical_w, (float)logical_h);
+    draw_crt_background(ImGui::GetMainViewport()->Pos, ImGui::GetMainViewport()->Size);
     ImGui::SetNextWindowPos(ImVec2(0, 0));
     ImGui::SetNextWindowSize(size);
     ImGui::Begin("##launch_loading", nullptr,
@@ -9619,6 +9755,7 @@ extern "C" LngAction launcher_backend_run(LauncherPlatform* p,
     g_boxart = launcher_texture_load(
         asset(m->boxart_path && m->boxart_path[0] ? m->boxart_path
                                                   : "assets/img/boxart.tga").c_str());
+    if (th->backdrop) g_backdrop = build_backdrop(m);
     // Controller art comes from the active SystemProfile's ControllerSpec —
     // never hardcoded console filenames in this common backend. Conventions:
     // a 32-bit TGA carries real alpha -> the plain alpha-respecting loader;
@@ -9870,6 +10007,7 @@ extern "C" LngAction launcher_backend_run(LauncherPlatform* p,
     launch_commit_poll(m, true);
     launcher_input_shutdown();
     launcher_texture_free(&g_boxart);
+    launcher_texture_free(&g_backdrop);
     launcher_texture_free(&g_pad);
     launcher_texture_free(&g_pad_analog);
     launcher_texture_free(&g_pad_digital);
