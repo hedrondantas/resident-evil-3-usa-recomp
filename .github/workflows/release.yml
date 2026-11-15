@@ -1,0 +1,89 @@
+# Builds the ready-to-run setup-host packages (Linux .tar.gz, Windows .zip).
+#
+# Each package holds the project sources and a prebuilt launcher executable
+# with no game code and no BIOS code (scripts/package_release.py refuses
+# anything else). Players open it; its wizard downloads the toolchain, takes
+# their own disc and BIOS and recompiles the game on their machine.
+#
+# - Run it by hand (Actions > Release > Run workflow) to get the packages as
+#   workflow artifacts.
+# - Push a tag vX.Y.Z matching the VERSION file to also create a draft GitHub
+#   Release with both packages attached; publish it after a check.
+name: Release
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  package:
+    name: Package ${{ matrix.platform }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            platform: linux-x64
+          - os: windows-2022
+            platform: windows-x64
+    defaults:
+      run:
+        shell: bash
+    env:
+      PYTHONUTF8: '1'
+      # Tag builds must match VERSION; manual runs package VERSION as is.
+      VERSION_TAG: ${{ startsWith(github.ref, 'refs/tags/') && github.ref_name || '' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      # The same commands launcher/bootstrap.py runs on a fresh checkout,
+      # forced into setup-host mode, then the gates and the archive.
+      - name: Build and package the setup host
+        run: python scripts/package_release.py --build --platform "${{ matrix.platform }}" --version "$VERSION_TAG"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: package-${{ matrix.platform }}
+          path: |
+            dist/*.tar.gz
+            dist/*.zip
+          if-no-files-found: error
+          retention-days: 30
+
+  release:
+    name: Draft GitHub Release
+    needs: package
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Create the draft release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ github.ref_name }}" dist/* \
+            --repo "${{ github.repository }}" \
+            --title "${{ github.ref_name }}" \
+            --draft --generate-notes

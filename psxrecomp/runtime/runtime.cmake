@@ -621,6 +621,13 @@ set(_psxrt_registry_entries "")
 set(_psxrt_bios_linked "")
 set(_psxrt_bios_skipped "")
 foreach(_stem IN LISTS PSXRECOMP_BIOS_STEMS)
+    # A setup host links no BIOS backend at all. Its zip is distributed, and a
+    # retail stem is a derivative of a copyrighted BIOS: a developer machine
+    # that has regenerated it must still not put it into a setup-host build.
+    if(PSXRECOMP_FORCE_SETUP_HOST)
+        list(APPEND _psxrt_bios_skipped "${_stem}")
+        continue()
+    endif()
     # Presence is not enough: a generated/ tree left over from before the
     # backend-descriptor mechanism has both files but defines no descriptor,
     # which links fine at configure time and then fails at link with an

@@ -31,14 +31,16 @@ development packages and no administrator password are needed. On Linux,
 
 Everything happens in one place: the launcher built into the game.
 
-- **Linux:** run `./Launcher.sh` (or double-click it). It works without Python; if
-  none is installed, it uses the one in the toolchain pack.
-- **Windows:** double-click `Launcher.pyw`. It needs Python 3.11 or newer (python.org or
-  Microsoft Store).
+- **Ready-to-run package (recommended):** download the Linux `.tar.gz` or the Windows
+  `.zip` from the [Releases](https://github.com/hedrondantas/resident-evil-3-usa-recomp/releases)
+  page, extract it, and open `Launcher.sh` (Linux) or `Launcher.cmd` (Windows). The
+  launcher is already built and nothing needs to be installed, not even Python.
+- **From a source checkout:** on Linux run `./Launcher.sh`, which needs no Python. On
+  Windows open `Launcher.cmd` or `Launcher.pyw`; this needs Python 3.11 or newer
+  (python.org or Microsoft Store). The first run compiles the launcher itself, once, in
+  a few minutes, with a progress window (or terminal output).
 
-On the first run, the launcher itself is compiled. This happens once, takes a few
-minutes and shows a progress window (or terminal output). The launcher then opens its
-first-run setup:
+The launcher then opens its first-run setup:
 
 1. **BIOS:** a `SCPH1001.BIN` in `assets/` (or `bios/`, or the project root) is picked
    up automatically; otherwise choose it with **Browse BIOS**. It is checked by size and
@@ -68,13 +70,14 @@ during play with Select + R1 or F7.
 
 | Path | Contents |
 |---|---|
-| `Launcher.sh`, `Launcher.pyw` | Entry points (Linux, Windows) |
+| `Launcher.sh`, `Launcher.cmd`, `Launcher.pyw` | Entry points (Linux; Windows; Windows with Python) |
 | `assets/` | Your disc and BIOS dumps (ignored by git) |
 | `game.toml`, `CMakeLists.txt`, `codegen_setup.c/.h`, `VERSION`, `framework_pins.txt` | Title configuration. The framework's tools expect these at the root. |
 | `src/` | Title code: the HUD mod plugin and the default keyboard layout |
 | `mods/` | The gameplay mod package |
 | `seeds/`, `symbols.toml`, `catalog/`, `catalog_identity.json` | Function seeds and the function catalogue |
 | `launcher/` | First-run bootstrap (`bootstrap.py`) and its log |
+| `scripts/`, `.github/workflows/` | Release packaging and its CI |
 | `psxrecomp/`, `recomp-ui/` | Vendored framework and launcher, with this project's changes |
 
 Created on your machine and ignored by git: `generated/` (the game's C code), `disc/`
@@ -103,6 +106,18 @@ These are the commands the launcher runs. Then copy your BIOS to
 `build-release/bios/SCPH1001.BIN` and run
 `build-release/Resident_Evil_3_Nemesis_USA_Recompiled`. The build stages the
 mod packages from `mods/packages/` next to the executable.
+
+## Releases
+
+`python scripts/package_release.py --build` builds the setup host (the launcher with no
+game code and no BIOS code) into `build-setup/` and writes the package for this
+platform to `dist/`. It refuses to package a build that contains game or BIOS code, or
+an executable that needs libraries players may not have.
+
+The [Release workflow](.github/workflows/release.yml) does the same on GitHub Actions for
+Linux and Windows. Run it by hand to get the packages as workflow artifacts, or bump
+`VERSION`, commit, and push a matching tag (`git tag v0.1.2 && git push origin v0.1.2`)
+to also create a draft release with both packages attached.
 
 ## Launcher look
 
@@ -252,7 +267,9 @@ The framework and launcher are included in this repository as ordinary folders
   `psxrecomp_cli.py` builds with the portable toolchain pack (and its prebuilt SDL3)
   whenever it is installed (`PSXRECOMP_NATIVE_TOOLCHAIN=1` opts out), and the setup host
   (`host/psxrecomp_codegen_host.c`) downloads and uses that pack, including its CPython,
-  on Linux as it does on Windows (its BIOS discovery also searches `assets/`); `generate` accepts
+  on Linux as it does on Windows (BIOS discovery in the host and in `main.cpp` also
+  searches `assets/`), a setup-host build (`PSXRECOMP_FORCE_SETUP_HOST=ON`) links no
+  BIOS backend even when `generated/` holds one; `generate` accepts
   an `.iso` (checked by its boot program), and `tools/prepare_disc.py` hard-links an
   unchanged BIN instead of copying it. Includes its `lib/recomp-net` and
   `lib/retcomm-rbengine` dependencies.

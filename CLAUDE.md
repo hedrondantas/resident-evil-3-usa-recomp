@@ -102,7 +102,14 @@ TC=~/.local/share/retcomm/toolchains/cmake-clang-v1/1.0.14
   they start the exe, or on a fresh checkout run `launcher/bootstrap.py`, which installs
   the pack and builds the setup host first (zenity/terminal progress, log in
   `launcher/first_run.log`; Linux also gets a `.desktop` menu entry).
-  `--rebuild-launcher` forces that rebuild.
+  `--rebuild-launcher` forces that rebuild. `Launcher.cmd` is the Windows entry point
+  that needs no Python when the exe exists (release packages).
+- **Releases:** `scripts/package_release.py --build` builds a setup host into
+  `build-setup/` and packages sources + exe into `dist/`; it refuses builds whose
+  `build.ninja` compiles `generated/` (game or BIOS C), whose exe has `func_8xxxxxxx`
+  symbols, or that need non-system libraries. Never package `build-release/` (it
+  holds the user's full game build). `.github/workflows/release.yml` runs it on
+  Linux and Windows; a `vX.Y.Z` tag (must match `VERSION`) drafts a GitHub Release.
 - **Runtime files next to the exe:** `settings.toml` (written by the built-in launcher,
   the F1 menu and the setup host; writers must preserve keys they do not own),
   `keybinds.ini`, `input.ini`, `config.ini` (host hotkeys). Save states live in

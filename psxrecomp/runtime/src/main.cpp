@@ -2757,7 +2757,8 @@ static std::filesystem::path discover_retail_bios_near(const char* argv0) {
         psx_known_bios_filenames(psx_expected_bios(), name_buf, 8);
     if (name_count <= 0) return {};
     static const char* kSubdirs[] = {
-        "bios", "", "system", "firmware", "psxrecomp/bios", "psxrecomp-v4/bios",
+        "bios", "assets", "", "system", "firmware", "psxrecomp/bios",
+        "psxrecomp-v4/bios",
     };
     const fs::path exe_dir = exe_dir_from_argv(argv0);
     std::error_code ec;
