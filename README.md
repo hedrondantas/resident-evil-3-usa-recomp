@@ -21,31 +21,66 @@ legally dumped disc and BIOS.
 
 No SBI file is needed (the USA release has no LibCrypt protection).
 
-Tools: Python 3, CMake, Ninja and a C/C++ compiler. On Windows,
-`psxrecomp_cli.py ensure-toolchain` downloads a portable CMake + Clang pack.
+Nothing else needs to be installed by hand. The build uses a portable toolchain pack
+(CMake, Ninja, Clang, a prebuilt SDL3 and Python) that is downloaded once into
+`~/.local/share/retcomm` (Linux) or `%LOCALAPPDATA%` (Windows), so no compiler, no
+development packages and no administrator password are needed. On Linux,
+`PSXRECOMP_NATIVE_TOOLCHAIN=1` builds with the system's CMake, Ninja and Clang instead.
 
 ## Setup and recompilation
 
-The easiest way to build the game is the recompiler window. Double-click `Launcher.pyw`
-in the project root, or run `python Launcher.pyw`. It needs Python 3.11 or newer with
-tkinter, which the python.org and Microsoft Store installers include.
+Everything happens in one place: the launcher built into the game.
 
-1. Choose the disc and the BIOS. The disc can be a `.cue` with its `.bin` (recommended),
-   a `.bin` or an `.iso`. Both files are checked against the expected dumps.
-2. When both files are valid, the recompilation starts by itself. It prepares the
-   toolchain, generates the C code, compiles the executable and installs the BIOS next to
-   it, with a progress bar and a log. **Recompile** runs it again at any time.
-3. **Play** starts the game, which opens its own launcher first.
+- **Linux:** run `./Launcher.sh` (or double-click it). It works without Python; if
+  none is installed, it uses the one in the toolchain pack.
+- **Windows:** double-click `Launcher.pyw`. It needs Python 3.11 or newer (python.org or
+  Microsoft Store).
 
-This window only sets up and recompiles. It runs the same commands as the manual build
-below, and its interface follows the system language (English or Portuguese). An `.iso`
-has no known checksum, so it is converted to BIN without verification.
+On the first run, the launcher itself is compiled. This happens once, takes a few
+minutes and shows a progress window (or terminal output). The launcher then opens its
+first-run setup:
+
+1. **BIOS:** a `SCPH1001.BIN` in `assets/` (or `bios/`, or the project root) is picked
+   up automatically; otherwise choose it with **Browse BIOS**. It is checked by size and
+   CRC.
+2. **Disc:** choose the `.cue` (recommended), the `.bin` alone, or an `.iso`. Keeping
+   your dumps in `assets/` keeps them out of git and next to the project. A `.cue`/
+   `.bin` is checked against the known dump. An `.iso` has no known checksum, so it is
+   converted to BIN and only its boot program is checked. The working copy of a BIN is
+   a hard link to yours when both are on the same drive, not a second 700 MB copy.
+3. **Generate & rebuild:** generates the C code, compiles the full game into the same
+   folder and restarts into it (about 10 to 20 minutes, with progress).
+
+After that, the same shortcut opens the game's launcher directly. On Linux, the first
+run also adds **Resident Evil 3: Nemesis Recompiled** to the applications menu.
+**Generate & rebuild** stays available from the launcher's settings, and
+`./Launcher.sh --rebuild-launcher` (or `python launcher/bootstrap.py
+--rebuild-launcher`) recompiles the executable from the existing generated code, for
+example after updating the project.
 
 Settings, controls and mods live in the game's own launcher, and in the F1 menu during
 play. The launcher's **Input** card sets the console port for controller 1, the same
 route F1 changes live. **Load State**, next to PLAY, starts the game straight from one
 of the 12 save-state slots, each shown with its thumbnail and date. Save states are made
 during play with Select + R1 or F7.
+
+## Project layout
+
+| Path | Contents |
+|---|---|
+| `Launcher.sh`, `Launcher.pyw` | Entry points (Linux, Windows) |
+| `assets/` | Your disc and BIOS dumps (ignored by git) |
+| `game.toml`, `CMakeLists.txt`, `codegen_setup.c/.h`, `VERSION`, `framework_pins.txt` | Title configuration. The framework's tools expect these at the root. |
+| `src/` | Title code: the HUD mod plugin and the default keyboard layout |
+| `mods/` | The gameplay mod package |
+| `seeds/`, `symbols.toml`, `catalog/`, `catalog_identity.json` | Function seeds and the function catalogue |
+| `launcher/` | First-run bootstrap (`bootstrap.py`) and its log |
+| `psxrecomp/`, `recomp-ui/` | Vendored framework and launcher, with this project's changes |
+
+Created on your machine and ignored by git: `generated/` (the game's C code), `disc/`
+(the working disc image, a hard link to your `.bin` when possible), `build-release/`
+(the game, its settings and a copy of the BIOS), `saves/` (memory cards and save
+states), and the launcher's pointers `bios.cfg`, `disc.cfg` and `toolchain/`.
 
 ## Build
 
@@ -64,7 +99,8 @@ python psxrecomp/psxrecomp_cli.py rebuild --project-root . --config game.toml \
   --exe-basename Resident_Evil_3_Nemesis_USA_Recompiled --no-pgo
 ```
 
-Then copy your BIOS to `build-release/bios/SCPH1001.BIN` and run
+These are the commands the launcher runs. Then copy your BIOS to
+`build-release/bios/SCPH1001.BIN` and run
 `build-release/Resident_Evil_3_Nemesis_USA_Recompiled`. The build stages the
 mod packages from `mods/packages/` next to the executable.
 
@@ -212,7 +248,13 @@ The framework and launcher are included in this repository as ordinary folders
   (`PSX_TITLE_KEYBINDS_HEADER`) and launcher theme (`PSX_TITLE_LAUNCHER_THEME`), and
   SMAA + AMD CAS post effects in the OpenGL present
   (`[video] smaa` / `cas_sharpness`; SMAA vendored under
-  `runtime/third_party/smaa/`, see its `THIRD_PARTY_ATTRIBUTION.md`). Includes its `lib/recomp-net` and
+  `runtime/third_party/smaa/`, see its `THIRD_PARTY_ATTRIBUTION.md`). On Linux,
+  `psxrecomp_cli.py` builds with the portable toolchain pack (and its prebuilt SDL3)
+  whenever it is installed (`PSXRECOMP_NATIVE_TOOLCHAIN=1` opts out), and the setup host
+  (`host/psxrecomp_codegen_host.c`) downloads and uses that pack, including its CPython,
+  on Linux as it does on Windows (its BIOS discovery also searches `assets/`); `generate` accepts
+  an `.iso` (checked by its boot program), and `tools/prepare_disc.py` hard-links an
+  unchanged BIN instead of copying it. Includes its `lib/recomp-net` and
   `lib/retcomm-rbengine` dependencies.
 - `recomp-ui/`: [recomp-ui](https://github.com/mstan/recomp-ui), from
   [Alexbeav/recomp-ui](https://github.com/Alexbeav/recomp-ui) at `be8ac1d`, plus the 8x
@@ -220,9 +262,12 @@ The framework and launcher are included in this repository as ordinary folders
   Load State picker on the dashboard, a Settings-menu host shortcut, the same title
   keyboard-layout hook, SMAA / Sharpening (CAS) rows in Display settings
   (`GameInfo.has_postfx`, `Settings.smaa` / `cas_sharpness`), the `re3` theme with a
-  blurred backdrop (`LauncherTheme.backdrop`), and a "Loading game..."
+  blurred backdrop (`LauncherTheme.backdrop`), a "Loading game..."
   screen after PLAY while the mod commit (a SHA-256 of the disc image) runs on a worker
-  thread instead of freezing the window.
+  thread instead of freezing the window, the portable-toolchain page of the first-run
+  wizard on Linux (it was Windows-only), and two first-run wizard fields:
+  `GameInfo.setup_bios_required` (retail BIOS only, no "Use OpenBIOS") and
+  `GameInfo.setup_disc_note` (the title's own disc note).
 - Project layout and configuration derived from
   [resident-evil-3-recomp](https://github.com/alexbeavs-ps1-ports/resident-evil-3-recomp).
 

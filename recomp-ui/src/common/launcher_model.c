@@ -290,6 +290,8 @@ void launcher_model_init(LauncherModel* m,
         // game->has_fullscreen_toggle is deliberately NOT read: the Fullscreen
         // row is universal (drawn for every console) — see recomp_launcher.h.
         m->has_bios             = game->has_bios != 0;
+        m->setup_bios_required  = game->setup_bios_required != 0;
+        m->setup_disc_note      = game->setup_disc_note;
         m->has_deadzone_pct     = game->has_deadzone_pct != 0;
         m->has_player_name      = game->has_player_name != 0;
         m->identity_detail      = game->identity_detail;
@@ -1765,6 +1767,12 @@ void launcher_model_refresh_bios_status(LauncherModel* m) {
      * Host bios_verify("", ...) may refuse that for titles that require a
      * retail dump; otherwise empty is OK — matching Settings → BIOS. */
     if (!m->s.bios_path[0]) {
+        if (m->setup_bios_required) {
+            /* No bundled fallback for this title: a retail dump is needed. */
+            safe_copy(m->setup_bios_detail, sizeof(m->setup_bios_detail),
+                      "Choose your BIOS dump.");
+            return;
+        }
         if (m->bios_verify_cb) {
             RecompLauncherCBiosVerify bv;
             memset(&bv, 0, sizeof(bv));

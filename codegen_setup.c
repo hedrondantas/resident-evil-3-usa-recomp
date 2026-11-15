@@ -18,21 +18,31 @@ static const PsxrecompCodegenHostConfig kCodegenConfig = {
     .cmake_target = "psx-runtime",
     .exe_basename = "Resident_Evil_3_Nemesis_USA_Recompiled",
     .prepare_note =
-        "Uses your legal disc with the local psxrecomp SDK to generate "
-        "BIOS + game C, then cmake --build. The product lives under "
-        "build-release/; reopening this setup exe forwards there.",
+        "Recompiles the game from your disc and BIOS, then restarts into it. "
+        "This is needed once and takes about 10 to 20 minutes; progress is "
+        "shown here. Everything stays inside the project folder.",
     .prepare_note_windows =
-        "Uses your legal disc with the local psxrecomp SDK to generate "
-        "BIOS + game C, then quits and rebuilds via a helper. Afterward, "
-        "this setup exe forwards to build-release/ (bios, mods, settings).",
+        "Recompiles the game from your disc and BIOS, then restarts into it. "
+        "This is needed once and takes about 10 to 20 minutes: the launcher "
+        "closes and a console window finishes the build, then the game opens.",
     .prepare_note_no_cmake =
-        "Uses your legal disc with the local psxrecomp SDK to generate "
-        "BIOS + game C. Rebuild into build-release/, then relaunch this "
-        "setup exe (it forwards to the product build).",
+        "Generates the game code from your disc. The build folder could not "
+        "be found: rebuild with Launcher.sh --rebuild-launcher, then open the "
+        "launcher again.",
 };
 
 void psx_game_codegen_setup_apply(RecompLauncherCGameInfo* gi) {
     psxrecomp_codegen_host_apply(gi, &kCodegenConfig);
+    if (!gi)
+        return;
+    /* game.toml sets openbios = false: the retail SCPH-1001 is required. */
+    gi->setup_bios_required = 1;
+    gi->setup_disc_note =
+        "Choose your Resident Evil 3: Nemesis (USA) disc (SLUS-00923): the .cue "
+        "with its .bin (recommended), the .bin alone, or an .iso. A .cue/.bin is "
+        "checked against the known dump; an .iso cannot be, so only its boot "
+        "program is checked. The disc stays where it is: the build links to it "
+        "instead of copying it when both are on the same drive.";
 }
 
 void psx_game_codegen_relaunch_or_exit(const char* disc_path) {

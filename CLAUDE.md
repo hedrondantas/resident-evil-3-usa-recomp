@@ -28,12 +28,18 @@ python psxrecomp/psxrecomp_cli.py rebuild --project-root . --config game.toml \
   recompiler change. Runtime/launcher edits only need `rebuild`, which is incremental
   (a change to `main.cpp` rebuilds a few objects; a full build is ~565 steps).
 - `--json-progress` makes the CLI emit one JSON event per line on stdout (`phase`, `log`,
-  `error`, `result`); `Launcher.pyw` consumes this.
+  `error`, `result`); the setup host (`psxrecomp/host/psxrecomp_codegen_host.c`) and
+  `launcher/bootstrap.py` consume this.
 - The rebuild fails at link time if the game is running (the exe is locked).
-- The toolchain is a portable cmake + clang (llvm-mingw) pack cached under
-  `~/.local/share/retcomm/toolchains/cmake-clang-v1/<ver>/`; its `deps/` has static SDL3,
-  and `bin/` has `llvm-nm`, `llvm-objdump`, `x86_64-w64-mingw32-clang`.
-- Run the game: `build-release/Resident_Evil_3_Nemesis_USA_Recompiled.exe` (needs
+- The toolchain is a portable cmake + clang pack cached under
+  `~/.local/share/retcomm/toolchains/cmake-clang-v1/<ver>/` (llvm-mingw on Windows; on
+  Linux, clang with a bundled Ubuntu sysroot and CPython under `python/`). Its `deps/` has
+  a static SDL3 (X11, ALSA, PulseAudio, udev loaded at run time, no Wayland/PipeWire
+  backends). The CLI builds with the pack on Windows, and on Linux whenever the pack is
+  installed, so no `-dev` packages are needed; `PSXRECOMP_NATIVE_TOOLCHAIN=1` forces the
+  host's cmake/ninja/clang (SDL3 is then fetched and compiled from source).
+- Run the game: `build-release/Resident_Evil_3_Nemesis_USA_Recompiled(.exe)`. It needs
+  the BIOS (`bios.cfg`, `settings.toml` `[bios] path`, or
   `build-release/bios/SCPH1001.BIN`). `--launcher` forces the built-in launcher;
   `PSX_NO_LAUNCHER=1` skips it.
 
@@ -54,6 +60,12 @@ TC=~/.local/share/retcomm/toolchains/cmake-clang-v1/1.0.14
 ```
 
 ## Layout and architecture
+
+- **User files:** the disc and BIOS dumps live in `assets/` (gitignored; the setup host's
+  BIOS discovery also searches it). `codegen_setup.c`, `symbols.toml`,
+  `catalog_identity.json` and `game.toml` must stay at the root: upstream tools
+  (`release_package_gate.py`, `psxrecomp_cli.py analyze`, RetComM) look for them there.
+  `bios.cfg`, `disc.cfg` and `toolchain/` at the root are launcher/CLI state.
 
 - **Project files (root):** `game.toml` (game identity, disc hashes, entry PC, recompiler
   inputs), `CMakeLists.txt` (calls `psxrecomp_add_game_runtime`, stages `game.toml` and
@@ -80,11 +92,19 @@ TC=~/.local/share/retcomm/toolchains/cmake-clang-v1/1.0.14
     end of these structs. Data flows host → `GameInfo`/`ls` → `launcher_model.c` (`m`) →
     `launcher_imgui.cpp`, and back through `ls` → `seed` (`UserSettings`) → saved to
     `settings.toml`.
-- **Two launchers:** `Launcher.pyw` / `launcher/re3_launcher.py` (tkinter) only checks
-  the disc/BIOS and runs the recompilation; all settings, controls, mods and Load State
-  live in the built-in launcher and the F1 menu.
+- **One launcher:** the built-in ImGui launcher. Without `generated/`, the CMake build
+  produces a *setup host* (same exe, no game C) whose first-run wizard
+  (`psxrecomp_codegen_host.c`, configured in `codegen_setup.c`) downloads the pack
+  (Windows and Linux; `host_uses_native_tools()` keeps host tools on macOS or with
+  `PSXRECOMP_NATIVE_TOOLCHAIN=1`), runs the CLI with the pack's CPython,
+  takes the BIOS and disc, runs generate + rebuild into `build-release/` and relaunches
+  the full game. `Launcher.sh` (Linux) and `Launcher.pyw` (Windows) are only entry points:
+  they start the exe, or on a fresh checkout run `launcher/bootstrap.py`, which installs
+  the pack and builds the setup host first (zenity/terminal progress, log in
+  `launcher/first_run.log`; Linux also gets a `.desktop` menu entry).
+  `--rebuild-launcher` forces that rebuild.
 - **Runtime files next to the exe:** `settings.toml` (written by the built-in launcher,
-  the F1 menu and `Launcher.pyw`; writers must preserve keys they do not own),
+  the F1 menu and the setup host; writers must preserve keys they do not own),
   `keybinds.ini`, `input.ini`, `config.ini` (host hotkeys). Save states live in
   `saves/scph1001/state_80011B80_slotNN.pst` (+ `.thumb`).
 - **Mods:** `mods/packages/re3usa.gameplay/<ver>/manifest.toml` declares features made of

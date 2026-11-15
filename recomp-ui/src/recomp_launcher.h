@@ -1401,6 +1401,16 @@ typedef struct RecompLauncherCGameInfo {
      * Settings.cas_sharpness): window-resolution post effects the host runs
      * on its final image. 0 => no rows. Appended additively. */
     int   has_postfx;
+
+    /* First-run wizard and Settings -> BIOS: this title cannot run on
+     * OpenBIOS. The setup step reads "(required)", "Use OpenBIOS" is hidden,
+     * and an empty BIOS path is not ready. 0 => OpenBIOS stays the optional
+     * default. Appended additively. */
+    int         setup_bios_required;
+    /* First-run wizard: the title's own note under the disc step, shown in
+     * place of the generic multitrack / redumper note. NULL => generic note.
+     * Appended additively. */
+    const char* setup_disc_note;
 } RecompLauncherCGameInfo;
 
 /* recomp_launcher_run_window return codes */

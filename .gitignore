@@ -18,5 +18,15 @@ psx_game_version.txt
 TODO.md
 assets/
 toolchain/
-launcher/state.json
-launcher/*.tmp
+# Your own disc and BIOS dumps, if kept in the project folder
+*.cue
+*.bin
+*.BIN
+*.iso
+*.ISO
+*.img
+*.chd
+*.car
+# Run reports the executable writes next to itself or the project
+psx_last_run_report.json
+psx_freeze_dump_*.json

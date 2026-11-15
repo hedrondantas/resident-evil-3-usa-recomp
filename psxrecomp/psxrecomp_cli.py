@@ -41,9 +41,21 @@ EXIT_USAGE = 2
 EXIT_VERIFY = 3
 
 
+def _uses_portable_pack() -> bool:
+    """Windows always builds with cmake-clang-v1. Linux does too when the pack
+    is installed: its prebuilt static SDL3 (deps/) loads X11, ALSA, PulseAudio
+    and udev at run time, so the build needs no -dev packages from the host.
+    PSXRECOMP_NATIVE_TOOLCHAIN=1 keeps the host's cmake/ninja/clang on Linux."""
+    if sys.platform == "win32":
+        return True
+    if not sys.platform.startswith("linux"):
+        return False
+    return os.environ.get("PSXRECOMP_NATIVE_TOOLCHAIN", "").strip() in ("", "0")
+
+
 def resolve_embedded_toolchain_bin(project_root: Path) -> Optional[Path]:
     """Return a usable toolchain bin/ (project, env, or shared cache)."""
-    if sys.platform != "win32":
+    if not _uses_portable_pack():
         return None
     return resolve_toolchain_bin(project_root)
 
@@ -71,10 +83,12 @@ def activate_embedded_toolchain(
 ) -> bool:
     """Prepend resolved toolchain bin/ to PATH for cmake/ninja/clang."""
     log = progress.log if progress else None
-    if sys.platform != "win32":
+    if not _uses_portable_pack():
         return _native_toolchain_ready(log)
     bin_dir = resolve_toolchain_bin(project_root)
     if not bin_dir or not toolchain_bin_runs(bin_dir, log=log):
+        if sys.platform != "win32":  # Linux without the pack: host tools
+            return _native_toolchain_ready(log)
         return False
     from toolchain_pack import activate_toolchain_bin
 
@@ -91,7 +105,7 @@ def ensure_toolchain_for_rebuild(
     min_version: str = "",
 ) -> bool:
     """Ensure cmake is available via cache / download / offline zip."""
-    if sys.platform != "win32":
+    if not _uses_portable_pack():
         return _native_toolchain_ready(progress.log)
     try:
         _ensure_toolchain_pack(
@@ -104,6 +118,8 @@ def ensure_toolchain_for_rebuild(
         return True
     except Exception as exc:  # noqa: BLE001 — surface to progress UI
         progress.log(f"Toolchain ensure: {exc}")
+        if sys.platform != "win32":  # Linux: fall back to host tools
+            return _native_toolchain_ready(progress.log)
         return False
 
 
@@ -1051,11 +1067,14 @@ def cmd_generate(args: argparse.Namespace, progress: ProgressReporter) -> int:
 
     progress.log(f"generate --disc {disc}")
     progress.phase("verify", pct=0.05, message=f"Checking disc {disc.name}")
+    # An .iso holds 2048-byte sectors, so its digests can never match the
+    # known 2352-byte BIN. prepare_disc converts it and checks the boot EXE.
+    skip_hash = bool(args.skip_hash_check) or disc.suffix.lower() == ".iso"
+    if skip_hash and not args.skip_hash_check:
+        progress.log("ISO image: digests cannot be checked; verifying the boot EXE instead")
     try:
         if disc.is_file():
-            verify_disc_path(
-                disc, prep, skip_hash=bool(args.skip_hash_check), progress=progress
-            )
+            verify_disc_path(disc, prep, skip_hash=skip_hash, progress=progress)
     except DiscVerifyError as exc:
         progress.error(str(exc), code=EXIT_VERIFY, verify_failed=True)
         return EXIT_VERIFY

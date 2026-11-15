@@ -3220,7 +3220,9 @@ void draw_system_controls(LauncherModel* m, const LauncherTheme& th) {
     if (is_psx || has_pick) {
         const float indent = ImGui::CalcTextSize("BIOS").x + px(th.spacing_md);
         ImGui::SetCursorPosX(ImGui::GetCursorPosX() + indent);
-        if (is_psx) {
+        if (is_psx && m->setup_bios_required) {
+            /* Retail BIOS only: no OpenBIOS switch to offer. */
+        } else if (is_psx) {
             if (!has_pick) ImGui::BeginDisabled();
             if (ImGui::Button(ui_text("Use OpenBIOS"), ImVec2(0, btn_h)))
                 launcher_model_request_bios_path(m, "");
@@ -8158,7 +8160,7 @@ static SetupPlatKind setup_platform_kind(const char* platform) {
     return SETUP_PLAT_GENERIC;
 }
 
-#if defined(_WIN32)
+#if defined(_WIN32) || defined(__linux__)
 static const char* kRetcommToolchainsUrl =
     "https://github.com/TechnicallyComputers/retcomm-toolchains";
 static const char* kRetcommToolchainsReleasesUrl =
@@ -8433,7 +8435,9 @@ void draw_setup_wizard_modal(LauncherModel* m, const LauncherTheme& th) {
         ImGui::TextColored(col(th.accent),
                            want_update ? "Toolchain update" : "Build tools");
         ImGui::PushTextWrapPos(wrap_x);
-#if defined(_WIN32)
+        /* Linux uses the portable linux-x64 pack too (see
+         * psxrecomp_codegen_host.c host_uses_native_tools). */
+#if defined(_WIN32) || defined(__linux__)
         /* SETUP_TOOLCHAIN_WINDOWS_BEGIN */
         if (want_update) {
             ImGui::TextColored(col(th.text_muted),
@@ -8552,14 +8556,14 @@ void draw_setup_wizard_modal(LauncherModel* m, const LauncherTheme& th) {
         }
 
         ImGui::Dummy(ImVec2(0, px(14)));
-#if defined(_WIN32)
+#if defined(_WIN32) || defined(__linux__)
         const bool can_next = launcher_model_can_advance_toolchain(m);
 #else
         const bool can_next = true;
 #endif
         if (!can_next) ImGui::BeginDisabled();
         if (ImGui::Button(
-#if defined(_WIN32)
+#if defined(_WIN32) || defined(__linux__)
                           want_update ? "Update##tc_next" : "Next##tc_next",
 #else
                           "Check tools##tc_next",
@@ -8665,13 +8669,19 @@ void draw_setup_wizard_modal(LauncherModel* m, const LauncherTheme& th) {
 
     if (m->has_bios) {
         const bool has_pick = m->s.bios_path[0] != 0;
-        const bool offers_bundled = (plat == SETUP_PLAT_PSX);
+        const bool bios_required = m->setup_bios_required;
+        const bool offers_bundled = (plat == SETUP_PLAT_PSX) && !bios_required;
         const char* bios_section =
             (plat == SETUP_PLAT_GBA) ? "1. GBA BIOS (required)"
+            : (plat == SETUP_PLAT_PSX && bios_required)
+                ? "1. PlayStation BIOS (required)"
             : (plat == SETUP_PLAT_PSX) ? "1. PlayStation BIOS (optional)"
                                       : "1. BIOS";
         const char* bios_help =
-            (plat == SETUP_PLAT_GBA)
+            (plat == SETUP_PLAT_PSX && bios_required)
+                ? "Browse for your retail BIOS dump (exactly 512 KB). This "
+                  "game does not run on OpenBIOS."
+            : (plat == SETUP_PLAT_GBA)
                 ? "Browse for your gba_bios.bin dump (16 KB, SHA-1 "
                   "300c20df… — dumped from a Game Boy Advance). Setup packages "
                   "do not ship a redistributable GBA BIOS."
@@ -8752,6 +8762,8 @@ void draw_setup_wizard_modal(LauncherModel* m, const LauncherTheme& th) {
                               "Disc image (.cue .bin .img .iso .car)",
                               kPsxDiscNote);
         ImGui::PushTextWrapPos(wrap_x);
+    } else if (m->setup_disc_note && m->setup_disc_note[0]) {
+        ImGui::TextColored(col(th.text_muted), "%s", m->setup_disc_note);
     } else if (plat == SETUP_PLAT_PSX) {
         /* Keep the note as one wrapped TextColored block — SameLine +
          * TextLinkOpenURL after a wrapped line leaves a huge empty gap in

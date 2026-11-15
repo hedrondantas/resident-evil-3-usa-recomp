@@ -24,6 +24,23 @@
 extern char** environ;
 #endif
 
+/* Linux builds with the portable cmake-clang-v1 pack, like Windows: its
+ * linux-x64 build ships a sysroot, a prebuilt static SDL3 and CPython, so a
+ * fresh machine needs no compiler, -dev packages or Python of its own.
+ * PSXRECOMP_NATIVE_TOOLCHAIN=1 keeps the host's tools (the previous Linux
+ * behavior); macOS always uses host tools. psxrecomp_cli.py follows the same
+ * rule. */
+static int host_uses_native_tools(void) {
+#if defined(_WIN32)
+    return 0;
+#elif defined(__linux__)
+    const char* v = getenv("PSXRECOMP_NATIVE_TOOLCHAIN");
+    return v && v[0] && v[0] != '0';
+#else
+    return 1;
+#endif
+}
+
 /* Forward decls — used by toolchain cache helpers before their definitions. */
 static int rmtree_path(const char* path);
 static int mkdir_p(const char* path);
@@ -489,9 +506,12 @@ static int find_python(char* out, size_t cap) {
         snprintf(out, cap, "%s", env);
         return 1;
     }
-#if defined(_WIN32)
+    /* The pack's CPython (3.12) on every platform: on Linux a missing or
+     * older (< 3.11, no tomllib) system python3 would otherwise break
+     * generate on machines that only have the pack. */
     if (find_toolchain_python(out, cap))
         return 1;
+#if defined(_WIN32)
     /* Prefer python.org / py-launcher installs over the Microsoft Store
      * stub: Store Python redirects LocalAppData writes into LocalCache. */
     char resolved[1100];
@@ -796,11 +816,10 @@ static int resolve_toolchain_bin(char* out, size_t cap) {
 static void activate_toolchain_path(void) {
     char pack_root[1400];
     g_toolchain_bin[0] = '\0';
-#if !defined(_WIN32)
-    /* Linux and macOS use native build tools. A stale Windows pack can exist
-     * in the shared cache, but it must never shadow tools from the host PATH. */
-    return;
-#endif
+    /* Native-tool platforms (macOS, Linux with PSXRECOMP_NATIVE_TOOLCHAIN=1):
+     * a cached pack must never shadow tools from the host PATH. */
+    if (host_uses_native_tools())
+        return;
     if (!resolve_toolchain_bin(g_toolchain_bin, sizeof(g_toolchain_bin)))
         return;
     /* Pack root (parent of bin/) — Windows cmake-clang-v1 ships zlib here. */
@@ -1325,7 +1344,8 @@ static int discover_retail_bios_c(char* out, size_t cap) {
     char names[8][32];
     int nnames = psx_known_bios_filenames(psx_expected_bios(), names, 8);
     static const char* subs[] = {
-        "bios", "", "system", "firmware", "psxrecomp/bios", "psxrecomp-v4/bios",
+        "bios", "assets", "", "system", "firmware", "psxrecomp/bios",
+        "psxrecomp-v4/bios",
     };
     char roots[3][1100];
     int nroots = 0;
@@ -3047,9 +3067,8 @@ static int cmake_path_runs(const char* cmake_path) {
 }
 
 #if !defined(_WIN32)
-/* Unix release kits use the host's native build tools.  The published
- * cmake-clang-v1 archive is a Windows pack, so the setup wizard must not offer
- * to download it on Linux or macOS. */
+/* Host build tools: macOS, and Linux with PSXRECOMP_NATIVE_TOOLCHAIN=1 (see
+ * host_uses_native_tools). Linux otherwise downloads the linux-x64 pack. */
 static int posix_command_runs(const char* command) {
     char cmd[1600];
     if (!command || !command[0])
@@ -3338,7 +3357,8 @@ static int host_toolchain_is_ready(void) {
         return 0;
     g_tc_repair_note[0] = '\0';
 #if !defined(_WIN32)
-    return host_system_toolchain_ready();
+    if (host_uses_native_tools())
+        return host_system_toolchain_ready();
 #endif
     migrate_legacy_psxrecomp_toolchain();
     /* Wizard open: drop broken latest/ before treating the pack as ready. */
@@ -3545,14 +3565,16 @@ static int host_ensure_toolchain_with_progress(
         return 0;
     }
 #if !defined(_WIN32)
-    if (on_progress)
-        on_progress(progress_ctx, 0.02f, "Checking native build tools…");
-    if (host_system_toolchain_ready())
-        return 1;
-    snprintf(err_msg, err_cap,
-             "Native build tools are missing. Install CMake, Ninja, Python, "
-             "and C/C++ compilers, then restart setup.");
-    return 0;
+    if (host_uses_native_tools()) {
+        if (on_progress)
+            on_progress(progress_ctx, 0.02f, "Checking native build tools…");
+        if (host_system_toolchain_ready())
+            return 1;
+        snprintf(err_msg, err_cap,
+                 "Native build tools are missing. Install CMake, Ninja, Python, "
+                 "and C/C++ compilers, then restart setup.");
+        return 0;
+    }
 #endif
     migrate_legacy_psxrecomp_toolchain();
     activate_toolchain_path();

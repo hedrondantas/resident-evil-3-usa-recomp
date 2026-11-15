@@ -24,6 +24,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import re
 import shutil
 import struct
@@ -310,6 +311,25 @@ def stage_multitrack_cue(
     else:
         print(f"source cue already at {cue_dest}")
     return cue_dest.resolve()
+
+
+def link_into_place(src: Path, dest: Path) -> bool:
+    """Hard-link an unchanged BIN instead of writing a second ~700 MB copy.
+
+    False when the filesystem refuses (another drive, FAT/exFAT, ...): the
+    caller then writes the copy as before.
+    """
+    try:
+        if dest.exists() and os.path.samefile(src, dest):
+            return True
+        tmp = dest.with_name(dest.name + ".link-tmp")
+        if tmp.exists() or tmp.is_symlink():
+            tmp.unlink()
+        os.link(src, tmp)
+        os.replace(tmp, dest)
+        return True
+    except OSError:
+        return False
 
 
 def detect_kind(path: Path, size: int) -> str:
@@ -667,6 +687,8 @@ def main() -> int:
     bin_path = cfg.out_dir / cfg.bin_name
     if src.resolve() == bin_path.resolve() and kind == "bin2352":
         print(f"source already at {bin_path}")
+    elif kind == "bin2352" and link_into_place(src, bin_path):
+        print(f"linked {bin_path} to the source (hard link, no copy)")
     else:
         print(f"writing {bin_path}")
         bin_path.write_bytes(bin_data)

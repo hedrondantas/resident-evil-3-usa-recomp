@@ -391,6 +391,8 @@ typedef struct {
     // (no has_fullscreen_toggle: the Fullscreen row is universal — every
     // console draws it; the ABI flag of that name is deprecated/ignored.)
     bool     has_bios;
+    bool     setup_bios_required;     // GameInfo.setup_bios_required
+    const char* setup_disc_note;      // GameInfo.setup_disc_note (may be NULL)
     bool     has_deadzone_pct;
     // Online identity (opt-in; see GameInfo.has_player_name): dashboard
     // IDENTITY card with the persistent display name + optional host-owned
