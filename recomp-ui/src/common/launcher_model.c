@@ -1432,6 +1432,23 @@ const char* launcher_model_aspect_label(const LauncherModel* m) {
     return kLabels[idx];
 }
 
+/* Option lists for the Settings dropdowns (the cycle functions step through
+ * the same tables). */
+const int* launcher_model_freq_options(int* count) {
+    if (count) *count = kFreqCount;
+    return kFreqTable;
+}
+
+const int* launcher_model_window_width_options(int* count) {
+    if (count) *count = kWindowWidthCount;
+    return kWindowWidths;
+}
+
+const int* launcher_model_interp_fps_options(int* count) {
+    if (count) *count = kInterpFpsCount;
+    return kInterpFpsTable;
+}
+
 void launcher_model_cycle_freq(LauncherModel* m) {
     int idx = 0;
     for (int i = 0; i < kFreqCount; ++i)
@@ -1607,6 +1624,11 @@ static const char* const* screen_kind_vocab(const LauncherModel* m, int* out_n) 
     }
     *out_n = 4;
     return kScreenKindNames;
+}
+
+int launcher_model_screen_kind_count(const LauncherModel* m) {
+    int n = 4; (void)screen_kind_vocab(m, &n);
+    return n;
 }
 
 void launcher_model_cycle_screen_kind(LauncherModel* m) {

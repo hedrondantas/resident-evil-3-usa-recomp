@@ -6204,7 +6204,24 @@ static const char kRuntimeQuitSave[] = "psx.quit_save";
 static const char kRuntimeQuitNoSave[] = "psx.quit_no_save";
 static const char kRuntimeSmaa[] = "psx.smaa";
 static const char kRuntimeCasSharpness[] = "psx.cas_sharpness";
+static const char kRuntimeShowLauncher[] = "psx.show_launcher";
+/* [launcher] skip_launcher as currently in effect, so the F1 menu can turn the
+ * launcher back on from inside the game. */
+static int g_skip_launcher_on_boot = 0;
 static const char *const kControllerRouteChoices[] = { "Port 1", "Port 2" };
+static const char kRuntimeWindowSize[] = "psx.window_size";
+/* F1 uses the launcher's names and value sets, so a setting reads the same in
+ * both places (Settings tab and this menu). */
+static const char *const kF1FullscreenChoices[] = { "Off", "Borderless", "Exclusive" };
+static const char *const kF1TextureFilterChoices[] = { "Nearest", "Bilinear" };
+static const char *const kF1FmvFilterChoices[] = { "Nearest", "Bilinear", "Sharp", "Bicubic" };
+static const int kF1WindowWidths[] = { 960, 1280, 1600, 1920 };
+static const int kF1SupersamplingValues[] = { 1, 2, 3, 4, 5, 6, 7, 8 };
+static const char *const kF1SupersamplingChoices[] = {
+    "1x", "2x", "3x", "4x", "5x", "6x", "7x", "8x" };
+static const int kF1CasValues[] = { 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100 };
+static const char *const kF1CasChoices[] = {
+    "Off", "10%", "20%", "30%", "40%", "50%", "60%", "70%", "80%", "90%", "100%" };
 
 /* Internal resolution can be rebuilt live only by the GL pipeline. */
 static bool runtime_ui_live_scale_available(void) {
@@ -6240,6 +6257,15 @@ static int runtime_ui_get_value(void*, const RecompRuntimeUiItem *item,
         *value_out = g_video_cas;
     else if (std::strcmp(item->key, kRuntimeControllerRoute) == 0)
         *value_out = g_controller_ports_swapped ? 1 : 0;
+    else if (std::strcmp(item->key, kRuntimeShowLauncher) == 0)
+        *value_out = g_skip_launcher_on_boot ? 0 : 1;
+    else if (std::strcmp(item->key, kRuntimeWindowSize) == 0) {
+        /* Nearest offered width (a fit-to-display window reports its size). */
+        int best = kF1WindowWidths[0];
+        for (int w : kF1WindowWidths)
+            if (std::abs(w - g_video_win_w) < std::abs(best - g_video_win_w)) best = w;
+        *value_out = best;
+    }
     else
         return 0;
     return 1;
@@ -6308,6 +6334,20 @@ static int runtime_ui_set_value(void*, const RecompRuntimeUiItem *item,
         const int requested = value ? 1 : 0;
         if (requested != (g_controller_ports_swapped ? 1 : 0))
             controller_port_route_toggle();
+    } else if (std::strcmp(item->key, kRuntimeShowLauncher) == 0) {
+        g_skip_launcher_on_boot = value ? 0 : 1;
+    } else if (std::strcmp(item->key, kRuntimeWindowSize) == 0) {
+        bool known = false;
+        for (int w : kF1WindowWidths) known = known || w == value;
+        if (!known) return 0;
+        g_video_win_w = value;
+        g_video_win_w_explicit = true;
+        if (sdl_window && !g_fullscreen) {
+            SDL_RestoreWindow(sdl_window);   /* a maximised window ignores a resize */
+            const int height = g_video_win_w * g_video_aspect_den /
+                               std::max(1, g_video_aspect_num);
+            SDL_SetWindowSize(sdl_window, g_video_win_w, height);
+        }
     } else {
         return 0;
     }
@@ -6348,6 +6388,8 @@ static void runtime_ui_save(void*) {
     settings.has_cas_sharpness = true;
     settings.p1_port = g_controller_ports_swapped ? 2 : 1;
     settings.has_p1_port = true;
+    settings.skip_launcher = g_skip_launcher_on_boot != 0;
+    settings.has_skip_launcher = true;
     if (!PSXRecompV4::save_user_settings(g_runtime_settings_path, settings))
         host_osd_push("Settings changed live but could not be saved", 2200);
 }
@@ -6455,45 +6497,77 @@ static void runtime_ui_visibility_changed(void*, int open) {
 static void runtime_settings_ui_ensure_created(void) {
     if (g_runtime_settings_ui) return;
 
+    /* Window size labels follow the display aspect, like the launcher's. */
+    static char window_labels[4][32];
+    static const char *window_choices[4];
+    for (int i = 0; i < 4; ++i) {
+        const int w = kF1WindowWidths[i];
+        std::snprintf(window_labels[i], sizeof(window_labels[i]), "%d x %d", w,
+                      w * g_video_aspect_den / std::max(1, g_video_aspect_num));
+        window_choices[i] = window_labels[i];
+    }
+
+    /* The whole menu, in the launcher's order and with its names. No geometry
+     * correction (it cracks meshes in this build; see ENHANCEMENTS.md
+     * G1.8/G1.9) and no disc tools (Resident Evil 3 is one disc). */
     static const RecompRuntimeUiItem extras[] = {
-        { kRuntimeGeometryCorrection, "Graphics", "Geometry correction",
-          "Sub-pixel vertex precision: removes polygon wobble. Visible at 2x+.",
+        { RECOMP_RUNTIME_UI_KEY_FULLSCREEN, "Display", "Fullscreen",
+          "Off, borderless or exclusive.",
+          RECOMP_RUNTIME_UI_CHOICE, 0, 2, 1, kF1FullscreenChoices, 3, nullptr },
+        { kRuntimeWindowSize, "Display", "Window size",
+          "Size of the game window.",
+          RECOMP_RUNTIME_UI_CHOICE, 0, 0, 1, window_choices, 4, kF1WindowWidths },
+        { RECOMP_RUNTIME_UI_KEY_RESOLUTION_SCALE, "Graphics", "Supersampling",
+          "Internal resolution. OpenGL.",
+          RECOMP_RUNTIME_UI_CHOICE, 0, 0, 1, kF1SupersamplingChoices, 8,
+          kF1SupersamplingValues },
+        { RECOMP_RUNTIME_UI_KEY_TEXTURE_FILTER, "Graphics", "Texture filtering",
+          "Nearest is sharp, Bilinear smooth.",
+          RECOMP_RUNTIME_UI_CHOICE, 0, 1, 1, kF1TextureFilterChoices, 2, nullptr },
+        { RECOMP_RUNTIME_UI_KEY_LINEAR_FILTER, "Graphics", "Antialiasing",
+          "Smooths the image when scaled.",
           RECOMP_RUNTIME_UI_BOOL, 0, 1, 1, nullptr, 0, nullptr },
-        { kRuntimePerspectiveTexturing, "Graphics", "Perspective texturing",
-          "Perspective-correct texture mapping on large polygons.",
-          RECOMP_RUNTIME_UI_BOOL, 0, 1, 1, nullptr, 0, nullptr },
+        { RECOMP_RUNTIME_UI_KEY_FMV_FILTER, "Graphics", "FMV filtering",
+          "How video is scaled up.",
+          RECOMP_RUNTIME_UI_CHOICE, 0, 3, 1, kF1FmvFilterChoices, 4, nullptr },
         { kRuntimeSmaa, "Graphics", "SMAA",
-          "Smooths jagged edges on the final image, 2D backgrounds included. OpenGL.",
+          "Smooths jagged edges. OpenGL.",
           RECOMP_RUNTIME_UI_BOOL, 0, 1, 1, nullptr, 0, nullptr },
         { kRuntimeCasSharpness, "Graphics", "Sharpening (CAS)",
-          "AMD contrast-adaptive sharpening. 0 = off. OpenGL.",
-          RECOMP_RUNTIME_UI_INT, 0, 100, 10, nullptr, 0, nullptr },
-        { kRuntimeControllerRoute, "Input", "Controller 1 route",
-          "Move host controller 1 between console ports without restarting.",
+          "Sharpens the image. OpenGL.",
+          RECOMP_RUNTIME_UI_CHOICE, 0, 0, 1, kF1CasChoices, 11, kF1CasValues },
+        { kRuntimePerspectiveTexturing, "Graphics", "Perspective textures",
+          "Stops floors and walls warping.",
+          RECOMP_RUNTIME_UI_BOOL, 0, 1, 1, nullptr, 0, nullptr },
+        { RECOMP_RUNTIME_UI_KEY_VOLUME, "Audio", "Volume",
+          "In-game mixer volume.",
+          RECOMP_RUNTIME_UI_INT, 0, 100, 5, nullptr, 0, nullptr },
+        { RECOMP_RUNTIME_UI_KEY_RESUME, "System", "Resume game",
+          "Return to the game.",
+          RECOMP_RUNTIME_UI_ACTION, 0, 0, 0, nullptr, 0, nullptr },
+        { kRuntimeSaveStates, "System", "Save states...",
+          "Save or load a state (also F7).",
+          RECOMP_RUNTIME_UI_ACTION, 0, 0, 0, nullptr, 0, nullptr },
+        { kRuntimeShowLauncher, "System", "Show launcher on boot",
+          "Launcher before the game starts.",
+          RECOMP_RUNTIME_UI_BOOL, 0, 1, 1, nullptr, 0, nullptr },
+        { kRuntimeControllerRoute, "Input", "Controller 1 port",
+          "Console port for controller 1.",
           RECOMP_RUNTIME_UI_CHOICE, 0, 1, 1, kControllerRouteChoices, 2,
           nullptr },
-        { kRuntimeSaveStates, "System", "Save states...",
-          "Open the save-state slots to save or load (same menu as F7).",
-          RECOMP_RUNTIME_UI_ACTION, 0, 0, 0, nullptr, 0, nullptr },
-        { kRuntimeDiscChange, "Disc", "Change disc...",
-          "Mount another disc for this session. Startup settings are unchanged.",
-          RECOMP_RUNTIME_UI_ACTION, 0, 0, 0, nullptr, 0, nullptr },
-        { kRuntimeDiscReinsert, "Disc", "Reinsert current disc",
-          "Signal a tray-open/close cycle without changing the mounted image.",
-          RECOMP_RUNTIME_UI_ACTION, 0, 0, 0, nullptr, 0, nullptr },
         /* Last section on purpose: opening it is the "save first?" question,
          * and Esc / Circle backs out of it as the cancel. */
         { kRuntimeQuitSave, "Quit game", "Save state, then quit",
-          "Pick a slot and save. The game closes once the state is written.",
+          "Save to a slot, then close.",
           RECOMP_RUNTIME_UI_ACTION, 0, 0, 0, nullptr, 0, nullptr },
         { kRuntimeQuitNoSave, "Quit game", "Quit without saving",
-          "Close the game now. Progress since your last save is lost.",
+          "Close now. Unsaved progress is lost.",
           RECOMP_RUNTIME_UI_ACTION, 0, 0, 0, nullptr, 0, nullptr },
     };
 
     RecompRuntimeUiStandardConfig config{};
     config.menu.title = "Runtime settings";
-    config.menu.subtitle = "Paused - live settings and session tools";
+    config.menu.subtitle = "Paused - changes apply live";
     config.menu.theme = "psx";
     config.menu.accept_label = "Enter / Cross";
     config.menu.back_label = "Esc / Circle";
@@ -6504,15 +6578,9 @@ static void runtime_settings_ui_ensure_created(void) {
     config.menu.callbacks.is_enabled = runtime_ui_is_enabled;
     config.menu.callbacks.save = runtime_ui_save;
     config.menu.callbacks.visibility_changed = runtime_ui_visibility_changed;
-    config.features =
-        RECOMP_RUNTIME_UI_STANDARD_FULLSCREEN |
-        RECOMP_RUNTIME_UI_STANDARD_WINDOW_SCALE |
-        RECOMP_RUNTIME_UI_STANDARD_LINEAR_FILTER |
-        RECOMP_RUNTIME_UI_STANDARD_TEXTURE_FILTER |
-        RECOMP_RUNTIME_UI_STANDARD_RESOLUTION_SCALE |
-        RECOMP_RUNTIME_UI_STANDARD_FMV_FILTER |
-        RECOMP_RUNTIME_UI_STANDARD_VOLUME |
-        RECOMP_RUNTIME_UI_STANDARD_RESUME;
+    /* Every row is declared above (same keys as the standard items, with the
+     * launcher's labels and value sets), so no standard rows are added. */
+    config.features = 0;
     config.window_scale_max = 4;
     config.resolution_scale_max = PSXRecompV4::VIDEO_SUPERSAMPLING_MAX;
     config.extra_items = extras;
@@ -11843,6 +11911,51 @@ namespace {
 }  // namespace
 #endif
 
+/* ~0.4 s window after the game window appears: is Shift held? */
+static bool psx_shift_held_at_window_open(void) {
+    const auto start = SDL_GetTicks();
+    while (SDL_GetTicks() - start < 400) {
+        SDL_PumpEvents();
+        if (SDL_GetModState() & KMOD_SHIFT) return true;
+#if defined(_WIN32)
+        if (GetAsyncKeyState(VK_SHIFT) & 0x8000) return true;
+#endif
+        SDL_Delay(20);
+    }
+    return false;
+}
+
+/* Restart this executable with --launcher (dropping --no-launcher). Returns
+ * only if the restart could not be started; the game then just continues. */
+static void psx_relaunch_with_launcher(int argc, char** argv) {
+    std::fprintf(stdout, "psxrecomp: Shift held at start; reopening the launcher\n");
+    std::fflush(stdout);
+#if defined(_WIN32)
+    wchar_t exe[MAX_PATH];
+    const DWORD n = GetModuleFileNameW(NULL, exe, MAX_PATH);
+    if (n == 0 || n >= MAX_PATH) return;
+    std::wstring cmd = L"\"" + std::wstring(exe) + L"\" --launcher";
+    STARTUPINFOW si{};
+    si.cb = sizeof(si);
+    PROCESS_INFORMATION pi{};
+    if (!CreateProcessW(exe, cmd.data(), NULL, NULL, FALSE, 0, NULL, NULL, &si, &pi))
+        return;
+    CloseHandle(pi.hThread);
+    CloseHandle(pi.hProcess);
+    std::exit(0);
+#else
+    std::vector<char*> args;
+    args.push_back(argv[0]);
+    for (int i = 1; i < argc; ++i)
+        if (std::strcmp(argv[i], "--no-launcher") != 0) args.push_back(argv[i]);
+    static char kFlag[] = "--launcher";
+    args.push_back(kFlag);
+    args.push_back(nullptr);
+    execv("/proc/self/exe", args.data());
+    execv(argv[0], args.data());   /* non-Linux POSIX */
+#endif
+}
+
 int main(int argc, char** argv) {
     /* Force line-buffered output so messages appear even if killed. */
     std::setvbuf(stdout, nullptr, _IOLBF, BUFSIZ);
@@ -13103,6 +13216,11 @@ int main(int argc, char** argv) {
     const bool want_launcher =
         force_launcher ||
         (!std::getenv("PSX_NO_LAUNCHER") && !force_no_launcher && !skip_launcher_setting);
+    g_skip_launcher_on_boot = skip_launcher_setting ? 1 : 0;
+    /* Skipped only because of the saved setting (not --no-launcher or the
+     * env): holding Shift as the game window opens brings the launcher back. */
+    const bool skipped_by_setting = !want_launcher && skip_launcher_setting &&
+                                    !force_no_launcher && !std::getenv("PSX_NO_LAUNCHER");
     if (want_launcher) {
         launcher_boot_timing_mark("host:before_sdl_init");
     /* Per-monitor DPI awareness, BEFORE any SDL_Init.
@@ -13884,6 +14002,7 @@ int main(int argc, char** argv) {
                     ? seed.hotkey_pad_runtime_menu
                     : PSX_HOTKEY_PAD_SELECT_START;
                 skip_launcher_setting = seed.skip_launcher;
+                g_skip_launcher_on_boot = skip_launcher_setting ? 1 : 0;
                 if (seed.has_bios_path) {
                     settings_bios_storage = seed.bios_path.string();
                     bios_path = settings_bios_storage.c_str();
@@ -14584,6 +14703,13 @@ session_reboot:
         return 1;
     }
     psx_apply_window_icon(sdl_window, argv[0]);
+
+    /* Way back from "Skip launcher on boot": Shift held as the game window
+     * opens restarts the game with --launcher. Checked on the game window, not
+     * before it, because a process cannot read the keyboard until it has a
+     * focused window of its own (Wayland / XWayland). */
+    if (skipped_by_setting && psx_shift_held_at_window_open())
+        psx_relaunch_with_launcher(argc, argv);
 
     /* Maximise instead of computing the frame size ourselves.
      *

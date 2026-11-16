@@ -666,6 +666,12 @@ bool launcher_model_rom_verified(const LauncherModel* m);
 
 // ---- navigation ----
 void launcher_model_set_view(LauncherModel* m, LngView v);
+
+/* Value lists behind the Settings dropdowns (same order as the cycles). */
+const int* launcher_model_freq_options(int* count);
+const int* launcher_model_window_width_options(int* count);
+const int* launcher_model_interp_fps_options(int* count);
+int        launcher_model_screen_kind_count(const LauncherModel* m);
 void launcher_model_open_config(LauncherModel* m, int player);  // -> Controller view
 void launcher_model_begin_camera_capture(LauncherModel* m, int action);
 void launcher_model_cancel_camera_capture(LauncherModel* m);

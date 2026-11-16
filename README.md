@@ -66,6 +66,11 @@ route F1 changes live. **Load State**, next to PLAY, starts the game straight fr
 of the 12 save-state slots, each shown with its thumbnail and date. Save states are made
 during play with Select + R1 or F7.
 
+**Skip launcher on boot** starts the game directly. To get the launcher back, hold
+**Shift** while the game window opens (the game restarts into the launcher), or turn on
+**Show launcher on boot** under System in the F1 menu. `--launcher` on the command line
+(`./Launcher.sh --launcher`, `Launcher.cmd --launcher`) also opens it.
+
 ## Project layout
 
 | Path | Contents |
@@ -129,6 +134,10 @@ art, so the backdrop is, in order of preference:
    scaled down and blurred when the launcher opens),
 2. the thumbnail of your newest save state,
 3. a plain dark gradient.
+
+The disc card on the Home tab shows a cover the same way: put your own `cover.png` or
+`cover.jpg` (portrait, any size) in `assets/`, next to your disc and BIOS, or next to the
+executable, and reopen the launcher. Without one, it draws a stylised disc.
 
 The theme is selected in `CMakeLists.txt` (`PSX_TITLE_LAUNCHER_THEME`).
 
@@ -256,8 +265,11 @@ The framework and launcher are included in this repository as ordinary folders
 
 - `psxrecomp/`: [PSXRecomp](https://github.com/mstan/psxrecomp), from the
   [Alexbeav/psxrecomp](https://github.com/Alexbeav/psxrecomp) fork at `6c7fdaa`, plus the
-  F1 runtime menu (with a Save states... entry that opens the F7 menu and a Quit game
-  section that offers a save state first), the 8x internal resolution, the saved controller 1 route
+  F1 runtime menu (declared in `main.cpp` with the launcher's names and value sets --
+  window sizes, supersampling, sharpening in 10% steps -- and without geometry
+  correction or disc tools; a Save states... entry that opens the F7 menu, a Show
+  launcher on boot toggle, and a Quit game section that offers a save state first), Shift held as
+  the game window opens reopening a skipped launcher, the 8x internal resolution, the saved controller 1 route
   (`[controller] p1_port` in `settings.toml`), live build progress in
   `psxrecomp_cli.py`, a hook for a title's own default keyboard layout
   (`PSX_TITLE_KEYBINDS_HEADER`) and launcher theme (`PSX_TITLE_LAUNCHER_THEME`), and
@@ -281,7 +293,18 @@ The framework and launcher are included in this repository as ordinary folders
   (`GameInfo.has_postfx`, `Settings.smaa` / `cas_sharpness`), the `re3` theme with a
   blurred backdrop (`LauncherTheme.backdrop`), a "Loading game..."
   screen after PLAY while the mod commit (a SHA-256 of the disc image) runs on a worker
-  thread instead of freezing the window, the portable-toolchain page of the first-run
+  thread instead of freezing the window, a tab row under the title (Home, Settings,
+  Mods, and Assist Tools / Credits when present) in place of the header buttons and
+  "< Back", Settings rows on a fixed label column with dropdowns instead of
+  click-to-cycle buttons (`value_combo`; PSX antialiasing is Off/On), a player-supplied
+  `cover.{png,jpg}` (beside the exe or in `../assets/`) for the box art with a CD
+  placeholder for disc titles, an aligned Controller page (label columns, bindings
+  chips placed from the cell start) with a "< Back" button in its footer, a Home tab
+  whose cards share one gap and end on one line (one-player titles fill both columns;
+  memory cards span the column), a Mods tab with a measured option column (on/off
+  options included), a wider feature list with elided two-tone rows and a
+  full-width search (the Enable all / Disable all buttons are gone), the
+  portable-toolchain page of the first-run
   wizard on Linux (it was Windows-only), and two first-run wizard fields:
   `GameInfo.setup_bios_required` (retail BIOS only, no "Use OpenBIOS") and
   `GameInfo.setup_disc_note` (the title's own disc note).

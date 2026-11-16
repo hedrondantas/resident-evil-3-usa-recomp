@@ -62,7 +62,8 @@ TC=~/.local/share/retcomm/toolchains/cmake-clang-v1/1.0.14
 ## Layout and architecture
 
 - **User files:** the disc and BIOS dumps live in `assets/` (gitignored; the setup host's
-  BIOS discovery also searches it). `codegen_setup.c`, `symbols.toml`,
+  BIOS discovery also searches it), plus an optional `cover.{png,jpg}` the launcher shows
+  as box art (the repo ships no game art). `codegen_setup.c`, `symbols.toml`,
   `catalog_identity.json` and `game.toml` must stay at the root: upstream tools
   (`release_package_gate.py`, `psxrecomp_cli.py analyze`, RetComM) look for them there.
   `bios.cfg`, `disc.cfg` and `toolchain/` at the root are launcher/CLI state.

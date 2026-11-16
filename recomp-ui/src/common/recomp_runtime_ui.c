@@ -517,7 +517,9 @@ void recomp_runtime_ui_render_argb8888(RecompRuntimeUi *ui, void *pixels,
         }
     }
 
-    const char *help = "UP/DOWN SELECT  LEFT/RIGHT CHANGE  ENTER ACCEPT";
+    /* Top level only moves and opens sections (rows show their own
+     * description); keep it short enough for the pixel font's line. */
+    const char *help = "UP/DOWN SELECT  ENTER OPEN  ESC BACK";
     if (ui->in_section) {
         const RecompRuntimeUiItem *item = recomp_runtime_ui_section_item(
             ui, ui->section_index, ui->row_index);
